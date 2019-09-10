@@ -16,25 +16,23 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
 import dev.weinsheimer.sportscalendar.R
-import dev.weinsheimer.sportscalendar.databinding.FragmentBadmintonnFilterBinding
 import dev.weinsheimer.sportscalendar.domain.Athlete
 import dev.weinsheimer.sportscalendar.domain.Event
 import dev.weinsheimer.sportscalendar.domain.EventCategory
 import dev.weinsheimer.sportscalendar.util.*
 import dev.weinsheimer.sportscalendar.viewmodels.SharedViewModel
-import kotlinx.android.synthetic.main.filter_selection_athlete.view.*
 import timber.log.Timber
-import android.os.Looper
 import android.os.HandlerThread
 import android.os.Handler
+import dev.weinsheimer.sportscalendar.databinding.FragmentBadmintonFilterBinding
+import kotlinx.android.synthetic.main.filter_selection_event_category.view.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 open class FilterFragment: Fragment() {
-    private lateinit var binding: FragmentBadmintonnFilterBinding
+    private lateinit var binding: FragmentBadmintonFilterBinding
 
     private val selectedAthlete = MutableLiveData<Athlete>()
     private val selectedEvent = MutableLiveData<Event>()
@@ -61,7 +59,7 @@ open class FilterFragment: Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_badmintonn_filter, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_badminton_filter, container, false)
 
         binding.lifecycleOwner = this
 
@@ -80,7 +78,7 @@ open class FilterFragment: Fragment() {
          */
         // populate autocompletetextview
         athletes.observe(viewLifecycleOwner, Observer { athletes ->
-            binding.athlete.athleteAutoCompleteTextView.setAdapter(BaseAdapter(binding.athlete.chipGroup.context, athletes))
+            binding.athlete.athleteAutoCompleteTextView.setAdapter(BaseAdapter(binding.athlete.athleteFilterChipGroup.context, athletes))
         })
 
         // react to selection
@@ -187,8 +185,8 @@ open class FilterFragment: Fragment() {
         val handler = Handler(looper)
         //handler.post {}
         eventCategories.value?.forEach { category ->
-            binding.eventCategory.chipGroup.addView(
-                Chip(binding.eventCategory.chipGroup.context).createCheckableFilterChip(
+            binding.eventCategory.eventCategoryFilterChipGroup.addView(
+                Chip(binding.eventCategory.eventCategoryFilterChipGroup.context).createCheckableFilterChip(
                     category.name,
                     CompoundButton.OnCheckedChangeListener { _, isChecked ->
                         if (isChecked) {
@@ -217,9 +215,9 @@ open class FilterFragment: Fragment() {
         // ATHLETES
         filteredAthletes.observe(viewLifecycleOwner, Observer { athletes ->
             athletes.forEach { athlete ->
-                if (!binding.athlete.chipGroup.contains(athlete.id)) {
-                    binding.athlete.chipGroup.addView(
-                        Chip(binding.athlete.chipGroup.context).createFilterChip(
+                if (!binding.athlete.athleteFilterChipGroup.contains(athlete.id)) {
+                    binding.athlete.athleteFilterChipGroup.addView(
+                        Chip(binding.athlete.athleteFilterChipGroup.context).createFilterChip(
                             athlete.name,
                             View.OnClickListener {
                                 filteredAthletes.value = filteredAthletes.value?.apply {
@@ -231,18 +229,18 @@ open class FilterFragment: Fragment() {
                     )
                 }
             }
-            binding.athlete.chipGroup.removeOtherChildren(athletes.map { it.id })
-            if (binding.athlete.chipGroup.childCount > 0) {
-                binding.athlete.chipGroup.visibility = View.VISIBLE
+            binding.athlete.athleteFilterChipGroup.removeOtherChildren(athletes.map { it.id })
+            if (binding.athlete.athleteFilterChipGroup.childCount > 0) {
+                binding.athlete.athleteFilterChipGroup.visibility = View.VISIBLE
             } else {
-                binding.athlete.chipGroup.visibility = View.GONE
+                binding.athlete.athleteFilterChipGroup.visibility = View.GONE
             }
         })
 
         // EVENT CATEGORIES
         filteredEventCategories.observe(viewLifecycleOwner, Observer { eventCategories ->
-            for (index in 0 until binding.eventCategory.chipGroup.childCount) {
-                val chip = binding.eventCategory.chipGroup.getChildAt(index) as Chip
+            for (index in 0 until binding.eventCategory.eventCategoryFilterChipGroup.childCount) {
+                val chip = binding.eventCategory.eventCategoryFilterChipGroup.getChildAt(index) as Chip
                 if (eventCategories.map { it.id }.contains(chip.id)) {
                     chip.isChecked = true
                 }
@@ -252,9 +250,9 @@ open class FilterFragment: Fragment() {
         // EVENTS
         filteredEvents.observe(viewLifecycleOwner, Observer { events ->
             events.forEach { event ->
-                if (!binding.event.chipGroup.contains(event.id)) {
-                    binding.event.chipGroup.addView(
-                        Chip(binding.event.chipGroup.context).createFilterChip(
+                if (!binding.event.eventFilterChipGroup.contains(event.id)) {
+                    binding.event.eventFilterChipGroup.addView(
+                        Chip(binding.event.eventFilterChipGroup.context).createFilterChip(
                             event.name,
                             View.OnClickListener {
                                 filteredEvents.value = filteredEvents.value?.apply {
@@ -266,11 +264,11 @@ open class FilterFragment: Fragment() {
                     )
                 }
             }
-            binding.event.chipGroup.removeOtherChildren(events.map { it.id })
-            if (binding.event.chipGroup.childCount > 0) {
-                binding.event.chipGroup.visibility = View.VISIBLE
+            binding.event.eventFilterChipGroup.removeOtherChildren(events.map { it.id })
+            if (binding.event.eventFilterChipGroup.childCount > 0) {
+                binding.event.eventFilterChipGroup.visibility = View.VISIBLE
             } else {
-                binding.event.chipGroup.visibility = View.GONE
+                binding.event.eventFilterChipGroup.visibility = View.GONE
             }
         })
 
