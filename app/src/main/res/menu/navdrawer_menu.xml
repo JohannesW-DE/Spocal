@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/menu_main" android:checkableBehavior="single">
+        <item android:id="@+id/calendarFragment" android:title="@string/menu_calendar" android:icon="@drawable/icon_home_2"/>
+        <item android:title="@string/menu_about" android:id="@+id/aboutFragment" android:icon="@drawable/icon_about"/>
+    </group>
+
+    <item android:title="@string/menu_filters">
+        <menu>
+            <item android:id="@+id/badmintonFilterFragment" android:title="@string/menu_badminton" android:icon="@drawable/icon_badminton"/>
+            <item android:id="@+id/cyclingFilterFragment" android:title="@string/menu_cycling" android:icon="@drawable/icon_cycling"/>
+            <item android:id="@+id/tennisFilterFragment" android:title="@string/menu_tennis" android:icon="@drawable/icon_tennis" />
+        </menu>
+    </item>
+</menu>

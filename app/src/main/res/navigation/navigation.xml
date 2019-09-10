@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/navigation"
+            app:startDestination="@id/calendarFragment">
+
+    <fragment android:id="@+id/calendarFragment"
+              android:name="dev.weinsheimer.sportscalendar.ui.CalendarFragment"
+              android:label="@string/navigation_label_calendar"/>
+
+    <fragment android:id="@+id/badmintonFilterFragment"
+              android:name="dev.weinsheimer.sportscalendar.ui.BadmintonFilterFragment"
+              android:label="@string/navigation_label_badminton"/>
+    <fragment android:id="@+id/cyclingFilterFragment"
+              android:name="dev.weinsheimer.sportscalendar.ui.CyclingFilterFragment"
+              android:label="@string/navigation_label_cycling"/>
+    <fragment android:id="@+id/tennisFilterFragment"
+              android:name="dev.weinsheimer.sportscalendar.ui.TennisFilterFragment"
+              android:label="@string/navigation_label_tennis"/>
+
+    <fragment android:id="@+id/aboutFragment"
+              android:name="dev.weinsheimer.sportscalendar.ui.AboutFragment"
+              android:label="@string/navigation_label_about">
+        <action
+                android:id="@+id/action_aboutFragment_to_badmintonFilterFragment"
+                app:destination="@id/badmintonFilterFragment" />
+        <action
+                android:id="@+id/action_aboutFragment_to_tennisFilterFragment"
+                app:destination="@id/tennisFilterFragment" />
+        <action
+                android:id="@+id/action_aboutFragment_to_cyclingFilterFragment"
+                app:destination="@id/cyclingFilterFragment" />
+    </fragment>
+
+</navigation>

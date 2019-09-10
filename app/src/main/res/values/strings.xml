@@ -1,0 +1,83 @@
+<resources>
+    <string name="app_name">SportsCalendar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_user_login_username">Username</string>
+    <string name="fragment_user_login_header">Login</string>
+    <string name="fragment_user_login_email">E-Mail</string>
+    <string name="fragment_user_login_password">Password</string>
+    <string name="fragment_user_login_login_button">Login</string>
+    <string name="fragment_user_register_register_textview">Register</string>
+    <string name="fragment_user_register_email_textview">E-Mail</string>
+    <string name="fragment_user_register_password1_textview">Password</string>
+    <string name="fragment_user_register_password2_textview">Repeat password</string>
+    <string name="fragment_user_register_register_button">Register</string>
+    <string name="menu_item_login">Login</string>
+    <string name="foo">bar</string>
+    <string name="navdrawer_menu_calendar">Calendar</string>
+    <string name="navdrawer_menu_filter_badminton">Badminton</string>
+    <string name="navdrawer_menu_filter_cycling">Cycling</string>
+    <string name="fragment_filter_badminton_athlete">Athletes</string>
+    <string name="fragment_filter_badminton_event">Events</string>
+    <string name="fragment_filter_badminton_categories">Categories</string>
+    <string name="item_calendar_event_location">City: %1$s</string>
+    // toasts
+    <string name="toast_refresh_complete">Datenbestand wurde aktualisiert.</string>
+    // badminton filter
+    <string name="tennis_filter_athletes">Athleten</string>
+    <string name="tennis_filter_events">Turniere</string>
+    <string name="tennis_filter_categories">Turnier-Kategorien</string>
+    <string name="tennis_filter_categories_all">Alle Kategorien</string>
+    // badminton filter
+    <string name="badminton_filter_athletes">Athleten</string>
+    <string name="badminton_filter_events">Turniere</string>
+    <string name="badminton_filter_categories">Turnier-Kategorien</string>
+    <string name="badminton_filter_categories_all">Alle Kategorien</string>
+    // menu
+    <string name="menu_calendar">Home</string>
+    <string name="menu_filters">Sportarten</string>
+    <string name="menu_badminton">Badminton</string>
+    <string name="menu_cycling">Rad</string>
+    <string name="menu_tennis">Tennis</string>
+    <string name="menu_about">Über</string>
+    // about
+    <string name="about_description">Diese App ist im Rahmen eines Projekts an der FH-SWF entstanden.</string>
+    <string name="about_copyright">© Johannes Weinsheimer, 2019</string>
+    // misc
+    <string name="error_network_connection">Es konnte keine Verbindung zum Server hergestellt werden.</string>
+    <string name="error_network_code">Aktualisierung des Datenbestandes fehlgeschlagen. Grund: Code!</string>
+    <string name="error_network_format">Aktualisierung des Datenbestandes fehlgeschlagen. Grund: Format!</string>
+    // calendar fragment
+    <string name="calendar_no_results">Leider wurden keine Turniere gemäß Ihrer aktuellen Einstellungen der Filter gefunden.</string>
+    <string name="calendar_no_filters">
+        Hier gibt es noch nichts zu sehen da Sie aktuell keine(n) Filter eingestellt haben.\n\nUm dies zu ändern können Sie über das Menü Sportarten auswählen für die Sie sich interessieren und Kriterien festlegen, die bestimmen, welche Turniere
+        Sie hier aufgelistet sehen wollen.
+    </string>
+
+
+
+    <string name="calendar_update_success">Der Kalender wurde aktualisiert.</string>
+    <string name="calendar_update_fail">Der Kalender konnte nicht aktualisiert werden.</string>
+    <string name="error_actionbar">Es konnte keine Verbindung zum Server hergestellt werden.</string>
+
+    // reusable xml components
+    <string name="filter_selection_athlete_header">Athleten</string>
+    <string name="filter_selection_event_header">Events</string>
+    <string name="filter_selection_event_category_header">Turnier-Kategorien</string>
+    // about fragment
+    <string name="fragment_about_about_header">Über</string>
+    <string name="fragment_about_about_textView">Diese App wurde mit dem Ziel entwickelt, dem Benutzer einen Überlick über Turniere / Renne / Wettkämpfe spannender Sportarten zu verschaffen,
+    die nicht im breiten Fokus der Öffentlichkeit stehen.</string>
+    <string name="fragment_about_athletes">Athleten: %s / %s</string>
+    <string name="fragment_about_events">Turniere: %s / %s</string>
+    <string name="fragment_about_event_categories">Turnier-Kategorien: %s / %s</string>
+    <string name="fragment_about_result">%s Turniere</string>
+
+    // navigation -> labels
+    <string name="navigation_label_calendar">Kalender</string>
+    <string name="navigation_label_about">Über SportsCalendar</string>
+    <string name="navigation_label_badminton">Badminton</string>
+    <string name="navigation_label_tennis">Tennis</string>
+    <string name="navigation_label_cycling">Rad</string>
+</resources>

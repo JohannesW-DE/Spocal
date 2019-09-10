@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="androidx.lifecycle.MutableLiveData"/>
+        <import type="dev.weinsheimer.sportscalendar.domain.Athlete"/>
+        <import type="dev.weinsheimer.sportscalendar.domain.Event"/>
+        <variable
+                name="viewModel"
+                type="dev.weinsheimer.sportscalendar.viewmodels.SharedViewModel" />
+        <variable
+                name="selectedAthlete"
+                type="MutableLiveData&lt;Athlete&gt;" />
+        <variable
+                name="selectedEvent"
+                type="MutableLiveData&lt;Event&gt;" />
+    </data>
+    <ScrollView android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".MainActivity">
+        <androidx.constraintlayout.widget.ConstraintLayout android:orientation="vertical"
+                                                           android:layout_width="match_parent"
+                                                           android:layout_height="match_parent"
+                                                           android:id="@+id/constraintLayout">
+            <View
+                    android:id="@+id/center_of_attention"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true" app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            <include android:layout_width="0dp" android:layout_height="wrap_content"
+                     layout="@layout/filter_selection_athlete" app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintStart_toStartOf="parent" app:selectedAthlete="@{selectedAthlete}"
+                     tools:layout_editor_absoluteY="0dp" app:layout_constraintHorizontal_bias="0.0" android:id="@+id/athlete"/>
+            <include android:layout_width="0dp" android:layout_height="wrap_content"
+                     layout="@layout/filter_selection_event" app:layout_constraintTop_toBottomOf="@+id/athlete"
+                     app:layout_constraintEnd_toEndOf="parent" app:selectedEvent="@{selectedEvent}"
+                     app:layout_constraintStart_toStartOf="parent" android:id="@+id/event" android:layout_marginTop="8dp"/>
+            <include android:layout_width="0dp" android:layout_height="wrap_content"
+                     layout="@layout/filter_selection_event_category"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintStart_toStartOf="parent"
+                     android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/event"
+                     android:id="@+id/event_category"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true" app:srcCompat="@drawable/icon_done"
+                    android:id="@+id/floatingActionButton" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp" android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent" android:tint="@color/colorPrimaryDark"
+                    android:focusable="true"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

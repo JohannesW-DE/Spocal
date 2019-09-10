@@ -1,0 +1,167 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/colorTextLight</item>
+    </style>
+
+    <style name="ImageButton.Add" parent="@android:style/Widget.Material.Light.ImageButton">
+        <item name="android:background">@color/colorAccent</item>
+    </style>
+
+    <style name="AutoCompleteTextView.Filter" parent="@android:style/Widget.Material.Light.AutoCompleteTextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:inputType">textNoSuggestions</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="Chip.Location" parent="@style/Base.Widget.MaterialComponents.Chip">
+        <item name="iconStartPadding">20dp</item>
+        <item name="iconEndPadding">20dp</item>
+        <item name="chipBackgroundColor">@color/colorPrimaryLight</item>
+        <item name="android:textColor">@color/colorTextLight</item>
+        <item name="android:clickable">false</item>
+    </style>
+    <style name="FilterCategoryChip" parent="@style/Base.Widget.MaterialComponents.Chip">
+        <item name="iconStartPadding">20dp</item>
+        <item name="iconEndPadding">20dp</item>
+        <item name="chipBackgroundColor">@color/colorPrimaryLight</item>
+        <item name="android:textColor">@color/colorTextLight</item>
+        <item name="android:clickable">false</item>
+    </style>
+    <style name="CategoryChip" parent="@style/Base.Widget.MaterialComponents.Chip">
+        <item name="iconStartPadding">20dp</item>
+        <item name="iconEndPadding">20dp</item>
+        <item name="chipBackgroundColor">@color/colorPrimaryLight</item>
+        <item name="android:textColor">@color/colorTextLight</item>
+        <item name="android:clickable">true</item>
+        <item name="android:checkable">true</item>
+    </style>
+    <style name="FilterChipText">
+        <item name="android:textSize">12dp</item>
+        <item name="android:fontFamily">@font/work_sans</item>
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+    <style name="ChipLocationText">
+        <item name="android:textSize">12dp</item>
+        <item name="android:fontFamily">@font/work_sans</item>
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+    <style name="FilterCaption">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:labelFor">@id/autoCompleteTextView</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:fontFamily">@font/work_sans_bold</item>
+        <item name="android:textColor">@color/colorTextLight</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+    <style name="FilterChip" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/work_sans</item>
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+    <style name="AddButton">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:fontFamily">@font/work_sans_semibold</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_marginTop">16dp</item>
+    </style>
+    <!-- menu -->
+    <style name="CalendarInfoText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/work_sans</item>
+        <item name="android:textColor">@color/colorTextDark</item>
+    </style>
+
+
+    <!-- reworked -->
+    <style name="MenuTextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/work_sans_light</item>
+        <item name="android:textColor">@color/colorTextDark</item>
+    </style>
+    <style name="DefaultTextAppearance">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/work_sans</item>
+        <item name="android:textColor">@color/colorTextDark</item>
+    </style>
+    <style name="DefaultTextAppearance.OnAccent">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/work_sans</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+    <style name="FilterSelectionTextViewTextAppearance">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/work_sans</item>
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+    <style name="FilterSelectionAutoCompleteTextViewTextAppearance">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/work_sans</item>
+        <item name="android:textColor">@color/colorTextDark</item>
+    </style>
+    <style name="FilterSelectionButtonTextAppearance">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/work_sans</item>
+        <item name="android:textColor">@color/colorTextDark</item>
+    </style>
+    <style name="FilterSelectionTextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:textAppearance">@style/FilterSelectionTextViewTextAppearance</item>
+        <item name="android:background">@drawable/background_primary_dark_5dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">textNoSuggestions</item>
+    </style>
+    <style name="FilterSelectionAutoCompleteTextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:textAppearance">@style/FilterSelectionAutoCompleteTextViewTextAppearance</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+    <style name="FilterSelectionButton">
+        <item name="android:layout_width">45dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:textAppearance">@style/FilterSelectionButtonTextAppearance</item>
+        <item name="android:textColor">@color/colorTextDark</item>
+    </style>
+
+    <style name="SpinnerStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:textAppearance">@style/DefaultTextAppearance</item>
+    </style>
+</resources>
