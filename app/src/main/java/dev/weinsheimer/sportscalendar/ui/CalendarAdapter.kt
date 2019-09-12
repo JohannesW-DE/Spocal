@@ -94,6 +94,10 @@ class CalendarAdapter(val clickListener: CalendarListener, context: Context): Li
             Timber.i("binding stuff")
             Timber.i(item.expanded.toString())
 
+            println("--date@construct--")
+            println(item.dateFrom)
+            println(item.dateTo)
+
             binding.item = item
             binding.executePendingBindings()
             binding.clickListener = clickListener
@@ -184,13 +188,13 @@ class CalendarDiffCallback: DiffUtil.ItemCallback<DataItem>() {
 }
 
 class CalendarListener(val clickListener: (sport: String, eventId: Int) -> Unit) {
-    fun onClick(item: CalendarListItem) = clickListener(item.sport, item.eventId)
+    fun onClick(item: CalendarListItem) = clickListener(item.sport.id, item.id)
 }
 
 sealed class DataItem {
     data class EventItem(val event: CalendarListItem): DataItem() {
-        override val id = event.eventId
-        override val type = event.sport
+        override val id = event.id
+        override val type = event.sport.id
     }
     data class MonthItem(val month: String): DataItem() {
         override val id = Int.MIN_VALUE

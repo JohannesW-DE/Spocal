@@ -1,4 +1,4 @@
-package dev.weinsheimer.sportscalendar.database
+package dev.weinsheimer.sportscalendar.database.model
 
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
@@ -6,6 +6,7 @@ import dev.weinsheimer.sportscalendar.domain.Athlete
 import dev.weinsheimer.sportscalendar.domain.CalendarListItem
 import dev.weinsheimer.sportscalendar.domain.Event
 import dev.weinsheimer.sportscalendar.domain.EventCategory
+import dev.weinsheimer.sportscalendar.util.Sport
 import java.util.*
 
 /**
@@ -147,13 +148,14 @@ data class DatabaseCyclingFilteredEvent (
 fun List<DatabaseCyclingFilteredEvent>.asCalendarListItems(): List<CalendarListItem> {
     return map {
         CalendarListItem(
-            sport = "cycling",
-            eventId = it.event.id,
+            id = it.event.id,
+            sport = Sport.CYCLING,
             name = it.event.name,
-            category = it.category.name,
             dateFrom = it.event.dateFrom,
             dateTo = it.event.dateTo,
-            entries = it.entries,
+            category = it.category.name,
+            athletes = emptyList(),
+            entries = emptyList(),
             country = it.country.asDomainModel()
         )
     }

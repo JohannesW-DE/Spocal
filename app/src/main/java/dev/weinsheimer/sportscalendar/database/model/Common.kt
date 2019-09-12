@@ -1,10 +1,9 @@
-package dev.weinsheimer.sportscalendar.database
+package dev.weinsheimer.sportscalendar.database.model
 
 import androidx.room.*
 import dev.weinsheimer.sportscalendar.domain.Country
 import dev.weinsheimer.sportscalendar.domain.Filter
 import dev.weinsheimer.sportscalendar.domain.FilterResult
-import dev.weinsheimer.sportscalendar.domain.FilteredBadmintonEvent
 
 /**
  * DatabaseCountry

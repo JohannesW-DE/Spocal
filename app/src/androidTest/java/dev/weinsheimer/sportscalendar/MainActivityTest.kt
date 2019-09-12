@@ -3,7 +3,6 @@ package dev.weinsheimer.sportscalendar
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -18,28 +17,57 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import androidx.test.espresso.matcher.RootMatchers.withDecorView
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher.RootMatchers.withDecorView
-import androidx.test.espresso.Espresso.onView
+import com.google.common.truth.Truth
+import dev.weinsheimer.sportscalendar.database.dao.BadmintonDao
+import dev.weinsheimer.sportscalendar.database.SpocalDB
+import dev.weinsheimer.sportscalendar.di.databaseTestModule
+import dev.weinsheimer.sportscalendar.network.ApiService
+import dev.weinsheimer.sportscalendar.repository.BadmintonRepository
+import org.junit.After
 import org.junit.Before
+import org.koin.core.context.loadKoinModules
+import org.koin.test.KoinTest
+import org.koin.test.inject
+import java.io.IOException
 
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest {
+class MainActivityTest : KoinTest {
     private lateinit var mActivity: MainActivity
+    private lateinit var repo: BadmintonRepository
+    private lateinit var badmintonDao: BadmintonDao
+
+    private val database: SpocalDB by inject()
+    private val apiService: ApiService by inject()
 
     @Rule
     @JvmField
-    var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
+    var mActivityTestRule =
+        ActivityTestRule(MainActivity::class.java, false, false)
 
     @Before
     fun before() {
+        loadKoinModules(databaseTestModule)
+
+        repo = BadmintonRepository(database, apiService)
+        TestUtil.populate(database)
+        badmintonDao = database.badmintonDao
+
+        mActivityTestRule.launchActivity(null)
         mActivity = mActivityTestRule.activity
+    }
+
+    @After
+    @Throws(IOException::class)
+    fun after() {
+        database.close()
     }
 
     @Test
     fun mainActivityTest() {
+        Truth.assertThat(badmintonDao.getCurrentAthletes().size).isEqualTo(2)
+
         val appCompatImageButton = onView(
             allOf(
                 withContentDescription("Open navigation drawer"),
@@ -75,8 +103,8 @@ class MainActivityTest {
         )
         navigationMenuItemView.perform(click())
 
-        onView(withId(R.id.athleteAutoCompleteTextView)).perform(scrollTo(), replaceText("Lin"), closeSoftKeyboard())
-        onView(withText("Lin Dan"))
+        onView(withId(R.id.athleteAutoCompleteTextView)).perform(scrollTo(), replaceText("Athl"), closeSoftKeyboard())
+        onView(withText("Athlete #1"))
             .inRoot(withDecorView(not(`is`(mActivity.window.decorView))))
             .perform(click())
         /*
@@ -85,10 +113,6 @@ class MainActivityTest {
             .atPosition(0)
         constraintLayout.perform(click())
          */
-
-        onView(withText("Lin"))
-            .inRoot(withDecorView(not(`is`(mActivityTestRule.activity.window.decorView))))
-            .perform(click())
 
         val materialButton = onView(
             allOf(

@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navigationView, navController)
 
-        applicationContext.deleteDatabase("spocal") // DEBUGGING
+        //applicationContext.deleteDatabase("spocal") // DEBUGGING
 
         // display information/errors/warnings
         viewModel.toast.observe(this, Observer { resourceId ->

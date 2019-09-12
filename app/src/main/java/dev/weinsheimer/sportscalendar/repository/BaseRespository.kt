@@ -31,27 +31,7 @@ abstract class BaseRepository(private val database: SpocalDB) {
 
     fun setup() {
         calendarItemsWithEntries.addSource(calendarItems) { items ->
-            println("setup -> calendarItems")
-            athletes.value?.let { athletes ->
-                items.forEach { item ->
-                    item.entries?.let { entries ->
-                        item.athletes = athletes.filter { entries.contains(it.id) }
-                    }
-                }
-            }
             calendarItemsWithEntries.value = items
-        }
-
-        calendarItemsWithEntries.addSource(athletes) { athletes ->
-            println("setup -> athletes")
-            calendarItems.value?.let { items ->
-                items.forEach { item ->
-                    item.entries?.let { entries ->
-                        item.athletes = athletes.filter { entries.contains(it.id) }
-                    }
-                }
-            }
-            calendarItemsWithEntries.value = calendarItemsWithEntries.value
         }
     }
 

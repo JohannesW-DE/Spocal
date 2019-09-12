@@ -1,8 +1,8 @@
 package dev.weinsheimer.sportscalendar.network
 
 import com.squareup.moshi.Json
-import dev.weinsheimer.sportscalendar.database.DatabaseCountry
-import dev.weinsheimer.sportscalendar.database.DatabaseFilterResult
+import dev.weinsheimer.sportscalendar.database.model.DatabaseCountry
+import dev.weinsheimer.sportscalendar.database.model.DatabaseFilterResult
 import dev.weinsheimer.sportscalendar.domain.Country
 
 /**
@@ -33,10 +33,11 @@ fun NetworkCountryContainer.asDomainModel(): List<Country> {
 
 fun NetworkCountryContainer.asDatabaseModel(): Array<DatabaseCountry> {
     return countries.map {
-        DatabaseCountry (
+        DatabaseCountry(
             id = it.id,
             name = it.name,
-            alphatwo = it.alphatwo)
+            alphatwo = it.alphatwo
+        )
     }.toTypedArray()
 }
 
@@ -58,6 +59,11 @@ data class NetworkFilterResult(
 
 fun NetworkFilterResultsContainer.asDatabaseModel(sport: String): Array<DatabaseFilterResult> {
     return events.map {
-        DatabaseFilterResult(id = 0, sport = sport, eventId = it.id, entries = it.entries)
+        DatabaseFilterResult(
+            id = 0,
+            sport = sport,
+            eventId = it.id,
+            entries = it.entries
+        )
     }.toTypedArray()
 }

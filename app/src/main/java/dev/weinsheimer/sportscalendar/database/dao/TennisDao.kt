@@ -1,7 +1,9 @@
-package dev.weinsheimer.sportscalendar.database
+package dev.weinsheimer.sportscalendar.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import dev.weinsheimer.sportscalendar.database.BaseDao
+import dev.weinsheimer.sportscalendar.database.model.*
 
 @Dao
 interface TennisDao : BaseDao {

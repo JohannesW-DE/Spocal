@@ -1,7 +1,10 @@
 package dev.weinsheimer.sportscalendar.network
 
 import com.squareup.moshi.Json
-import dev.weinsheimer.sportscalendar.database.*
+import dev.weinsheimer.sportscalendar.database.model.DatabaseCyclingAthlete
+import dev.weinsheimer.sportscalendar.database.model.DatabaseCyclingEvent
+import dev.weinsheimer.sportscalendar.database.model.DatabaseCyclingEventCategory
+import dev.weinsheimer.sportscalendar.database.model.DatabaseFilterResult
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,7 +21,13 @@ data class NetworkCyclingAthlete(
 
 fun NetworkCyclingAthletesContainer.asDatabaseModel(): Array<DatabaseCyclingAthlete> {
     return athletes.map {
-        DatabaseCyclingAthlete (id = it.id, name = it.name, gender = "m", filter = false, nationality = it.nationality)
+        DatabaseCyclingAthlete(
+            id = it.id,
+            name = it.name,
+            gender = "m",
+            filter = false,
+            nationality = it.nationality
+        )
     }.toTypedArray()
 }
 
@@ -39,7 +48,7 @@ data class NetworkCyclingEvent(
 
 fun NetworkCyclingEventsContainer.asDatabaseModel(): Array<DatabaseCyclingEvent> {
     return events.map {
-        DatabaseCyclingEvent (
+        DatabaseCyclingEvent(
             id = it.id,
             name = it.name,
             dateFrom = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(it.dateFrom),
@@ -47,7 +56,8 @@ fun NetworkCyclingEventsContainer.asDatabaseModel(): Array<DatabaseCyclingEvent>
             filter = false,
             list = false,
             category = it.category,
-            country = it.country)
+            country = it.country
+        )
     }.toTypedArray()
 }
 
@@ -65,7 +75,12 @@ data class NetworkCyclingEventCategory(
 
 fun NetworkCyclingEventCategoriesContainer.asDatabaseModel(): Array<DatabaseCyclingEventCategory> {
     return categories.map {
-        DatabaseCyclingEventCategory(id = it.id, name = it.name, filter = false, mainCategory = it.mainCategory)
+        DatabaseCyclingEventCategory(
+            id = it.id,
+            name = it.name,
+            filter = false,
+            mainCategory = it.mainCategory
+        )
     }.toTypedArray()
 }
 
@@ -86,6 +101,11 @@ data class NetworkCyclingFilterResult(
 
 fun NetworkCyclingFilterResultContainer.asDatabaseModel(): Array<DatabaseFilterResult> {
     return events.map {
-        DatabaseFilterResult(id = 0, sport = "cycling", eventId = it.id, entries = it.entries)
+        DatabaseFilterResult(
+            id = 0,
+            sport = "cycling",
+            eventId = it.id,
+            entries = it.entries
+        )
     }.toTypedArray()
 }

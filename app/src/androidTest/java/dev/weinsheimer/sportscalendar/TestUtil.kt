@@ -1,17 +1,27 @@
 package dev.weinsheimer.sportscalendar
 
 import dev.weinsheimer.sportscalendar.database.*
-import java.time.Instant
+import dev.weinsheimer.sportscalendar.database.model.*
 import java.util.*
 
 class TestUtil {
     companion object {
         fun createDatabaseCountry(id: Int = 1) : DatabaseCountry {
-            return DatabaseCountry(id, "Country #$id", "A$id")
+            return DatabaseCountry(
+                id,
+                "Country #$id",
+                "A$id"
+            )
         }
 
         fun createDatabaseBadmintonAthlete(id: Int = 1, nationality: Int = 1) : DatabaseBadmintonAthlete {
-            return DatabaseBadmintonAthlete(id, "Athlete #$id", "m", false, nationality)
+            return DatabaseBadmintonAthlete(
+                id,
+                "Athlete #$id",
+                "m",
+                false,
+                nationality
+            )
         }
 
         fun createDatabaseBadmintonEvent(id: Int = 1, country: Int = 1, category: Int = 1) : DatabaseBadmintonEvent {
@@ -29,16 +39,24 @@ class TestUtil {
         }
 
         fun createDatabaseBadmintonEventCategory(id: Int = 1) : DatabaseBadmintonEventCategory {
-            return DatabaseBadmintonEventCategory(id, "Event Category #$id", false, null)
+            return DatabaseBadmintonEventCategory(
+                id,
+                "Event Category #$id",
+                false,
+                null
+            )
         }
 
         fun createDatabaseBadmintonEntry(eventId: Int, athleteId: Int): DatabaseBadmintonEntry {
-            return DatabaseBadmintonEntry(eventId, athleteId)
+            return DatabaseBadmintonEntry(
+                eventId,
+                athleteId
+            )
         }
 
         fun populate(database: SpocalDB) {
-            database.commonDao.insertCountries(createDatabaseCountry(1))
-            database.commonDao.insertCountries(createDatabaseCountry(2))
+            database.countryDao.insertCountries(createDatabaseCountry(1))
+            database.countryDao.insertCountries(createDatabaseCountry(2))
 
             val athletes = listOf(
                 createDatabaseBadmintonAthlete(1),

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import dev.weinsheimer.sportscalendar.R
 import dev.weinsheimer.sportscalendar.databinding.FragmentAboutBinding
+import dev.weinsheimer.sportscalendar.util.Sport
 import dev.weinsheimer.sportscalendar.viewmodels.SharedViewModel
 import org.koin.android.ext.android.bind
 
@@ -51,7 +52,7 @@ class AboutFragment: Fragment() {
         })
 
         viewModel.calendarItems.observe(viewLifecycleOwner, Observer { calendarItems ->
-            binding.badminton.result = calendarItems.filter { it.sport == "badminton" }.size.toString()
+            binding.badminton.result = calendarItems.filter { it.sport == Sport.BADMINTON }.size.toString()
         })
 
         binding.badminton.sportTextView.setOnClickListener { view ->
@@ -83,39 +84,7 @@ class AboutFragment: Fragment() {
         })
 
         viewModel.calendarItems.observe(viewLifecycleOwner, Observer { calendarItems ->
-            binding.tennis.result = calendarItems.filter { it.sport == "tennis" }.size.toString()
-        })
-
-        binding.tennis.sportTextView.setOnClickListener { view ->
-            view.findNavController().navigate(R.id.action_aboutFragment_to_tennisFilterFragment)
-        }
-
-        binding.tennis.sport = "Tennis"
-        binding.tennis.athletesfilter = "-"
-        binding.tennis.athletes = "-"
-        binding.tennis.eventsfilter = "-"
-        binding.tennis.events = "-"
-        binding.tennis.eventcategoriesfilter = "-"
-        binding.tennis.eventcategories = "-"
-        binding.tennis.result = "0"
-
-        viewModel.tennisAthletes.observe(viewLifecycleOwner, Observer { athletes ->
-            binding.tennis.athletes = athletes.size.toString()
-            binding.tennis.athletesfilter = athletes.filter { it.filter }.size.toString()
-        })
-
-        viewModel.tennisEvents.observe(viewLifecycleOwner, Observer { events ->
-            binding.tennis.events = events.size.toString()
-            binding.tennis.eventsfilter = events.filter { it.filter }.size.toString()
-        })
-
-        viewModel.tennisEventCategories.observe(viewLifecycleOwner, Observer { eventCategories ->
-            binding.tennis.eventcategories = eventCategories.size.toString()
-            binding.tennis.eventcategoriesfilter = eventCategories.filter { it.filter }.size.toString()
-        })
-
-        viewModel.calendarItems.observe(viewLifecycleOwner, Observer { calendarItems ->
-            binding.tennis.result = calendarItems.filter { it.sport == "tennis" }.size.toString()
+            binding.tennis.result = calendarItems.filter { it.sport == Sport.TENNIS }.size.toString()
         })
 
         binding.tennis.sportTextView.setOnClickListener { view ->
@@ -142,12 +111,13 @@ class AboutFragment: Fragment() {
         })
 
         viewModel.calendarItems.observe(viewLifecycleOwner, Observer { calendarItems ->
-            binding.cycling.result = calendarItems.filter { it.sport == "cycling" }.size.toString()
+            binding.cycling.result = calendarItems.filter { it.sport == Sport.CYCLING }.size.toString()
         })
 
         binding.cycling.sportTextView.setOnClickListener { view ->
             view.findNavController().navigate(R.id.action_aboutFragment_to_cyclingFilterFragment)
         }
+
 
         return binding.root
     }

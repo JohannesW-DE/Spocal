@@ -1,10 +1,10 @@
 package dev.weinsheimer.sportscalendar.network
 
 import com.squareup.moshi.Json
-import dev.weinsheimer.sportscalendar.database.DatabaseFilterResult
-import dev.weinsheimer.sportscalendar.database.DatabaseTennisAthlete
-import dev.weinsheimer.sportscalendar.database.DatabaseTennisEvent
-import dev.weinsheimer.sportscalendar.database.DatabaseTennisEventCategory
+import dev.weinsheimer.sportscalendar.database.model.DatabaseFilterResult
+import dev.weinsheimer.sportscalendar.database.model.DatabaseTennisAthlete
+import dev.weinsheimer.sportscalendar.database.model.DatabaseTennisEvent
+import dev.weinsheimer.sportscalendar.database.model.DatabaseTennisEventCategory
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,7 +22,13 @@ data class NetworkTennisAthlete(
 
 fun NetworkTennisAthletesContainer.asDatabaseModel(): Array<DatabaseTennisAthlete> {
     return athletes.map {
-        DatabaseTennisAthlete(id = it.id, name = it.name, gender = it.gender, filter = false, nationality = it.nationality)
+        DatabaseTennisAthlete(
+            id = it.id,
+            name = it.name,
+            gender = it.gender,
+            filter = false,
+            nationality = it.nationality
+        )
     }.toTypedArray()
 }
 
@@ -49,7 +55,7 @@ data class NetworkTennisEvent(
 
 fun NetworkTennisEventsContainer.asDatabaseModel(): Array<DatabaseTennisEvent> {
     return events.map {
-        DatabaseTennisEvent (
+        DatabaseTennisEvent(
             id = it.id,
             association = it.association,
             name = it.name,
@@ -64,7 +70,7 @@ fun NetworkTennisEventsContainer.asDatabaseModel(): Array<DatabaseTennisEvent> {
             list = false,
             country = it.country,
             category = it.category
-            )
+        )
     }.toTypedArray()
 }
 
@@ -82,7 +88,12 @@ data class NetworkTennisEventCategory(
 
 fun NetworkTennisEventCategoriesContainer.asDatabaseModel(): Array<DatabaseTennisEventCategory> {
     return categories.map {
-        DatabaseTennisEventCategory(id = it.id, association = it.association, name = it.name, filter = false)
+        DatabaseTennisEventCategory(
+            id = it.id,
+            association = it.association,
+            name = it.name,
+            filter = false
+        )
     }.toTypedArray()
 }
 
@@ -107,6 +118,7 @@ fun NetworkTennisFilterResultContainer.asDatabaseModel(): Array<DatabaseFilterRe
             id = 0,
             sport = "tennis",
             eventId = it.id,
-            entries = it.entries)
+            entries = it.entries
+        )
     }.toTypedArray()
 }

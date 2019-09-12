@@ -1,20 +1,15 @@
 package dev.weinsheimer.sportscalendar.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
-import com.google.gson.Gson
-import com.squareup.moshi.JsonDataException
 import dev.weinsheimer.sportscalendar.database.*
-import dev.weinsheimer.sportscalendar.domain.*
+import dev.weinsheimer.sportscalendar.database.dao.TennisDao
+import dev.weinsheimer.sportscalendar.database.model.DatabaseTennisEntry
+import dev.weinsheimer.sportscalendar.database.model.asCalendarListItems
+import dev.weinsheimer.sportscalendar.database.model.asDomainModel
+import dev.weinsheimer.sportscalendar.database.model.update
 import dev.weinsheimer.sportscalendar.network.*
 import dev.weinsheimer.sportscalendar.util.RefreshException
 import dev.weinsheimer.sportscalendar.util.RefreshExceptionType
-import dev.weinsheimer.sportscalendar.util.refresh
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import retrofit2.Response
-import java.net.SocketTimeoutException
 
 class TennisRepository(val database: SpocalDB, val retrofitService: ApiService): BaseRepository(database) {
     override var sport = "tennis"
@@ -47,6 +42,9 @@ class TennisRepository(val database: SpocalDB, val retrofitService: ApiService):
     override var calendarItems =
         Transformations.map(database.tennisDao.getFilteredEvents()) {
             println(sport + " - _calendarItems_ -> " + it.size)
+            it.forEach { xd ->
+                println("@Transformations.map -> ${xd.event.dateFrom} / ${xd.event.dateTo}")
+            }
             it.asCalendarListItems()
         }
 
@@ -133,7 +131,12 @@ class TennisRepository(val database: SpocalDB, val retrofitService: ApiService):
                 container.events.forEach { event ->
                     dao.changeEventListStatus(true, event.id)
                     event.entries?.forEach { athleteId ->
-                        (dao as TennisDao).insertEntries(DatabaseTennisEntry(event.id, athleteId))
+                        (dao as TennisDao).insertEntries(
+                            DatabaseTennisEntry(
+                                event.id,
+                                athleteId
+                            )
+                        )
                     }
                 }
             }

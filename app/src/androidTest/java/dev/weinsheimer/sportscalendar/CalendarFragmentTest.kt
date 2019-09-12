@@ -1,35 +1,24 @@
 package dev.weinsheimer.sportscalendar
 
-import android.content.Context
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import com.google.common.truth.Truth
-import dev.weinsheimer.sportscalendar.database.BadmintonDao
+import dev.weinsheimer.sportscalendar.database.dao.BadmintonDao
 import dev.weinsheimer.sportscalendar.database.SpocalDB
 import dev.weinsheimer.sportscalendar.di.*
-import dev.weinsheimer.sportscalendar.network.Api
 import dev.weinsheimer.sportscalendar.network.ApiService
 import dev.weinsheimer.sportscalendar.repository.BadmintonRepository
-import dev.weinsheimer.sportscalendar.ui.CalendarAdapter
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
-import org.koin.core.context.startKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
-import org.mockito.junit.MockitoJUnit.rule
-
 
 
 @RunWith(AndroidJUnit4::class)

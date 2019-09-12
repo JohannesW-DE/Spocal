@@ -12,6 +12,7 @@ import dev.weinsheimer.sportscalendar.network.Api
 import dev.weinsheimer.sportscalendar.util.RefreshException
 import dev.weinsheimer.sportscalendar.util.RefreshExceptionType
 import dev.weinsheimer.sportscalendar.repository.*
+import dev.weinsheimer.sportscalendar.util.Sport
 import kotlinx.coroutines.delay
 
 const val REFRESH_DELAY = 10000L
@@ -64,7 +65,6 @@ class SharedViewModel(
      */
     fun updateFilters(sport: String, athletes: List<Athlete>?, eventCategories: List<EventCategory>?, events: List<Event>?) {
         viewModelScope.launch {
-            commonRepository.clearFilters(sport)
             when(sport) {
                 "badminton" -> badmintonRepository.updateFilter(athletes, eventCategories, events)
                 "tennis" -> tennisRepository.updateFilter(athletes, eventCategories, events)
@@ -113,7 +113,7 @@ class SharedViewModel(
         calendarItems.addSource(badmintonRepository.calendarItemsWithEntries) { calendarItems ->
             val result = mutableListOf<CalendarListItem>()
             this.calendarItems.value?.let { list ->
-                result.addAll(list.filter { it.sport != "badminton" })
+                result.addAll(list.filter { it.sport != Sport.BADMINTON })
             }
             result.addAll(calendarItems)
             this.calendarItems.value = result
@@ -122,7 +122,7 @@ class SharedViewModel(
         calendarItems.addSource(cyclingRepository.calendarItems) { calendarItems ->
             val result = mutableListOf<CalendarListItem>()
             this.calendarItems.value?.let { list ->
-                result.addAll(list.filter { it.sport != "cycling" })
+                result.addAll(list.filter { it.sport != Sport.CYCLING })
             }
             result.addAll(calendarItems)
             this.calendarItems.value = result
@@ -131,7 +131,10 @@ class SharedViewModel(
         calendarItems.addSource(tennisRepository.calendarItemsWithEntries) { calendarItems ->
             val result = mutableListOf<CalendarListItem>()
             this.calendarItems.value?.let { list ->
-                result.addAll(list.filter { it.sport != "tennis" })
+                list.forEach {
+                    println("@addSource -> ${it.dateFrom} / ${it.dateTo}")
+                }
+                result.addAll(list.filter { it.sport != Sport.TENNIS })
             }
             result.addAll(calendarItems)
             this.calendarItems.value = result

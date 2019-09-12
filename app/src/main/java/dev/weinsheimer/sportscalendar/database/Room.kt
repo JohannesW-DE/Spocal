@@ -3,6 +3,11 @@ package dev.weinsheimer.sportscalendar.database
 import android.content.Context
 import androidx.room.*
 import androidx.room.Database
+import dev.weinsheimer.sportscalendar.database.dao.BadmintonDao
+import dev.weinsheimer.sportscalendar.database.dao.CountryDao
+import dev.weinsheimer.sportscalendar.database.dao.CyclingDao
+import dev.weinsheimer.sportscalendar.database.dao.TennisDao
+import dev.weinsheimer.sportscalendar.database.model.*
 
 @Database(
     entities = [
@@ -24,7 +29,7 @@ import androidx.room.Database
     version = 1)
 @TypeConverters(Converters::class)
 abstract class SpocalDB: RoomDatabase() {
-    abstract val commonDao: CommonDao
+    abstract val countryDao: CountryDao
     abstract val badmintonDao: BadmintonDao
     abstract val cyclingDao: CyclingDao
     abstract val tennisDao: TennisDao

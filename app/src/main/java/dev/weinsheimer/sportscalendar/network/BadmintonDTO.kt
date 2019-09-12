@@ -2,6 +2,10 @@ package dev.weinsheimer.sportscalendar.network
 
 import com.squareup.moshi.Json
 import dev.weinsheimer.sportscalendar.database.*
+import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonAthlete
+import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEvent
+import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEventCategory
+import dev.weinsheimer.sportscalendar.database.model.DatabaseFilterResult
 import java.text.SimpleDateFormat
 
 /**
@@ -12,7 +16,13 @@ data class NetworkBadmintonAthletesContainer(
 ) : NetworkAthleteContainerInterface {
     override fun toDatabaseModel(): Array<DatabaseAthlete> {
         return athletes.map {
-            DatabaseBadmintonAthlete (id = it.id, name = it.name, gender = it.gender, filter = false, nationality = it.nationality)
+            DatabaseBadmintonAthlete(
+                id = it.id,
+                name = it.name,
+                gender = it.gender,
+                filter = false,
+                nationality = it.nationality
+            )
         }.toTypedArray()
     }
 }
@@ -25,7 +35,13 @@ data class NetworkBadmintonAthlete(
 
 fun NetworkBadmintonAthletesContainer.asDatabaseModel(): Array<DatabaseBadmintonAthlete> {
     return athletes.map {
-        DatabaseBadmintonAthlete (id = it.id, name = it.name, gender = it.gender, filter = false, nationality = it.nationality)
+        DatabaseBadmintonAthlete(
+            id = it.id,
+            name = it.name,
+            gender = it.gender,
+            filter = false,
+            nationality = it.nationality
+        )
     }.toTypedArray()
 }
 
@@ -47,7 +63,7 @@ data class NetworkBadmintonEvent(
 
 fun NetworkBadmintonEventsContainer.asDatabaseModel(): Array<DatabaseBadmintonEvent> {
     return events.map {
-        DatabaseBadmintonEvent (
+        DatabaseBadmintonEvent(
             id = it.id,
             name = it.name,
             dateFrom = SimpleDateFormat("yyyy-MM-dd").parse(it.dateFrom),
@@ -56,7 +72,8 @@ fun NetworkBadmintonEventsContainer.asDatabaseModel(): Array<DatabaseBadmintonEv
             filter = false,
             list = false,
             category = it.category,
-            country = it.country)
+            country = it.country
+        )
     }.toTypedArray()
 }
 
@@ -74,7 +91,12 @@ data class NetworkBadmintonEventCategory(
 
 fun NetworkBadmintonEventCategoriesContainer.asDatabaseModel(): Array<DatabaseBadmintonEventCategory> {
     return categories.map {
-        DatabaseBadmintonEventCategory(id = it.id, name = it.name, filter = false, mainCategory = it.mainCategory)
+        DatabaseBadmintonEventCategory(
+            id = it.id,
+            name = it.name,
+            filter = false,
+            mainCategory = it.mainCategory
+        )
     }.toTypedArray()
 }
 
@@ -99,6 +121,7 @@ fun NetworkBadmintonFilterResultContainer.asDatabaseModel(): Array<DatabaseFilte
             id = 0,
             sport = "badminton",
             eventId = it.id,
-            entries = it.entries)
+            entries = it.entries
+        )
     }.toTypedArray()
 }

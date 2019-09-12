@@ -7,6 +7,9 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import dev.weinsheimer.sportscalendar.database.*
+import dev.weinsheimer.sportscalendar.database.dao.BadmintonDao
+import dev.weinsheimer.sportscalendar.database.dao.CountryDao
+import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEntry
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -18,7 +21,7 @@ import org.junit.Rule
 @RunWith(AndroidJUnit4::class)
 class DatabaseUnitTest {
     private lateinit var badmintonDao: BadmintonDao
-    private lateinit var commonDao: CommonDao
+    private lateinit var countryDao: CountryDao
     private lateinit var db: SpocalDB
 
     @get:Rule
@@ -30,7 +33,7 @@ class DatabaseUnitTest {
         db = Room.inMemoryDatabaseBuilder(context, SpocalDB::class.java).build()
 
         badmintonDao = db.badmintonDao
-        commonDao = db.commonDao
+        countryDao = db.countryDao
 
         TestUtil.populate(db)
     }
@@ -60,7 +63,7 @@ class DatabaseUnitTest {
     @Test
     @Throws(Exception::class)
     fun badminton_getAthletesWithCountry() {
-        val countries = commonDao.getCurrentCountries()
+        val countries = countryDao.getCurrentCountries()
         val athletes = badmintonDao.getAthletesWithCountry()
         athletes.observeForever {  }
         assertThat(athletes.value!!.first().country).isEqualTo(countries.first())
@@ -84,7 +87,7 @@ class DatabaseUnitTest {
     @Throws(Exception::class)
     fun badminton_getFilteredEvents() {
         val category = badmintonDao.getCurrentEventCategories().first()
-        val country = commonDao.getCurrentCountries().first()
+        val country = countryDao.getCurrentCountries().first()
         val event = badmintonDao.getCurrentEvents().first()
         val filteredEvents = badmintonDao.getFilteredEvents()
         filteredEvents.observeForever {  }
@@ -93,6 +96,11 @@ class DatabaseUnitTest {
         assertThat(filteredEvents.value!!.first().country).isEqualTo(country)
         assertThat(filteredEvents.value!!.first().event).isEqualTo(event)
         assertThat(filteredEvents.value!!.first().entries.size).isEqualTo(2)
-        assertThat(filteredEvents.value!!.first().entries.first()).isEqualTo(DatabaseBadmintonEntry(1, 1))
+        assertThat(filteredEvents.value!!.first().entries.first()).isEqualTo(
+            DatabaseBadmintonEntry(
+                1,
+                1
+            )
+        )
     }
 }

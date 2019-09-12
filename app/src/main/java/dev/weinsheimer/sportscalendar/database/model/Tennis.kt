@@ -1,16 +1,25 @@
-package dev.weinsheimer.sportscalendar.database
+package dev.weinsheimer.sportscalendar.database.model
 
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
+import dev.weinsheimer.sportscalendar.database.DatabaseAthlete
 import dev.weinsheimer.sportscalendar.domain.Athlete
 import dev.weinsheimer.sportscalendar.domain.CalendarListItem
 import dev.weinsheimer.sportscalendar.domain.Event
 import dev.weinsheimer.sportscalendar.domain.EventCategory
+import dev.weinsheimer.sportscalendar.util.Sport
 import java.util.*
 
 /**
- * ATHLETES
+ * Models
  */
+
+
+/**
+ * Extensions
+ */
+
+
 @Entity(tableName = "tennis_athletes")
 data class DatabaseTennisAthlete constructor(
     @PrimaryKey(autoGenerate = false)
@@ -148,14 +157,19 @@ data class DatabaseTennisFilteredEvent (
 fun List<DatabaseTennisFilteredEvent>.asCalendarListItems(): List<CalendarListItem> {
     return map {
         CalendarListItem(
-            sport = "tennis",
-            eventId = it.event.id,
+            id = it.event.id,
+            sport = Sport.TENNIS,
             name = it.event.name,
-            category = it.category.name,
             dateFrom = it.event.dateFrom,
             dateTo = it.event.dateTo,
-            entries = it.entries.map { entry -> entry.athleteId },
-            details = mutableMapOf("city" to it.event.city, "surface" to it.event.surface, "indoor" to it.event.indoor),
+            category = it.category.name,
+            details = mutableMapOf(
+                "city" to it.event.city,
+                "surface" to it.event.surface,
+                "indoor" to it.event.indoor
+            ),
+            athletes = emptyList(),
+            entries = emptyList(),
             country = it.country.asDomainModel()
         )
     }

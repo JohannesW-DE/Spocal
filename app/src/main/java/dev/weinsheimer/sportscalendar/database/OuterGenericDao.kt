@@ -2,6 +2,7 @@ package dev.weinsheimer.sportscalendar.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonAthlete
 
 
 @Dao

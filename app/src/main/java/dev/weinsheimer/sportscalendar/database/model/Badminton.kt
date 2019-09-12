@@ -1,15 +1,15 @@
-package dev.weinsheimer.sportscalendar.database
+package dev.weinsheimer.sportscalendar.database.model
 
-import android.provider.ContactsContract
 import java.util.*
 
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 
 import dev.weinsheimer.sportscalendar.domain.*
+import dev.weinsheimer.sportscalendar.util.Sport
 
 /**
- * ATHLETES
+ * Models
  */
 
 @Entity(
@@ -23,97 +23,12 @@ import dev.weinsheimer.sportscalendar.domain.*
 )
 data class DatabaseBadmintonAthlete(
     @PrimaryKey(autoGenerate = false)
-    override val id: Int,
+    val id: Int,
     var name: String,
     var gender: String,
     var filter: Boolean,
     var nationality: Int
-) : DatabaseAthlete
-
-@JvmName("databaseBadmintonAthleteUpdate")
-fun DatabaseBadmintonAthlete.update(athlete: DatabaseBadmintonAthlete) {
-    this.name = athlete.name
-    this.gender = athlete.gender
-    this.nationality = athlete.nationality
-}
-
-data class DatabaseBadmintonAthleteWithCountry constructor(
-    val id: Int,
-    val name: String,
-    val gender: String,
-    val filter: Boolean,
-    @Embedded(prefix = "country_")
-    val country: DatabaseCountry
 )
-
-@JvmName("databaseBadmintonAthleteWithCountryAsDomainModel")
-fun List<DatabaseBadmintonAthleteWithCountry>.asDomainModel(): List<Athlete> {
-    return map {
-        Athlete(id = it.id, name = it.name, gender = it.gender, filter = it.filter, nationality = it.country.asDomainModel())
-    }
-}
-
-/**
- * EVENTS
- */
-
-@Entity(
-    tableName = "badminton_events",
-    foreignKeys = [
-        ForeignKey(
-            entity = DatabaseBadmintonEventCategory::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("category"),
-            onDelete = CASCADE),
-        ForeignKey(
-            entity = DatabaseCountry::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("country"),
-            onDelete = CASCADE)]
-)
-data class DatabaseBadmintonEvent constructor(
-    @PrimaryKey(autoGenerate = false)
-    val id: Int,
-    var name: String,
-    @ColumnInfo(name = "date_from")
-    var dateFrom: Date,
-    @ColumnInfo(name = "date_to")
-    var dateTo: Date,
-    var city: String,
-    var filter: Boolean,
-    var list: Boolean,
-    var country: Int,
-    var category: Int
-)
-
-@JvmName("databaseBadmintonEventAsDomainModel")
-fun List<DatabaseBadmintonEvent>.asDomainModel(): List<Event> {
-    return map {
-        Event(
-            id = it.id,
-            name = it.name,
-            dateFrom = it.dateFrom,
-            dateTo = it.dateTo,
-            city = it.city,
-            filter = it.filter,
-            list = it.list,
-            county = it.country,
-            category = it.category)
-    }
-}
-
-@JvmName("databaseBadmintonEventUpdate")
-fun DatabaseBadmintonEvent.update(event: DatabaseBadmintonEvent) {
-    this.name = event.name
-    this.dateFrom = event.dateFrom
-    this.city = event.city
-    this.country = event.country
-    this.category = event.category
-}
-
-/**
- * EVENT CATEGORIES
- */
 
 @Entity(
     tableName = "badminton_event_categories",
@@ -132,6 +47,55 @@ data class DatabaseBadmintonEventCategory constructor(
     var mainCategory: Int?
 )
 
+@Entity(
+    tableName = "badminton_events",
+    foreignKeys = [
+        ForeignKey(
+            entity = DatabaseBadmintonEventCategory::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("category"),
+            onDelete = CASCADE),
+        ForeignKey(
+            entity = DatabaseCountry::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("country"),
+            onDelete = CASCADE)]
+)
+data class DatabaseBadmintonEvent(
+    @PrimaryKey(autoGenerate = false)
+    val id: Int,
+    var name: String,
+    @ColumnInfo(name = "date_from")
+    var dateFrom: Date,
+    @ColumnInfo(name = "date_to")
+    var dateTo: Date,
+    var city: String,
+    var filter: Boolean,
+    var list: Boolean,
+    var country: Int,
+    var category: Int
+)
+
+/**
+ * Extensions
+ */
+
+@JvmName("databaseBadmintonAthleteAsDomainModel")
+fun List<DatabaseBadmintonAthlete>.asDomainModel(): List<Athlete> {
+    return map {
+        Athlete(id = it.id, name = it.name, filter = it.filter)
+    }
+}
+
+@JvmName("databaseBadmintonAthleteUpdate")
+fun DatabaseBadmintonAthlete.update(athlete: DatabaseBadmintonAthlete) {
+    apply {
+        name = athlete.name
+        gender = athlete.gender
+        nationality = athlete.nationality
+    }
+}
+
 @JvmName("databaseBadmintonEventCategoryAsDomainModel")
 fun List<DatabaseBadmintonEventCategory>.asDomainModel(): List<EventCategory> {
     return map {
@@ -149,6 +113,28 @@ fun List<DatabaseBadmintonEventCategory>.asDomainModel(): List<EventCategory> {
         EventCategory(id = it.id, name = name, filter = it.filter, mainCategory = it.mainCategory)
     }
 }
+
+@JvmName("databaseBadmintonEventAsDomainModel")
+fun List<DatabaseBadmintonEvent>.asDomainModel(): List<Event> {
+    return map {
+        Event(id = it.id, name = it.name,filter = it.filter, category = it.category)
+    }
+}
+
+@JvmName("databaseBadmintonEventUpdate")
+fun DatabaseBadmintonEvent.update(event: DatabaseBadmintonEvent) {
+    apply {
+        name = event.name
+        dateFrom = event.dateFrom
+        dateTo = event.dateTo
+        city = event.city
+        country = event.country
+        category = event.category
+    }
+}
+
+
+
 
 @JvmName("databaseBadmintonEventCategoryUpdate")
 fun DatabaseBadmintonEventCategory.update(eventCategory: DatabaseBadmintonEventCategory) {
@@ -184,19 +170,29 @@ data class DatabaseBadmintonEntry (
  * FILTERED EVENTS
  */
 
-data class DatabaseBadmintonFilteredEvent (
-    @Relation(parentColumn = "id", entityColumn = "event_id")
-    val entries: List<DatabaseBadmintonEntry>,
+data class DatabaseBadmintonEntryWithAthletes(
+    @Embedded
+    var entry: DatabaseBadmintonEntry,
+    @Relation(parentColumn = "athlete_id", entityColumn = "id", entity = DatabaseBadmintonAthlete::class)
+    val athletes: List<DatabaseBadmintonAthlete>
+)
+
+@JvmName("databaseBadmintonEntryWithAthletesAsDomainModel")
+fun List<DatabaseBadmintonEntryWithAthletes>.asDomainModel(): List<Athlete> {
+    return this.map { it.athletes }.flatten().asDomainModel()
+}
+
+data class DatabaseBadmintonEventWithAthletes(
     @Embedded
     val event: DatabaseBadmintonEvent,
     @Embedded(prefix = "category_")
     val category: DatabaseBadmintonEventCategory,
-    @Embedded(prefix = "country_")
-    val country: DatabaseCountry
+    @Relation(parentColumn = "id", entityColumn = "event_id", entity = DatabaseBadmintonEntry::class)
+    val entries: List<DatabaseBadmintonEntryWithAthletes>
 )
 
 @JvmName("databaseBadmintonFilteredEventAsDomainModel")
-fun List<DatabaseBadmintonFilteredEvent>.asCalendarListItems(): List<CalendarListItem> {
+fun List<DatabaseBadmintonEventWithAthletes>.asCalendarListItems(): List<CalendarListItem> {
     return map {
         val category = when(it.category.name) {
             "Individual Tournaments" -> "BWF World Championships"
@@ -209,16 +205,22 @@ fun List<DatabaseBadmintonFilteredEvent>.asCalendarListItems(): List<CalendarLis
             "BWF Tour Super 100" -> "Super 100"
             else -> it.category.name
         }
+        println("@@calendarlistitem")
+        println(it.event.dateFrom)
+        println(it.event.dateTo)
         CalendarListItem(
-            sport = "badminton",
-            eventId = it.event.id,
+            id = it.event.id,
+            sport = Sport.BADMINTON,
             name = it.event.name,
-            category = category,
             dateFrom = it.event.dateFrom,
             dateTo = it.event.dateTo,
-            entries = it.entries.map { entry -> entry.athleteId },
-            details = mutableMapOf("city" to it.event.city),
-            country = it.country.asDomainModel()
+            category = category,
+            details = mutableMapOf(
+                "city" to it.event.city
+            ),
+            athletes = it.entries.asDomainModel(),
+            entries = emptyList(),
+            country = Country(1,"Country", "XD")
         )
     }
 }

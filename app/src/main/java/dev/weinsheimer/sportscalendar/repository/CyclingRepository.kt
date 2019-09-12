@@ -7,6 +7,9 @@ import androidx.lifecycle.Transformations
 import com.google.gson.Gson
 import com.squareup.moshi.JsonDataException
 import dev.weinsheimer.sportscalendar.database.*
+import dev.weinsheimer.sportscalendar.database.model.asCalendarListItems
+import dev.weinsheimer.sportscalendar.database.model.asDomainModel
+import dev.weinsheimer.sportscalendar.database.model.update
 import dev.weinsheimer.sportscalendar.domain.*
 import dev.weinsheimer.sportscalendar.network.Api
 import dev.weinsheimer.sportscalendar.network.ApiService

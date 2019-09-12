@@ -35,7 +35,7 @@
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/icon_cycling"
                         android:id="@+id/sport_imageView"
-                        app:eventIcon="@{item.sport}"
+                        app:eventIcon="@{item.sport.id}"
                         tools:layout_conversion_absoluteHeight="24dp"
                         tools:layout_conversion_absoluteWidth="24dp"
                         android:layout_marginStart="16dp"

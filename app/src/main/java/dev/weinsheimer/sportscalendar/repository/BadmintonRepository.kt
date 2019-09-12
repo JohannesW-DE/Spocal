@@ -1,16 +1,15 @@
 package dev.weinsheimer.sportscalendar.repository
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import dev.weinsheimer.sportscalendar.database.*
-import dev.weinsheimer.sportscalendar.domain.*
+import dev.weinsheimer.sportscalendar.database.dao.BadmintonDao
+import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEntry
+import dev.weinsheimer.sportscalendar.database.model.asCalendarListItems
+import dev.weinsheimer.sportscalendar.database.model.asDomainModel
+import dev.weinsheimer.sportscalendar.database.model.update
 import dev.weinsheimer.sportscalendar.network.*
 import dev.weinsheimer.sportscalendar.util.RefreshException
 import dev.weinsheimer.sportscalendar.util.RefreshExceptionType
-import dev.weinsheimer.sportscalendar.util.refresh
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class BadmintonRepository(val database: SpocalDB, val retrofitService: ApiService): BaseRepository(database) {
     override var sport = "badminton"
@@ -130,7 +129,12 @@ class BadmintonRepository(val database: SpocalDB, val retrofitService: ApiServic
                 container.events.forEach { event ->
                     dao.changeEventListStatus(true, event.id)
                     event.entries?.forEach { athleteId ->
-                        (dao as BadmintonDao).insertEntries(DatabaseBadmintonEntry(event.id, athleteId))
+                        (dao as BadmintonDao).insertEntries(
+                            DatabaseBadmintonEntry(
+                                event.id,
+                                athleteId
+                            )
+                        )
                     }
                 }
             }

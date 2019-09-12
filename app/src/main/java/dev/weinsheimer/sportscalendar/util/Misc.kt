@@ -12,6 +12,12 @@ import dev.weinsheimer.sportscalendar.R
 import timber.log.Timber
 import java.net.SocketTimeoutException
 
+enum class Sport(val id: String) {
+    BADMINTON("badminton"),
+    TENNIS("tennis"),
+    CYCLING("cycling")
+}
+
 fun ChipGroup.contains(id: Int): Boolean {
     for(index in 0 until this.childCount) {
         if (this.getChildAt(index).id == id)
