@@ -32,12 +32,6 @@ private val retrofitMock = Retrofit.Builder()
 
 interface ApiService {
     /**
-     * ping pong
-     */
-    @GET("ping")
-    suspend fun getPing(): Response<NetworkPingContainer>
-
-    /**
      * Common
      */
     @GET("countries")

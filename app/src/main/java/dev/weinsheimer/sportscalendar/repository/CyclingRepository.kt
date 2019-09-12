@@ -1,26 +1,15 @@
 package dev.weinsheimer.sportscalendar.repository
 
-import android.view.LayoutInflater
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
-import com.google.gson.Gson
-import com.squareup.moshi.JsonDataException
 import dev.weinsheimer.sportscalendar.database.*
+import dev.weinsheimer.sportscalendar.database.dao.BaseDao
 import dev.weinsheimer.sportscalendar.database.model.asCalendarListItems
 import dev.weinsheimer.sportscalendar.database.model.asDomainModel
 import dev.weinsheimer.sportscalendar.database.model.update
-import dev.weinsheimer.sportscalendar.domain.*
-import dev.weinsheimer.sportscalendar.network.Api
 import dev.weinsheimer.sportscalendar.network.ApiService
 import dev.weinsheimer.sportscalendar.network.asDatabaseModel
 import dev.weinsheimer.sportscalendar.util.RefreshException
 import dev.weinsheimer.sportscalendar.util.RefreshExceptionType
-import dev.weinsheimer.sportscalendar.util.refresh
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import timber.log.Timber
-import java.net.SocketTimeoutException
 
 class CyclingRepository(val database: SpocalDB, val retrofitService: ApiService): BaseRepository(database) {
     override var sport = "badminton"
@@ -30,7 +19,7 @@ class CyclingRepository(val database: SpocalDB, val retrofitService: ApiService)
      * DAO calls
      */
     override var athletes =
-        Transformations.map(database.cyclingDao.getAthletesWithCountry()) {
+        Transformations.map(database.cyclingDao.getAthletes()) {
             it.asDomainModel()
         }
 

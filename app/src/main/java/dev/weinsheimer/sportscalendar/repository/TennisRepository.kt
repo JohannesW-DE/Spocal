@@ -2,6 +2,7 @@ package dev.weinsheimer.sportscalendar.repository
 
 import androidx.lifecycle.Transformations
 import dev.weinsheimer.sportscalendar.database.*
+import dev.weinsheimer.sportscalendar.database.dao.BaseDao
 import dev.weinsheimer.sportscalendar.database.dao.TennisDao
 import dev.weinsheimer.sportscalendar.database.model.DatabaseTennisEntry
 import dev.weinsheimer.sportscalendar.database.model.asCalendarListItems
@@ -16,7 +17,7 @@ class TennisRepository(val database: SpocalDB, val retrofitService: ApiService):
     override var dao: BaseDao = database.tennisDao
 
     override var athletes =
-        Transformations.map(database.tennisDao.getAthletesWithCountry()) {
+        Transformations.map(database.tennisDao.getAthletes()) {
             println(sport + " - athletes -> " + it.size)
             it.asDomainModel()
         }

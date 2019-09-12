@@ -2,7 +2,6 @@ package dev.weinsheimer.sportscalendar.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import dev.weinsheimer.sportscalendar.database.BaseDao
 import dev.weinsheimer.sportscalendar.database.model.*
 
 @Dao
@@ -30,9 +29,6 @@ interface CyclingDao : BaseDao {
 
     @Query("SELECT * FROM cycling_athletes")
     fun getAthletes(): LiveData<List<DatabaseCyclingAthlete>>
-
-    @Query("SELECT cycling_athletes.*, countries.id as country_id, countries.name as country_name, countries.alphatwo as country_alphatwo FROM cycling_athletes JOIN countries ON cycling_athletes.nationality = countries.id")
-    fun getAthletesWithCountry(): LiveData<List<DatabaseCyclingAthleteWithCountry>>
 
     /**
      * events
@@ -88,8 +84,8 @@ interface CyclingDao : BaseDao {
     @Query("SELECT * FROM cycling_event_categories")
     fun getEventCategories(): LiveData<List<DatabaseCyclingEventCategory>>
 
-    @Query("SELECT cycling_events.*, cycling_event_categories.id as category_id, cycling_event_categories.name as category_name, cycling_event_categories.filter as category_filter, countries.id as country_id, countries.name as country_name, countries.alphatwo as country_alphatwo FROM cycling_events JOIN cycling_event_categories ON cycling_event_categories.id = cycling_events.category JOIN countries ON countries.id = cycling_events.country WHERE cycling_events.list = 1")
-    fun getFilteredEvents(): LiveData<List<DatabaseCyclingFilteredEvent>>
+    @Transaction @Query("SELECT cycling_events.*, cycling_event_categories.id as category_id, cycling_event_categories.name as category_name, cycling_event_categories.filter as category_filter, countries.id as country_id, countries.name as country_name, countries.alphatwo as country_alphatwo FROM cycling_events JOIN cycling_event_categories ON cycling_event_categories.id = cycling_events.category JOIN countries ON countries.id = cycling_events.country WHERE cycling_events.list = 1")
+    fun getFilteredEvents(): LiveData<List<DatabaseCyclingEventWithAthletes>>
 
     /**
      * entries

@@ -51,15 +51,6 @@ fun entries(chipGroup: ChipGroup, athletes: List<Athlete>?) {
     }
 }
 
-@BindingAdapter("app:country")
-fun setCountry(imageView: ImageView, alphatwo: String) {
-    val flag = "flag_" + alphatwo.toLowerCase()
-    val identifier = imageView.resources.getIdentifier(flag, "drawable", imageView.context.packageName)
-    if (identifier != 0) {
-        imageView.setImageDrawable(imageView.context.getDrawable(identifier))
-    }
-}
-
 @BindingAdapter("eventIcon")
 fun setEventIcon(imageView: ImageView, sport: String) {
     imageView.setImageResource(

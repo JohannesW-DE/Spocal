@@ -1,7 +1,6 @@
 package dev.weinsheimer.sportscalendar.network
 
 import com.squareup.moshi.Json
-import dev.weinsheimer.sportscalendar.database.model.DatabaseFilterResult
 import dev.weinsheimer.sportscalendar.database.model.DatabaseTennisAthlete
 import dev.weinsheimer.sportscalendar.database.model.DatabaseTennisEvent
 import dev.weinsheimer.sportscalendar.database.model.DatabaseTennisEventCategory
@@ -112,13 +111,3 @@ data class NetworkTennisFilterResult(
     val entries: List<Int>?
 )
 
-fun NetworkTennisFilterResultContainer.asDatabaseModel(): Array<DatabaseFilterResult> {
-    return events.map {
-        DatabaseFilterResult(
-            id = 0,
-            sport = "tennis",
-            eventId = it.id,
-            entries = it.entries
-        )
-    }.toTypedArray()
-}

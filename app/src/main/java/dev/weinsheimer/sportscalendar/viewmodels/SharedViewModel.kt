@@ -1,14 +1,10 @@
 package dev.weinsheimer.sportscalendar.viewmodels
 
-import android.app.Application
 import androidx.lifecycle.*
-import dev.weinsheimer.sportscalendar.database.getDatabase
 import dev.weinsheimer.sportscalendar.domain.*
 import dev.weinsheimer.sportscalendar.R
 import kotlinx.coroutines.launch
 import androidx.lifecycle.MediatorLiveData
-import dev.weinsheimer.sportscalendar.database.SpocalDB
-import dev.weinsheimer.sportscalendar.network.Api
 import dev.weinsheimer.sportscalendar.util.RefreshException
 import dev.weinsheimer.sportscalendar.util.RefreshExceptionType
 import dev.weinsheimer.sportscalendar.repository.*
@@ -23,7 +19,7 @@ const val REFRESH_DELAY = 10000L
  */
 @Suppress("IMPLICIT_CAST_TO_ANY")
 class SharedViewModel(
-    val commonRepository: CommonRepository,
+    val countryRepository: CountryRepository,
     val badmintonRepository: BadmintonRepository,
     val tennisRepository: TennisRepository,
     val cyclingRepository: CyclingRepository
@@ -32,7 +28,7 @@ class SharedViewModel(
     val calendarUpdateCompleted = MutableLiveData<Boolean>()
 
     // COMMON
-    val countries = commonRepository.countries
+    val countries = countryRepository.countries
 
     // TENNIS
     val tennisAthletes = tennisRepository.athletes
@@ -103,14 +99,10 @@ class SharedViewModel(
     }
 
     init {
-        badmintonRepository.setup()
-        tennisRepository.setup()
-        cyclingRepository.setup()
-
         /**
          * mediate calendar items
          */
-        calendarItems.addSource(badmintonRepository.calendarItemsWithEntries) { calendarItems ->
+        calendarItems.addSource(badmintonRepository.calendarItems) { calendarItems ->
             val result = mutableListOf<CalendarListItem>()
             this.calendarItems.value?.let { list ->
                 result.addAll(list.filter { it.sport != Sport.BADMINTON })
@@ -128,7 +120,7 @@ class SharedViewModel(
             this.calendarItems.value = result
         }
 
-        calendarItems.addSource(tennisRepository.calendarItemsWithEntries) { calendarItems ->
+        calendarItems.addSource(tennisRepository.calendarItems) { calendarItems ->
             val result = mutableListOf<CalendarListItem>()
             this.calendarItems.value?.let { list ->
                 list.forEach {
@@ -147,7 +139,7 @@ class SharedViewModel(
         viewModelScope.launch {
             try {
                 // common
-                commonRepository.refreshCountries()
+                countryRepository.refreshCountries()
                 // badminton
                 badmintonRepository.refreshAthletes()
                 badmintonRepository.refreshEventCategories()
@@ -174,11 +166,10 @@ class SharedViewModel(
                 // only send the toast once, and let the actionbar indicate the existing problem otherwise
                 refreshCompleted.value.let {
                     if (it == null) {
-                        println("SEND NEW MSG")
                         when(e.message) {
-                            RefreshExceptionType.CONNECTION.toString() -> toast.value = R.string.error_network_connection
-                            RefreshExceptionType.CODE.toString() -> toast.value = R.string.error_network_code
-                            RefreshExceptionType.FORMAT.toString() -> toast.value = R.string.error_network_format
+                            RefreshExceptionType.CONNECTION.id -> toast.value = R.string.error_network_connection
+                            RefreshExceptionType.CODE.id -> toast.value = R.string.error_network_code
+                            RefreshExceptionType.FORMAT.id -> toast.value = R.string.error_network_format
                         }
                     }
                 }

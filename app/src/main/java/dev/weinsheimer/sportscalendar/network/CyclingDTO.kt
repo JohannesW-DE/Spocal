@@ -4,7 +4,6 @@ import com.squareup.moshi.Json
 import dev.weinsheimer.sportscalendar.database.model.DatabaseCyclingAthlete
 import dev.weinsheimer.sportscalendar.database.model.DatabaseCyclingEvent
 import dev.weinsheimer.sportscalendar.database.model.DatabaseCyclingEventCategory
-import dev.weinsheimer.sportscalendar.database.model.DatabaseFilterResult
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -99,13 +98,3 @@ data class NetworkCyclingFilterResult(
     val entries: List<Int>?
 )
 
-fun NetworkCyclingFilterResultContainer.asDatabaseModel(): Array<DatabaseFilterResult> {
-    return events.map {
-        DatabaseFilterResult(
-            id = 0,
-            sport = "cycling",
-            eventId = it.id,
-            entries = it.entries
-        )
-    }.toTypedArray()
-}

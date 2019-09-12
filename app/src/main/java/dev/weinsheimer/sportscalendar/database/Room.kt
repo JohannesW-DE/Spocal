@@ -1,6 +1,5 @@
 package dev.weinsheimer.sportscalendar.database
 
-import android.content.Context
 import androidx.room.*
 import androidx.room.Database
 import dev.weinsheimer.sportscalendar.database.dao.BadmintonDao
@@ -15,15 +14,14 @@ import dev.weinsheimer.sportscalendar.database.model.*
         DatabaseBadmintonAthlete::class,
         DatabaseBadmintonEventCategory::class,
         DatabaseBadmintonEvent::class,
+        DatabaseBadmintonEntry::class,
         DatabaseCyclingAthlete::class,
         DatabaseCyclingEventCategory::class,
         DatabaseCyclingEvent::class,
+        DatabaseCyclingEntry::class,
         DatabaseTennisAthlete::class,
         DatabaseTennisEventCategory::class,
         DatabaseTennisEvent::class,
-        DatabaseFilter::class,
-        DatabaseFilterResult::class,
-        DatabaseBadmintonEntry::class,
         DatabaseTennisEntry::class
     ],
     version = 1)
@@ -33,21 +31,4 @@ abstract class SpocalDB: RoomDatabase() {
     abstract val badmintonDao: BadmintonDao
     abstract val cyclingDao: CyclingDao
     abstract val tennisDao: TennisDao
-    abstract val testDao: OuterGenericDao
 }
-
-private lateinit var INSTANCE: SpocalDB
-
-fun getDatabase(context: Context): SpocalDB {
-    synchronized(SpocalDB::class.java) {
-        if (!::INSTANCE.isInitialized) {
-            println("BUiLDING DB")
-            println("BUiLDING DB")
-            println("BUiLDING DB")
-            INSTANCE = Room.databaseBuilder(context.applicationContext, SpocalDB::class.java, "spocal").build()
-        }
-        return INSTANCE
-    }
-}
-
-

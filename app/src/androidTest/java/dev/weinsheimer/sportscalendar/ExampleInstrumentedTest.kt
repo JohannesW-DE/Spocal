@@ -1,7 +1,7 @@
 package dev.weinsheimer.sportscalendar
 
 import android.content.Context
-import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 
 import org.junit.Test

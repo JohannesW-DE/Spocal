@@ -11,25 +11,25 @@
     <androidx.constraintlayout.widget.ConstraintLayout android:orientation="vertical"
                                                        android:layout_width="match_parent"
                                                        android:layout_height="match_parent"
-                                                       android:id="@+id/constraintLayout">
+                                                       android:id="@+id/fseConstraintLayout">
 
         <TextView
                 android:text="@string/filter_selection_event_header"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView" android:layout_marginTop="16dp"
+                android:id="@+id/fseTextView" android:layout_marginTop="16dp"
                 app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="16dp" style="@style/FilterSelectionTextView"
                 tools:text="Events"/>
         <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/fseSpinner"
                 app:layout_constraintTop_toBottomOf="@+id/textView" app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 style="@style/SpinnerStyle" />
 
         <AutoCompleteTextView
-                android:id="@+id/eventAutoCompleteTextView"
+                android:id="@+id/fseAutoCompleteTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -38,23 +38,23 @@
                 android:inputType="textPhonetic"
                 android:textAppearance="@style/DefaultTextAppearance"
                 android:textColor="@color/colorTextDark"
-                app:layout_constraintEnd_toStartOf="@+id/button"
+                app:layout_constraintEnd_toStartOf="@+id/fseButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner" />
+                app:layout_constraintTop_toBottomOf="@+id/fseSpinner" />
         <Button
                 android:text="+"
                 app:visibleIfNotNull="@{selectedEvent}"
                 android:layout_width="45dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/button" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/spinner" app:layout_constraintEnd_toEndOf="@+id/textView"
+                android:id="@+id/fseButton" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/fseSpinner" app:layout_constraintEnd_toEndOf="@+id/fseTextView"
                 style="@style/FilterSelectionButton" android:visibility="gone" tools:visibility="visible"/>
         <com.google.android.material.chip.ChipGroup
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/eventAutoCompleteTextView"
+                app:layout_constraintTop_toBottomOf="@+id/fseAutoCompleteTextView"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp" tools:visibility="visible"
-                android:visibility="gone" android:id="@+id/eventFilterChipGroup"/>
+                android:visibility="gone" android:id="@+id/fseChipGroup"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

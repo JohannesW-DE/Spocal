@@ -1,20 +1,14 @@
 package dev.weinsheimer.sportscalendar.repository
 
-import android.provider.ContactsContract
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Transformations
-import androidx.room.Database
-import com.google.gson.Gson
 import dev.weinsheimer.sportscalendar.database.*
+import dev.weinsheimer.sportscalendar.database.dao.BaseDao
 import dev.weinsheimer.sportscalendar.domain.*
 import dev.weinsheimer.sportscalendar.network.*
-import dev.weinsheimer.sportscalendar.util.RefreshException
-import dev.weinsheimer.sportscalendar.util.RefreshExceptionType
 import dev.weinsheimer.sportscalendar.util.refresh
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Response
 
 
 abstract class BaseRepository(private val database: SpocalDB) {
@@ -26,14 +20,6 @@ abstract class BaseRepository(private val database: SpocalDB) {
     abstract var mainEventCategories: LiveData<List<EventCategory>>
     abstract var eventCategories: LiveData<List<EventCategory>>
     abstract var calendarItems: LiveData<List<CalendarListItem>>
-
-    var calendarItemsWithEntries = MediatorLiveData<List<CalendarListItem>>().apply { postValue(emptyList()) }
-
-    fun setup() {
-        calendarItemsWithEntries.addSource(calendarItems) { items ->
-            calendarItemsWithEntries.value = items
-        }
-    }
 
     open suspend fun updateFilter(athletes: List<Athlete>?, eventCategories: List<EventCategory>?, events: List<Event>?) {
         withContext(Dispatchers.IO) {

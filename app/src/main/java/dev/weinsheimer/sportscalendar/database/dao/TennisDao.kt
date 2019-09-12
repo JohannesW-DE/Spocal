@@ -2,7 +2,6 @@ package dev.weinsheimer.sportscalendar.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import dev.weinsheimer.sportscalendar.database.BaseDao
 import dev.weinsheimer.sportscalendar.database.model.*
 
 @Dao
@@ -30,9 +29,6 @@ interface TennisDao : BaseDao {
 
     @Query("SELECT * FROM tennis_athletes")
     fun getAthletes(): LiveData<List<DatabaseTennisAthlete>>
-
-    @Query("SELECT tennis_athletes.*, countries.id as country_id, countries.name as country_name, countries.alphatwo as country_alphatwo FROM tennis_athletes JOIN countries ON tennis_athletes.nationality = countries.id")
-    fun getAthletesWithCountry(): LiveData<List<DatabaseTennisAthleteWithCountry>>
 
     /**
      * events
@@ -100,6 +96,6 @@ interface TennisDao : BaseDao {
     /**
      * filtered events
      */
-    @Query("SELECT tennis_events.*, tennis_event_categories.id as category_id, tennis_event_categories.name as category_name, tennis_event_categories.filter as category_filter, countries.id as country_id, countries.name as country_name, countries.alphatwo as country_alphatwo FROM tennis_events JOIN tennis_event_categories ON tennis_event_categories.id = tennis_events.category JOIN countries ON countries.id = tennis_events.country WHERE tennis_events.list = 1")
-    fun getFilteredEvents(): LiveData<List<DatabaseTennisFilteredEvent>>
+    @Transaction @Query("SELECT tennis_events.*, tennis_event_categories.id as category_id, tennis_event_categories.name as category_name, tennis_event_categories.filter as category_filter, countries.id as country_id, countries.name as country_name, countries.alphatwo as country_alphatwo  FROM tennis_events JOIN tennis_event_categories ON tennis_event_categories.id = tennis_events.category JOIN countries ON countries.id = tennis_events.country WHERE tennis_events.list = 1")
+    fun getFilteredEvents(): LiveData<List<DatabaseTennisEventWithAthletes>>
 }

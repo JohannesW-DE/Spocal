@@ -51,12 +51,8 @@ class CalendarFragment : Fragment() {
 
         binding.calendarRecyclerView.adapter = adapter
 
-        viewModel.calendarItems.observe(viewLifecycleOwner, Observer { items ->
-            items.forEach {
-                print("CHECK@${it.dateFrom} - ${it.dateTo}")
-            }
-            adapter.add(items)
-            adapter.notifyDataSetChanged()
+        viewModel.calendarItems.observe(viewLifecycleOwner, Observer {
+            adapter.add(it)
         })
 
         // refresh events

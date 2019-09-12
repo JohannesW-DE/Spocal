@@ -78,17 +78,17 @@ open class FilterFragment: Fragment() {
          */
         // populate autocompletetextview
         athletes.observe(viewLifecycleOwner, Observer { athletes ->
-            binding.athlete.athleteAutoCompleteTextView.setAdapter(BaseAdapter(binding.athlete.athleteFilterChipGroup.context, athletes))
+            binding.athlete.fsaAutoCompleteTextView.setAdapter(BaseAdapter(binding.athlete.fsaChipGroup.context, athletes))
         })
 
         // react to selection
-        binding.athlete.athleteAutoCompleteTextView.onItemClickListener =
+        binding.athlete.fsaAutoCompleteTextView.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                selectedAthlete.value = binding.athlete.athleteAutoCompleteTextView.adapter.getItem(position) as Athlete
+                selectedAthlete.value = binding.athlete.fsaAutoCompleteTextView.adapter.getItem(position) as Athlete
             }
 
         // react to text change, disabling adding
-        binding.athlete.athleteAutoCompleteTextView.addTextChangedListener(object : TextWatcher {
+        binding.athlete.fsaAutoCompleteTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
@@ -97,7 +97,7 @@ open class FilterFragment: Fragment() {
         })
 
         // react to add
-        binding.athlete.button.setOnClickListener {
+        binding.athlete.fsaButton.setOnClickListener {
             selectedAthlete.value?.let { athlete ->
                 filteredAthletes.value?.let { athletes ->
                     athletes.add(athlete)
@@ -107,9 +107,9 @@ open class FilterFragment: Fragment() {
             selectedAthlete.value = null
 
             // try some stuff to clear focus and hide keyboard
-            binding.athlete.athleteAutoCompleteTextView.setText("")
-            binding.athlete.athleteAutoCompleteTextView.clearComposingText()
-            binding.athlete.athleteAutoCompleteTextView.clearFocus()
+            binding.athlete.fsaAutoCompleteTextView.setText("")
+            binding.athlete.fsaAutoCompleteTextView.clearComposingText()
+            binding.athlete.fsaAutoCompleteTextView.clearFocus()
 
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
@@ -120,36 +120,36 @@ open class FilterFragment: Fragment() {
          */
         // populate spinner
         mainEventCategories.observe(viewLifecycleOwner, Observer { categories ->
-            binding.event.spinner.adapter =
+            binding.event.fseSpinner.adapter =
                 ArrayAdapter(
-                    binding.event.spinner.context,
+                    binding.event.fseSpinner.context,
                     R.layout.spinner_row,
                     listOf(EventCategory(0, getString(R.string.badminton_filter_categories_all), true,null)) + categories
                 )
         })
 
         // react to spinner selection
-        binding.event.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.event.fseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 Timber.i("nothing")
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                selectedCategory.value = binding.event.spinner.adapter.getItem(position) as EventCategory
+                selectedCategory.value = binding.event.fseSpinner.adapter.getItem(position) as EventCategory
                 updateEventAutoComplete()
                 // react to refreshed events
-                binding.event.eventAutoCompleteTextView.text = binding.event.eventAutoCompleteTextView.text
-                binding.event.eventAutoCompleteTextView.setSelection(binding.event.eventAutoCompleteTextView.text.length)
+                binding.event.fseAutoCompleteTextView.text = binding.event.fseAutoCompleteTextView.text
+                binding.event.fseAutoCompleteTextView.setSelection(binding.event.fseAutoCompleteTextView.text.length)
             }
         }
 
         // react to autocompletetextview selection
-        binding.event.eventAutoCompleteTextView.onItemClickListener =
+        binding.event.fseAutoCompleteTextView.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                selectedEvent.value = binding.event.eventAutoCompleteTextView.adapter.getItem(position) as Event
+                selectedEvent.value = binding.event.fseAutoCompleteTextView.adapter.getItem(position) as Event
             }
 
         // react to text change, disabling adding
-        binding.event.eventAutoCompleteTextView.addTextChangedListener(object : TextWatcher {
+        binding.event.fseAutoCompleteTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
@@ -158,7 +158,7 @@ open class FilterFragment: Fragment() {
         })
 
         // react to add
-        binding.event.button.setOnClickListener {
+        binding.event.fseButton.setOnClickListener {
             selectedEvent.value?.let { event ->
                 filteredEvents.value?.let { events ->
                     events.add(event)
@@ -168,9 +168,9 @@ open class FilterFragment: Fragment() {
             selectedEvent.value = null
 
             // try some stuff to clear focus and hide keyboard
-            binding.event.eventAutoCompleteTextView.setText("")
-            binding.event.eventAutoCompleteTextView.clearComposingText()
-            binding.event.eventAutoCompleteTextView.clearFocus()
+            binding.event.fseAutoCompleteTextView.setText("")
+            binding.event.fseAutoCompleteTextView.clearComposingText()
+            binding.event.fseAutoCompleteTextView.clearFocus()
 
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
@@ -185,8 +185,8 @@ open class FilterFragment: Fragment() {
         val handler = Handler(looper)
         //handler.post {}
         eventCategories.value?.forEach { category ->
-            binding.eventCategory.eventCategoryFilterChipGroup.addView(
-                Chip(binding.eventCategory.eventCategoryFilterChipGroup.context).createCheckableFilterChip(
+            binding.eventCategory.fsecChipGroup.addView(
+                Chip(binding.eventCategory.fsecChipGroup.context).createCheckableFilterChip(
                     category.name,
                     CompoundButton.OnCheckedChangeListener { _, isChecked ->
                         if (isChecked) {
@@ -215,9 +215,9 @@ open class FilterFragment: Fragment() {
         // ATHLETES
         filteredAthletes.observe(viewLifecycleOwner, Observer { athletes ->
             athletes.forEach { athlete ->
-                if (!binding.athlete.athleteFilterChipGroup.contains(athlete.id)) {
-                    binding.athlete.athleteFilterChipGroup.addView(
-                        Chip(binding.athlete.athleteFilterChipGroup.context).createFilterChip(
+                if (!binding.athlete.fsaChipGroup.contains(athlete.hashCode())) {
+                    binding.athlete.fsaChipGroup.addView(
+                        Chip(binding.athlete.fsaChipGroup.context).createFilterChip(
                             athlete.name,
                             View.OnClickListener {
                                 filteredAthletes.value = filteredAthletes.value?.apply {
@@ -229,19 +229,22 @@ open class FilterFragment: Fragment() {
                     )
                 }
             }
-            binding.athlete.athleteFilterChipGroup.removeOtherChildren(athletes.map { it.id })
-            if (binding.athlete.athleteFilterChipGroup.childCount > 0) {
-                binding.athlete.athleteFilterChipGroup.visibility = View.VISIBLE
+            binding.athlete.fsaChipGroup.removeOtherChildren(athletes.map { it.hashCode() })
+            if (binding.athlete.fsaChipGroup.childCount > 0) {
+                binding.athlete.fsaChipGroup.visibility = View.VISIBLE
             } else {
-                binding.athlete.athleteFilterChipGroup.visibility = View.GONE
+                binding.athlete.fsaChipGroup.visibility = View.GONE
             }
         })
 
         // EVENT CATEGORIES
         filteredEventCategories.observe(viewLifecycleOwner, Observer { eventCategories ->
-            for (index in 0 until binding.eventCategory.eventCategoryFilterChipGroup.childCount) {
-                val chip = binding.eventCategory.eventCategoryFilterChipGroup.getChildAt(index) as Chip
-                if (eventCategories.map { it.id }.contains(chip.id)) {
+            println("categories")
+            println(eventCategories.map { it.id })
+            for (index in 0 until binding.eventCategory.fsecChipGroup.childCount) {
+                val chip = binding.eventCategory.fsecChipGroup.getChildAt(index) as Chip
+                println(chip.id)
+                if (eventCategories.map { it.hashCode() }.contains(chip.id)) {
                     chip.isChecked = true
                 }
             }
@@ -250,9 +253,9 @@ open class FilterFragment: Fragment() {
         // EVENTS
         filteredEvents.observe(viewLifecycleOwner, Observer { events ->
             events.forEach { event ->
-                if (!binding.event.eventFilterChipGroup.contains(event.id)) {
-                    binding.event.eventFilterChipGroup.addView(
-                        Chip(binding.event.eventFilterChipGroup.context).createFilterChip(
+                if (!binding.event.fseChipGroup.contains(event.hashCode())) {
+                    binding.event.fseChipGroup.addView(
+                        Chip(binding.event.fseChipGroup.context).createFilterChip(
                             event.name,
                             View.OnClickListener {
                                 filteredEvents.value = filteredEvents.value?.apply {
@@ -264,11 +267,11 @@ open class FilterFragment: Fragment() {
                     )
                 }
             }
-            binding.event.eventFilterChipGroup.removeOtherChildren(events.map { it.id })
-            if (binding.event.eventFilterChipGroup.childCount > 0) {
-                binding.event.eventFilterChipGroup.visibility = View.VISIBLE
+            binding.event.fseChipGroup.removeOtherChildren(events.map { it.hashCode() })
+            if (binding.event.fseChipGroup.childCount > 0) {
+                binding.event.fseChipGroup.visibility = View.VISIBLE
             } else {
-                binding.event.eventFilterChipGroup.visibility = View.GONE
+                binding.event.fseChipGroup.visibility = View.GONE
             }
         })
 
@@ -278,20 +281,20 @@ open class FilterFragment: Fragment() {
     fun updateEventAutoComplete() {
         selectedCategory.value?.let { selectedCategory ->
             if (selectedCategory.id == 0) {
-                binding.event.eventAutoCompleteTextView.threshold = 1
+                binding.event.fseAutoCompleteTextView.threshold = 1
 
                 events.value?.let { events ->
                     events.sortedBy { it.name }.let { sortedEvents ->
-                        binding.event.eventAutoCompleteTextView.setAdapter(
+                        binding.event.fseAutoCompleteTextView.setAdapter(
                             BaseAdapter(
-                                binding.event.eventAutoCompleteTextView.context,
+                                binding.event.fseAutoCompleteTextView.context,
                                 sortedEvents.toMutableList()
                             )
                         )
                     }
                 }
             } else {
-                binding.event.eventAutoCompleteTextView.threshold = 1
+                binding.event.fseAutoCompleteTextView.threshold = 1
 
                 eventCategories.value?.let { categories ->
                     println(categories)
@@ -300,9 +303,9 @@ open class FilterFragment: Fragment() {
                             println(events)
                             events.filter { subCategories.contains(it.category) }.sortedBy { it.name }.let { filteredEvents ->
                                 println(filteredEvents)
-                                binding.event.eventAutoCompleteTextView.setAdapter(
+                                binding.event.fseAutoCompleteTextView.setAdapter(
                                     BaseAdapter(
-                                        binding.event.eventAutoCompleteTextView.context,
+                                        binding.event.fseAutoCompleteTextView.context,
                                         filteredEvents.toMutableList()
                                     )
                                 )

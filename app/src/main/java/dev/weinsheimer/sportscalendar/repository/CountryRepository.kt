@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.SocketTimeoutException
 
-class CommonRepository(private val database: SpocalDB) {
+class CountryRepository(private val database: SpocalDB) {
     /**
      * DAO calls
      */

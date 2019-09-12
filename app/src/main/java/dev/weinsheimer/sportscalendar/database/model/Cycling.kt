@@ -10,43 +10,25 @@ import dev.weinsheimer.sportscalendar.util.Sport
 import java.util.*
 
 /**
- * ATHLETES
+ * Models
  */
-@Entity(tableName = "cycling_athletes")
-data class DatabaseCyclingAthlete constructor(
+@Entity(tableName = "cycling_athletes",
+    foreignKeys = [
+        ForeignKey(
+            entity = DatabaseCountry::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("nationality"),
+            onDelete = CASCADE)])
+data class DatabaseCyclingAthlete(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
     var name: String,
     var gender: String,
-    var filter: Boolean,
-    var nationality: Int)
-
-data class DatabaseCyclingAthleteWithCountry constructor(
-    val id: Int,
-    val name: String,
-    val gender: String,
     val filter: Boolean,
-    @Embedded(prefix = "country_")
-    val country: DatabaseCountry
+    @ColumnInfo(index = true)
+    var nationality: Int
 )
 
-@JvmName("databaseCyclingAthleteWithCountryAsDomainModel")
-fun List<DatabaseCyclingAthleteWithCountry>.asDomainModel(): List<Athlete> {
-    return map {
-        Athlete(id = it.id, name = it.name, gender = it.gender, filter = it.filter, nationality = it.country.asDomainModel())
-    }
-}
-
-@JvmName("databaseCyclingAthleteUpdate")
-fun DatabaseCyclingAthlete.update(athlete: DatabaseCyclingAthlete) {
-    this.name = athlete.name
-    this.gender = athlete.gender
-    this.nationality = athlete.nationality
-}
-
-/**
- * EVENTS / CATEGORIES
- */
 @Entity(
     tableName = "cycling_event_categories",
     foreignKeys = [ForeignKey(
@@ -59,27 +41,11 @@ data class DatabaseCyclingEventCategory constructor(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
     var name: String,
-    var filter: Boolean,
-    @ColumnInfo(name = "main_category_id")
+    val filter: Boolean,
+    @ColumnInfo(name = "main_category_id", index = true)
     var mainCategory: Int?
 )
 
-@JvmName("databaseCyclingEventCategoryAsDomainModel")
-fun List<DatabaseCyclingEventCategory>.asDomainModel(): List<EventCategory> {
-    return map {
-        EventCategory(id = it.id, name = it.name, filter = it.filter, mainCategory = it.mainCategory)
-    }
-}
-
-@JvmName("databaseCyclingEventCategoryUpdate")
-fun DatabaseCyclingEventCategory.update(eventCategory: DatabaseCyclingEventCategory) {
-    this.name = eventCategory.name
-    this.mainCategory = eventCategory.mainCategory
-}
-
-/**
- * EVENTS
- */
 @Entity(
     tableName = "cycling_events",
     foreignKeys = [
@@ -92,7 +58,7 @@ fun DatabaseCyclingEventCategory.update(eventCategory: DatabaseCyclingEventCateg
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("country"))]
 )
-data class DatabaseCyclingEvent constructor(
+data class DatabaseCyclingEvent(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
     var name: String,
@@ -100,52 +66,117 @@ data class DatabaseCyclingEvent constructor(
     var dateFrom: Date,
     @ColumnInfo(name = "date_to")
     var dateTo: Date,
-    var filter: Boolean,
-    var list: Boolean,
+    val filter: Boolean,
+    val list: Boolean,
+    @ColumnInfo(index = true)
     var category: Int,
+    @ColumnInfo(index = true)
     var country: Int
 )
 
-@JvmName("databaseCyclingEventToDomainModel")
-fun List<DatabaseCyclingEvent>.asDomainModel(): List<Event> {
-    return map {
-        Event(
-            id = it.id,
-            name = it.name,
-            dateFrom = it.dateFrom,
-            dateTo = it.dateTo,
-            category = it.category,
-            filter = it.filter,
-            list = it.list,
-            city = null,
-            county = it.country)
-    }
-}
-
-@JvmName("databaseCyclingEventUpdate")
-fun DatabaseCyclingEvent.update(event: DatabaseCyclingEvent) {
-    this.name = event.name
-    this.dateFrom = event.dateFrom
-    this.dateTo = event.dateTo
-    this.country = event.country
-    this.category = event.category
-}
+@Entity(
+    tableName = "cycling_entries",
+    foreignKeys = [
+        ForeignKey(
+            entity = DatabaseCyclingEvent::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("event_id"),
+            onDelete = CASCADE),
+        ForeignKey(
+            entity = DatabaseCyclingAthlete::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("athlete_id"),
+            onDelete = CASCADE)],
+    primaryKeys = [ "event_id", "athlete_id" ])
+data class DatabaseCyclingEntry (
+    @ColumnInfo(name = "event_id", index = true)
+    val eventId: Int,
+    @ColumnInfo(name = "athlete_id", index = true)
+    val athleteId: Int
+)
 
 /**
- * FILTERED EVENTS
+ * PoJos
  */
-data class DatabaseCyclingFilteredEvent (
-    val entries: List<Int>?,
+
+data class DatabaseCyclingEntryWithAthletes(
+    @Embedded
+    var entry: DatabaseCyclingEntry,
+    @Relation(parentColumn = "athlete_id", entityColumn = "id", entity = DatabaseCyclingAthlete::class)
+    val athletes: List<DatabaseCyclingAthlete>
+)
+
+data class DatabaseCyclingEventWithAthletes(
     @Embedded
     val event: DatabaseCyclingEvent,
     @Embedded(prefix = "category_")
     val category: DatabaseCyclingEventCategory,
     @Embedded(prefix = "country_")
-    val country: DatabaseCountry
+    val country: DatabaseCountry,
+    @Relation(parentColumn = "id", entityColumn = "event_id", entity = DatabaseCyclingEntry::class)
+    val entries: List<DatabaseCyclingEntryWithAthletes>
 )
 
-@JvmName("databaseCyclingFilteredEventAsDomainModel")
-fun List<DatabaseCyclingFilteredEvent>.asCalendarListItems(): List<CalendarListItem> {
+/**
+ * Extensions
+ */
+
+@JvmName("databaseCyclingAthleteAsDomainModel")
+fun List<DatabaseCyclingAthlete>.asDomainModel(): List<Athlete> {
+    return map {
+        Athlete(id = it.id, name = it.name, filter = it.filter)
+    }
+}
+
+@JvmName("databaseCyclingAthleteUpdate")
+fun DatabaseCyclingAthlete.update(athlete: DatabaseCyclingAthlete) {
+    apply {
+        name = athlete.name
+        gender = athlete.gender
+        nationality = athlete.nationality
+    }
+}
+
+@JvmName("databaseCyclingEventCategoryAsDomainModel")
+fun List<DatabaseCyclingEventCategory>.asDomainModel(): List<EventCategory> {
+    return map {
+        EventCategory(id = it.id, name = it.name, filter = it.filter, mainCategory = it.mainCategory)
+    }
+}
+
+@JvmName("databaseCyclingEventCategoryUpdate")
+fun DatabaseCyclingEventCategory.update(eventCategory: DatabaseCyclingEventCategory) {
+    apply {
+        name = eventCategory.name
+        mainCategory = eventCategory.mainCategory
+    }
+}
+
+@JvmName("databaseCyclingEventToDomainModel")
+fun List<DatabaseCyclingEvent>.asDomainModel(): List<Event> {
+    return map {
+        Event(id = it.id, name = it.name,filter = it.filter, category = it.category)
+    }
+}
+
+@JvmName("databaseCyclingEventUpdate")
+fun DatabaseCyclingEvent.update(event: DatabaseCyclingEvent) {
+    apply {
+        name = event.name
+        dateFrom = event.dateFrom
+        dateTo = event.dateTo
+        country = event.country
+        category = event.category
+    }
+}
+
+@JvmName("databaseCyclingEntryWithAthletesAsDomainModel")
+fun List<DatabaseCyclingEntryWithAthletes>.asDomainModel(): List<Athlete> {
+    return this.map { it.athletes }.flatten().asDomainModel()
+}
+
+@JvmName("databaseCyclingEventWithAthletesAsCalendarListItems")
+fun List<DatabaseCyclingEventWithAthletes>.asCalendarListItems(): List<CalendarListItem> {
     return map {
         CalendarListItem(
             id = it.event.id,
@@ -154,8 +185,7 @@ fun List<DatabaseCyclingFilteredEvent>.asCalendarListItems(): List<CalendarListI
             dateFrom = it.event.dateFrom,
             dateTo = it.event.dateTo,
             category = it.category.name,
-            athletes = emptyList(),
-            entries = emptyList(),
+            athletes = it.entries.asDomainModel(),
             country = it.country.asDomainModel()
         )
     }

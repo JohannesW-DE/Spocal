@@ -27,7 +27,9 @@ fun ChipGroup.contains(id: Int): Boolean {
 }
 
 fun ChipGroup.removeOtherChildren(ids: List<Int>) {
+    println(ids)
     val indexes = mutableListOf<Int>()
+    println(this.childCount)
     for (index in 0 until this.childCount) {
         if (!ids.contains(this.getChildAt(index).id)) {
             indexes.add(index)
@@ -42,10 +44,11 @@ fun Chip.createFilterChip(txt: String, listener: View.OnClickListener, obj: Any)
     return Chip(this.context).apply {
         // basics
         id = obj.hashCode()
+        println("id = $id")
         text = txt
         //
         isClickable = false
-        closeIcon = context.getDrawable(R.drawable.ic_mtrl_chip_close_circle)
+        closeIcon = context.getDrawable(R.drawable.icon_close)
         isCloseIconVisible = true
         setOnCloseIconClickListener(listener)
         // style
@@ -93,9 +96,13 @@ fun Chip.createInfoChip(txt: String): Chip {
     }
 }
 
-enum class RefreshExceptionType { CONNECTION, CODE, FORMAT }
+enum class RefreshExceptionType(val id: String) {
+    CONNECTION("connection"),
+    CODE("code"),
+    FORMAT("format")
+}
 
-class RefreshException(type: RefreshExceptionType): Exception(type.toString())
+class RefreshException(type: RefreshExceptionType): Exception(type.id)
 
 suspend fun refresh(function: suspend () -> Unit) {
     try {

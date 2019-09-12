@@ -74,7 +74,6 @@ class CalendarAdapter(val clickListener: CalendarListener, context: Context): Li
                 }
         }
         submitList(result)
-        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -91,18 +90,11 @@ class CalendarAdapter(val clickListener: CalendarListener, context: Context): Li
             item: CalendarListItem,
             clickListener: CalendarListener
         ) {
-            Timber.i("binding stuff")
-            Timber.i(item.expanded.toString())
-
-            println("--date@construct--")
-            println(item.dateFrom)
-            println(item.dateTo)
-
             binding.item = item
             binding.executePendingBindings()
             binding.clickListener = clickListener
 
-             // clear
+            // clear
             binding.detailsChipGroup.removeAllViews()
             binding.entriesChipGroup.removeAllViews()
 
