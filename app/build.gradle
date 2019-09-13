@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'androidx.navigation.safeargs'
+//apply plugin: 'androidx.navigation.safeargs'
 
 android {
     compileSdkVersion 28
@@ -15,6 +15,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
+            }
+        }
       }
 
     buildTypes {
@@ -86,8 +92,8 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_coroutine"
 
     // navigation
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.0-alpha01'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.2.0-alpha01'
+    implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
 
     // retrofit/moshi
     implementation "com.squareup.moshi:moshi:$version_moshi"

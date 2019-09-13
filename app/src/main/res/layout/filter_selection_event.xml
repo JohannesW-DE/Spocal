@@ -24,7 +24,7 @@
                 tools:text="Events"/>
         <Spinner
                 android:id="@+id/fseSpinner"
-                app:layout_constraintTop_toBottomOf="@+id/textView" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fseTextView" app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 style="@style/SpinnerStyle" />
 

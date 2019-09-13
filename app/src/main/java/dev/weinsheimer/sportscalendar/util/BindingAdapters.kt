@@ -40,14 +40,47 @@ fun datesToString(view: TextView, dateFrom: Date, dateTo: Date) {
 
 }
 
-@BindingAdapter("app:athletes")
-fun entries(chipGroup: ChipGroup, athletes: List<Athlete>?) {
-    chipGroup.removeAllViews()
-    athletes?.forEach { athlete ->
-        val chip = Chip(chipGroup.context).apply {
-            text = athlete.name
+/**
+ * item_calendar_event.xml
+ */
+@BindingAdapter("isVisible")
+fun isVisible(view: View, expanded: Boolean) {
+    view.visibility = if (expanded) View.VISIBLE else View.GONE
+}
+
+
+@BindingAdapter("athletes")
+fun athletes(chipGroup: ChipGroup, athletes: List<Athlete>) {
+    chipGroup.apply {
+        removeAllViews()
+
+        athletes.forEach { addView(Chip(chipGroup.context).createInfoChip(it.name)) }
+    }
+}
+
+@BindingAdapter("item")
+fun details(chipGroup: ChipGroup, item: CalendarListItem) {
+    chipGroup.apply {
+        removeAllViews()
+
+        addView(Chip(chipGroup.context).createInfoChip(item.category))
+
+        val location = if ("city" in item.details) {
+            item.details["city"].toString() + ", " + item.country.name
+        } else {
+            item.country.name
         }
-        chipGroup.addView(chip)
+        addView(Chip(chipGroup.context).createInfoChip(location))
+
+        item.details.forEach { detail ->
+            when(detail.key) {
+                "indoor" -> if (detail.value as Boolean) "Indoor" else "Outdoor"
+                "surface" -> detail.value.toString()
+                else -> null
+            }?.let {
+                addView(Chip(chipGroup.context).createInfoChip(it))
+            }
+        }
     }
 }
 
@@ -62,3 +95,4 @@ fun setEventIcon(imageView: ImageView, sport: String) {
         }
     )
 }
+

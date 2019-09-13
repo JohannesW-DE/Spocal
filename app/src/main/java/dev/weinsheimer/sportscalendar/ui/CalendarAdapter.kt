@@ -36,13 +36,8 @@ class CalendarAdapter(val clickListener: CalendarListener, context: Context): Li
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is EventViewHolder -> {
-                val eventItem = getItem(position) as DataItem.EventItem
+                val eventItem = getItem(holder.getAdapterPosition()) as DataItem.EventItem
                 holder.bind(eventItem.event, clickListener)
-                holder.itemView.setOnClickListener {
-                    eventItem.event.expanded = !eventItem.event.expanded
-                    Timber.i("After click: " + eventItem.event.expanded.toString())
-                    notifyItemChanged(position)
-                }
             }
             is MonthViewHolder -> {
                 val monthItem = getItem(position) as DataItem.MonthItem
@@ -90,52 +85,15 @@ class CalendarAdapter(val clickListener: CalendarListener, context: Context): Li
             item: CalendarListItem,
             clickListener: CalendarListener
         ) {
+            println("bind -> " + item.name + " -> " + item.expanded)
             binding.item = item
+            binding.expanded = false
+            binding.cardView.setOnClickListener {
+                val expanded = binding.expanded
+                binding.expanded = !expanded!!
+            }
             binding.executePendingBindings()
             binding.clickListener = clickListener
-
-            // clear
-            binding.detailsChipGroup.removeAllViews()
-            binding.entriesChipGroup.removeAllViews()
-
-            // add category chip
-            binding.detailsChipGroup.addView(
-                Chip(binding.detailsChipGroup.context).createInfoChip(item.category)
-            )
-            // add location chip
-            var location = item.country.name
-            if ("city" in item.details) {
-                location = item.details["city"].toString() + ", " + location
-            }
-            binding.detailsChipGroup.addView(
-                Chip(binding.detailsChipGroup.context).createInfoChip(location)
-            )
-            // (potentially) add more details
-            for (detail in item.details) {
-                when(detail.key) {
-                    "indoor" -> if (item.details["indoor"] as Boolean) "Indoor" else "Outdoor"
-                    "surface" -> detail.value.toString()
-                    else -> null
-                }?.let {
-                    binding.detailsChipGroup.addView(
-                        Chip(binding.detailsChipGroup.context).createInfoChip(it)
-                    )
-                }
-            }
-            // (potentially) add entries
-            item.athletes.forEach { athlete ->
-                binding.entriesChipGroup.addView(
-                    Chip(binding.entriesChipGroup.context).createInfoChip(athlete.name)
-                )
-            }
-            // handle expansion
-            if (item.expanded) {
-                binding.detailsChipGroup.visibility = View.VISIBLE
-                binding.entriesChipGroup.visibility = View.VISIBLE
-            } else {
-                binding.detailsChipGroup.visibility = View.GONE
-                binding.entriesChipGroup.visibility = View.GONE
-            }
         }
 
         companion object {
