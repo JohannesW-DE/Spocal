@@ -6,33 +6,42 @@ import dev.weinsheimer.sportscalendar.BuildConfig
 import okhttp3.*
 import timber.log.Timber
 import com.google.gson.JsonObject
+import okhttp3.ResponseBody
+import android.R.id.message
 
 
 
-class MockInterceptor : Interceptor {
+
+
+class MockInterceptor(val fake: (String) -> String) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         if (BuildConfig.DEBUG) {
+            println("INTERCEPTED")
             val uri = chain.request().url().uri().toString()
-            val responseString = when {
-                uri.endsWith("badminton/athletes") -> badmintonAthletes
-                else -> ""
-            }
-            return chain.proceed(chain.request())
-                .newBuilder()
-                .code(200)
+
+            println(uri)
+            val responseString = fake(uri)
+            println(responseString)
+
+            val mockRequest = Request.Builder()
+                .url(BuildConfig.SERVER_BASE_URL)
+                .build()
+
+            return Response.Builder()
+                .request(mockRequest)
                 .protocol(Protocol.HTTP_2)
-                .message(responseString)
+                .code(200)
+                .message("")
                 .body(
                     ResponseBody.create(
                         MediaType.parse("application/json"),
-                        responseString))
-                .addHeader("Content-Type", "application/json")
+                        responseString
+                    )
+                )
                 .build()
         } else {
-            return chain.proceed(chain.request()).networkResponse()!!
+            return chain.proceed(chain.request())
         }
     }
 
 }
-
-const val badmintonAthletes = "{ \"athletes\": [ {\"gender\": \"m\", \"id\": 3, \"name\": \"Athlete #3\", \"nationality\": 1}, {\"gender\": \"m\", \"id\": 4, \"name\": \"Athlete #4\", \"nationality\": 1} ] }"

@@ -8,31 +8,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 
-//private const val BASE_URL = "http://10.0.2.2:5000"
-private const val BASE_URL = "http://88.153.223.200:5000"
-
-private val moshi = Moshi.Builder()
-    .add(KotlinJsonAdapterFactory())
-    .build()
-
-private val okhttp = OkHttpClient.Builder()
-    .addInterceptor(MockInterceptor())
-    .build()
-
-private val retrofit = Retrofit.Builder()
-    .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .baseUrl(BASE_URL)
-    .build()
-
-private val retrofitMock = Retrofit.Builder()
-    .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .baseUrl(BASE_URL)
-    .client(okhttp)
-    .build()
 
 interface ApiService {
     /**
-     * Common
+     * Country
      */
     @GET("countries")
     suspend fun getCountries(): Response<NetworkCountryContainer>
@@ -87,13 +66,4 @@ interface ApiService {
     @Headers("Content-Type:application/json")
     @POST("tennis/events")
     suspend fun getTennisFilterResults(@Body body: NetworkFilterResultsRequest): Response<NetworkFilterResultsContainer>
-}
-
-object Api {
-    val retrofitService: ApiService by lazy {
-        retrofit.create(ApiService::class.java)
-    }
-    val retrofitMockService: ApiService by lazy {
-        retrofitMock.create(ApiService::class.java)
-    }
 }

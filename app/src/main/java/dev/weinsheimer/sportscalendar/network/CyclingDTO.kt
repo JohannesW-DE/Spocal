@@ -83,18 +83,3 @@ fun NetworkCyclingEventCategoriesContainer.asDatabaseModel(): Array<DatabaseCycl
     }.toTypedArray()
 }
 
-/**
- * EVENTS / FILTERED
- */
-data class NetworkCyclingFilter(@Json(name="athleteIDs") val athletes: List<Int>?,
-                                @Json(name="eventIDs") val events: List<Int>?,
-                                @Json(name="categoryIDs") val eventCategories: List<Int>?)
-
-data class NetworkCyclingFilterResultContainer(
-    val events: List<NetworkCyclingFilterResult>)
-
-data class NetworkCyclingFilterResult(
-    val id: Int,
-    val entries: List<Int>?
-)
-

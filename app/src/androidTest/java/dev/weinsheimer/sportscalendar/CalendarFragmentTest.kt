@@ -37,7 +37,7 @@ class CalendarFragmentTest : KoinTest {
     fun before() {
         loadKoinModules(databaseTestModule)
 
-        repo = BadmintonRepository(database, apiService)
+        repo = BadmintonRepository()
         TestUtil.populate(database)
         badmintonDao = database.badmintonDao
         badmintonDao.changeEventListStatus(true, 1)

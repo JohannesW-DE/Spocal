@@ -10,10 +10,16 @@ import dev.weinsheimer.sportscalendar.network.ApiService
 import dev.weinsheimer.sportscalendar.network.asDatabaseModel
 import dev.weinsheimer.sportscalendar.util.RefreshException
 import dev.weinsheimer.sportscalendar.util.RefreshExceptionType
+import dev.weinsheimer.sportscalendar.util.Sport
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class CyclingRepository(val database: SpocalDB, val retrofitService: ApiService): BaseRepository(database) {
-    override var sport = "badminton"
+class CyclingRepository: BaseRepository(), KoinComponent {
+    private val database: SpocalDB by inject()
+    private val retrofitService: ApiService by inject()
+
     override var dao: BaseDao = database.cyclingDao
+    override var sport = Sport.CYCLING
 
     /**
      * DAO calls
@@ -42,6 +48,11 @@ class CyclingRepository(val database: SpocalDB, val retrofitService: ApiService)
         Transformations.map(database.cyclingDao.getFilteredEvents()) {
             it.asCalendarListItems()
         }
+
+    override suspend fun refresh() {
+        refreshEventCategories()
+        refreshEvents()
+    }
 
     /**
      * API + DAO calls
@@ -124,6 +135,7 @@ class CyclingRepository(val database: SpocalDB, val retrofitService: ApiService)
         val response = retrofitService.getCyclingFilterResults(createNetworkRequest())
         if (response.code() == 200) {
             response.body()?.let { container ->
+                println("container")
                 dao.resetEventListStatus()
                 dao.clearEntries()
                 container.events.forEach { event ->

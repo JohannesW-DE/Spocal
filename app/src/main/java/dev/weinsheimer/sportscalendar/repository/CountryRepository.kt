@@ -6,15 +6,21 @@ import com.squareup.moshi.JsonDataException
 import dev.weinsheimer.sportscalendar.database.SpocalDB
 import dev.weinsheimer.sportscalendar.database.model.asDomainModel
 import dev.weinsheimer.sportscalendar.domain.Country
-import dev.weinsheimer.sportscalendar.network.Api
+import dev.weinsheimer.sportscalendar.network.ApiService
 import dev.weinsheimer.sportscalendar.network.asDatabaseModel
 import dev.weinsheimer.sportscalendar.util.RefreshException
 import dev.weinsheimer.sportscalendar.util.RefreshExceptionType
+import dev.weinsheimer.sportscalendar.util.refresh
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.net.SocketTimeoutException
 
-class CountryRepository(private val database: SpocalDB) {
+class CountryRepository: KoinComponent {
+    private val database: SpocalDB by inject()
+    private val retrofitService: ApiService by inject()
+
     /**
      * DAO calls
      */
@@ -27,10 +33,11 @@ class CountryRepository(private val database: SpocalDB) {
      * API + DAO calls
      */
     suspend fun refreshCountries() {
-        withContext(Dispatchers.IO) {
-            try {
-                val response = Api.retrofitService.getCountries()
+        refresh {
+            withContext(Dispatchers.IO) {
+                val response = retrofitService.getCountries()
                 if (response.code() == 200) {
+                    println("COUNTRYCONTAINER")
                     response.body()?.let { container ->
                         val currentCountries = database.countryDao.getCurrentCountries()
                         val deletes = currentCountries.filter { currentCountry ->
@@ -45,10 +52,6 @@ class CountryRepository(private val database: SpocalDB) {
                 } else {
                     throw RefreshException(RefreshExceptionType.CODE)
                 }
-            } catch (e: SocketTimeoutException) {
-                throw RefreshException(RefreshExceptionType.CONNECTION)
-            } catch (e: JsonDataException) {
-                throw RefreshException(RefreshExceptionType.FORMAT)
             }
         }
     }

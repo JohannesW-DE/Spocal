@@ -6,7 +6,6 @@ import com.google.common.truth.Truth.assertThat
 import dev.weinsheimer.sportscalendar.database.dao.BadmintonDao
 import dev.weinsheimer.sportscalendar.database.SpocalDB
 import dev.weinsheimer.sportscalendar.di.databaseTestModule
-import dev.weinsheimer.sportscalendar.di.networkTestModule
 import dev.weinsheimer.sportscalendar.domain.Athlete
 import dev.weinsheimer.sportscalendar.domain.Country
 import dev.weinsheimer.sportscalendar.network.ApiService
@@ -36,19 +35,19 @@ class BadmintonRepositoryUnitTest : KoinTest {
 
     @Before
     fun before() {
+        /*
         loadKoinModules(listOf(databaseTestModule, networkTestModule))
-
-        repo = BadmintonRepository(database, apiService)
+        */
+        loadKoinModules(listOf(databaseTestModule))
+        repo = BadmintonRepository()
         TestUtil.populate(database)
         badmintonDao = database.badmintonDao
 
-        repo.setup()
         repo.athletes.observeForever {  }
         repo.events.observeForever {  }
         repo.mainEventCategories.observeForever {  }
         repo.eventCategories.observeForever {  }
         repo.calendarItems.observeForever {  }
-        repo.calendarItemsWithEntries.observeForever {  }
     }
 
     @After
@@ -63,13 +62,13 @@ class BadmintonRepositoryUnitTest : KoinTest {
         assertThat(repo.mainEventCategories.value?.size).isEqualTo(10)
         assertThat(repo.eventCategories.value?.first()?.name).isEqualTo("Event Category #5")
         assertThat(repo.eventCategories.value?.last()?.id).isEqualTo(10)
-        assertThat(repo.calendarItemsWithEntries.value).isNotNull()
-        val calendarItem = repo.calendarItemsWithEntries.value?.first()
+        assertThat(repo.calendarItems.value).isNotNull()
+        val calendarItem = repo.calendarItems.value?.first()
         assertThat(calendarItem).isNotNull()
         if (calendarItem != null) {
             assertThat(calendarItem.name).matches("Event #1")
             assertThat(calendarItem.category).matches("Event Category #1")
-            assertThat(calendarItem.entries?.size).isEqualTo(2)
+            assertThat(calendarItem.athletes.size).isEqualTo(2)
             assertThat(calendarItem.details).containsEntry("city", "Anycity")
             assertThat(calendarItem.athletes.first().name).isEqualTo("Athlete #1")
         }
@@ -77,7 +76,7 @@ class BadmintonRepositoryUnitTest : KoinTest {
 
     @Test
     fun test_updateFilter()  {
-        val athletes = listOf(Athlete(1, "Athlete #1", "m", false, Country(1, "Country #1", "A1")))
+        val athletes = listOf(Athlete(1, "Athlete #1", false))
         runBlocking {
             repo.updateFilter(athletes, null, null)
         }

@@ -11,43 +11,47 @@ import dev.weinsheimer.sportscalendar.database.model.update
 import dev.weinsheimer.sportscalendar.network.*
 import dev.weinsheimer.sportscalendar.util.RefreshException
 import dev.weinsheimer.sportscalendar.util.RefreshExceptionType
+import dev.weinsheimer.sportscalendar.util.Sport
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class TennisRepository(val database: SpocalDB, val retrofitService: ApiService): BaseRepository(database) {
-    override var sport = "tennis"
+class TennisRepository: BaseRepository(), KoinComponent {
+    private val database: SpocalDB by inject()
+    private val retrofitService: ApiService by inject()
+
     override var dao: BaseDao = database.tennisDao
+    override var sport = Sport.TENNIS
 
     override var athletes =
         Transformations.map(database.tennisDao.getAthletes()) {
-            println(sport + " - athletes -> " + it.size)
             it.asDomainModel()
         }
 
     override var events =
         Transformations.map(database.tennisDao.getEvents()) {
-            println(sport + " - events -> " + it.size)
             it.asDomainModel()
         }
 
     override var mainEventCategories =
         Transformations.map(database.tennisDao.getEventCategories()) {
-            println(sport + " - mainEventCategories -> " + it.size)
             it.asDomainModel()
         }
 
     override var eventCategories =
         Transformations.map(database.tennisDao.getEventCategories()) {
-            println(sport + " - eventCategories -> " + it.size)
             it.asDomainModel()
         }
 
     override var calendarItems =
         Transformations.map(database.tennisDao.getFilteredEvents()) {
-            println(sport + " - _calendarItems_ -> " + it.size)
-            it.forEach { xd ->
-                println("@Transformations.map -> ${xd.event.dateFrom} / ${xd.event.dateTo}")
-            }
             it.asCalendarListItems()
         }
+
+    override suspend fun refresh() {
+        refreshAthletes()
+        refreshEventCategories()
+        refreshEvents()
+    }
 
     override suspend fun refreshAthletesFunction() {
         val response = retrofitService.getTennisAthletes()

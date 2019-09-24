@@ -15,6 +15,6 @@ val databaseModule = module {
     single { provideRoomDatabase(androidApplication()) }
 }
 
-val databaseTestModule = module {
+val databaseTestModule = module(override = true) {
     single(override = true){ Room.inMemoryDatabaseBuilder(androidApplication(), SpocalDB::class.java).allowMainThreadQueries().build() }
 }

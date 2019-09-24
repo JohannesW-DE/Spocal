@@ -2,20 +2,38 @@ package dev.weinsheimer.sportscalendar.util
 
 import android.view.View
 import android.widget.CompoundButton
-import androidx.lifecycle.MutableLiveData
-import com.airbnb.paris.utils.setPaddingBottom
-import com.airbnb.paris.utils.setPaddingTop
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.squareup.moshi.JsonDataException
 import dev.weinsheimer.sportscalendar.R
-import timber.log.Timber
 import java.net.SocketTimeoutException
+import java.text.SimpleDateFormat
+import java.util.*
 
 enum class Sport(val id: String) {
     BADMINTON("badminton"),
     TENNIS("tennis"),
     CYCLING("cycling")
+}
+
+object Constants {
+    const val APP_NAME = "spocal"
+    const val TABLE_USER_ATTRIBUTE_DATA = "data"
+}
+
+private val sdf = SimpleDateFormat("yyyy-MM-dd - HH:mm:ss", Locale.US)
+private val simpleSdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+
+fun String.asDate(): Date {
+    return sdf.parse(this)
+}
+
+fun Date.asString(): String {
+    return sdf.format(this)
+}
+
+fun String.asSimpleDate(): Date {
+    return simpleSdf.parse(this)
 }
 
 fun ChipGroup.contains(id: Int): Boolean {
@@ -91,8 +109,7 @@ fun Chip.createInfoChip(txt: String): Chip {
         chipMinHeight = 0f
         chipCornerRadius = 12f
         val scale = resources.displayMetrics.density
-        setPaddingTop((5 * scale + 0.5f).toInt())
-        setPaddingBottom((5 * scale + 0.5f).toInt())
+        setPadding(0, (5 * scale + 0.5f).toInt(), 0, (5 * scale + 0.5f).toInt() )
     }
 }
 

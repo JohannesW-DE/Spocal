@@ -96,18 +96,3 @@ fun NetworkTennisEventCategoriesContainer.asDatabaseModel(): Array<DatabaseTenni
     }.toTypedArray()
 }
 
-/**
- * EVENTS / FILTERED
- */
-data class NetworkTennisFilter(@Json(name="athleteIDs") val athletes: List<Int>?,
-                               @Json(name="eventIDs") val events: List<Int>?,
-                               @Json(name="categoryIDs") val categories: List<Int>?)
-
-data class NetworkTennisFilterResultContainer(
-    val events: List<NetworkTennisFilterResult>)
-
-data class NetworkTennisFilterResult(
-    val id: Int,
-    val entries: List<Int>?
-)
-

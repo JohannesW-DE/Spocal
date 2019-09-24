@@ -48,12 +48,7 @@
     <string name="error_network_connection">Es konnte keine Verbindung zum Server hergestellt werden.</string>
     <string name="error_network_code">Aktualisierung des Datenbestandes fehlgeschlagen. Grund: Code!</string>
     <string name="error_network_format">Aktualisierung des Datenbestandes fehlgeschlagen. Grund: Format!</string>
-    // calendar fragment
-    <string name="calendar_no_results">Leider wurden keine Turniere gemäß Ihrer aktuellen Einstellungen der Filter gefunden.</string>
-    <string name="calendar_no_filters">
-        Hier gibt es noch nichts zu sehen da Sie aktuell keine(n) Filter eingestellt haben.\n\nUm dies zu ändern können Sie über das Menü Sportarten auswählen für die Sie sich interessieren und Kriterien festlegen, die bestimmen, welche Turniere
-        Sie hier aufgelistet sehen wollen.
-    </string>
+
 
 
 
@@ -80,4 +75,13 @@
     <string name="navigation_label_badminton">Badminton</string>
     <string name="navigation_label_tennis">Tennis</string>
     <string name="navigation_label_cycling">Rad</string>
+
+    // CalendarFragment
+    <string name="calendar_no_results">Leider wurden keine Turniere gemäß Ihrer aktuellen Einstellungen der Filter gefunden.</string>
+    <string name="calendar_no_items">
+        Ihr Kalender ist noch leer!\nUm dies zu ändern müssen Sie die Filtereinstellungen bearbeiten.
+    </string>
+    <string name="calendar_no_data">
+        Vor der ersten Nutzung müssen die aktuellen Informationen geladen werden.\nBitte haben Sie einen Moment Geduld.
+    </string>
 </resources>

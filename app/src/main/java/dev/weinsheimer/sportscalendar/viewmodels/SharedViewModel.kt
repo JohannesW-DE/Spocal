@@ -1,15 +1,25 @@
 package dev.weinsheimer.sportscalendar.viewmodels
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.*
 import dev.weinsheimer.sportscalendar.domain.*
 import dev.weinsheimer.sportscalendar.R
 import kotlinx.coroutines.launch
 import androidx.lifecycle.MediatorLiveData
-import dev.weinsheimer.sportscalendar.util.RefreshException
-import dev.weinsheimer.sportscalendar.util.RefreshExceptionType
+import androidx.work.BackoffPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import dev.weinsheimer.sportscalendar.network.RefreshWorker
 import dev.weinsheimer.sportscalendar.repository.*
-import dev.weinsheimer.sportscalendar.util.Sport
+import dev.weinsheimer.sportscalendar.util.*
 import kotlinx.coroutines.delay
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 const val REFRESH_DELAY = 10000L
 
@@ -18,14 +28,20 @@ const val REFRESH_DELAY = 10000L
  * application context is needed for managing the room database.
  */
 @Suppress("IMPLICIT_CAST_TO_ANY")
-class SharedViewModel(
-    val countryRepository: CountryRepository,
-    val badmintonRepository: BadmintonRepository,
-    val tennisRepository: TennisRepository,
-    val cyclingRepository: CyclingRepository
-) : ViewModel() {
-    val refreshCompleted = MutableLiveData<Boolean>()
-    val calendarUpdateCompleted = MutableLiveData<Boolean>()
+class SharedViewModel: ViewModel(), KoinComponent {
+    private val applicationContext: Context by inject()
+
+    private val countryRepository: CountryRepository by inject()
+    private val badmintonRepository: BadmintonRepository by inject()
+    private val tennisRepository: TennisRepository by inject()
+    private val cyclingRepository: CyclingRepository by inject()
+
+    val isCalendarUpdated = MutableLiveData<Boolean>()
+
+    var refreshWorkInfo: LiveData<WorkInfo>? = null
+    val isDatabasePopulated = MutableLiveData<Boolean>().apply { value = false }
+
+
 
     // COMMON
     val countries = countryRepository.countries
@@ -66,23 +82,23 @@ class SharedViewModel(
                 "tennis" -> tennisRepository.updateFilter(athletes, eventCategories, events)
                 "cycling" -> cyclingRepository.updateFilter(athletes, eventCategories, events)
             }
-            println("UPDATING CALENDAR?????")
-            //delay(1000)
-            //updateCalendar()
         }
     }
 
     fun updateCalendar() {
         viewModelScope.launch {
             try {
+                println("badmintonRepository.updateEvents()")
                 badmintonRepository.updateEvents()
+                println("tennisRepository.updateEvents()")
                 tennisRepository.updateEvents()
+                println("cyclingRepository.updateEvents()")
                 cyclingRepository.updateEvents()
 
-                calendarUpdateCompleted.value = true
+                isCalendarUpdated.value = true
                 toast.value = R.string.calendar_update_success
             } catch (e: RefreshException) {
-                calendarUpdateCompleted.value = false
+                isCalendarUpdated.value = false
                 toast.value = R.string.calendar_update_fail
             }
         }
@@ -132,51 +148,53 @@ class SharedViewModel(
             this.calendarItems.value = result
         }
 
-        refresh()
-    }
+        // check if there was an database refresh since the app was started the last time
+        val lastStart = applicationContext
+            .getSharedPreferences("spocal", Context.MODE_PRIVATE)
+            .getString("lastStart", null)
 
-    private fun refresh() {
-        viewModelScope.launch {
-            try {
-                // common
-                countryRepository.refreshCountries()
-                // badminton
-                badmintonRepository.refreshAthletes()
-                badmintonRepository.refreshEventCategories()
-                badmintonRepository.refreshEvents()
-                // tennis
-                tennisRepository.refreshAthletes()
-                tennisRepository.refreshEventCategories()
-                tennisRepository.refreshEvents()
-                // cycling
-                //cyclingRepository.refreshAthletes()
-                cyclingRepository.refreshEventCategories()
-                cyclingRepository.refreshEvents()
+        val refreshDate = applicationContext
+            .getSharedPreferences("spocal", Context.MODE_PRIVATE)
+            .getString("refreshDate", null)
 
-                refreshCompleted.value = true
-
-                // update calendar as well if it failed the last time
-                calendarUpdateCompleted.value?.let {
-                    if (!it) {
-                        updateCalendar()
-                    }
-                }
-
-            } catch (e: RefreshException) {
-                // only send the toast once, and let the actionbar indicate the existing problem otherwise
-                refreshCompleted.value.let {
-                    if (it == null) {
-                        when(e.message) {
-                            RefreshExceptionType.CONNECTION.id -> toast.value = R.string.error_network_connection
-                            RefreshExceptionType.CODE.id -> toast.value = R.string.error_network_code
-                            RefreshExceptionType.FORMAT.id -> toast.value = R.string.error_network_format
-                        }
-                    }
-                }
-                refreshCompleted.value = false
-                delay(REFRESH_DELAY)
-                refresh()
+        if (lastStart != null && refreshDate != null) {
+            if (lastStart.asDate() < refreshDate.asDate()) {
+                toast.value = R.string.toast_refresh_complete
             }
         }
+
+        // run RefreshWorker for the one time and the one time only if the db isn't initialized yet
+        println("checking refreshDate")
+        refreshDate.let {
+            if (it == null) {
+                refreshWorkInfo = runRefreshWorker()
+            } else {
+                println("populated YAY")
+                isDatabasePopulated.value = true
+            }
+        }
+
+        // remember the app start
+        with (applicationContext.getSharedPreferences("spocal", Context.MODE_PRIVATE).edit()) {
+            putString("lastStart", java.util.Calendar.getInstance().time.asString())
+            commit()
+        }
+    }
+
+    private fun runRefreshWorker() : LiveData<WorkInfo> {
+        val request = OneTimeWorkRequestBuilder<RefreshWorker>()
+            .addTag(RefreshWorker.WORK_NAME_UNIQUE)
+            .setBackoffCriteria(BackoffPolicy.LINEAR, 15L, TimeUnit.SECONDS)
+            .build()
+        WorkManager.getInstance(applicationContext).enqueue(request)
+        return WorkManager.getInstance(applicationContext).getWorkInfoByIdLiveData(request.id)
+    }
+
+    fun updateRefreshDate() {
+        with (applicationContext.getSharedPreferences("spocal", Context.MODE_PRIVATE).edit()) {
+            putString("refreshDate", Calendar.getInstance().time.asString())
+            commit()
+        }
+        isDatabasePopulated.value = true
     }
 }

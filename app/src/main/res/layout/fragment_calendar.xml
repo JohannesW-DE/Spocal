@@ -27,14 +27,32 @@
                 android:id="@+id/floatingActionButton"
                 app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="32dp" android:layout_marginBottom="32dp"/>
+
         <TextView
+                android:id="@+id/info_textView"
+                style="@style/CalendarInfoText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/info_textView" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="32dp" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="32dp" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent" tools:text="Information for the user"
-                tools:visibility="visible" android:visibility="gone" style="@style/CalendarInfoText"/>
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="256dp"
+                android:layout_marginEnd="32dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Information for the user"
+                tools:visibility="visible" />
+
+        <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="128dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

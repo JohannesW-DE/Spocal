@@ -6,13 +6,14 @@ import dev.weinsheimer.sportscalendar.database.*
 import dev.weinsheimer.sportscalendar.database.dao.BaseDao
 import dev.weinsheimer.sportscalendar.domain.*
 import dev.weinsheimer.sportscalendar.network.*
+import dev.weinsheimer.sportscalendar.util.Sport
 import dev.weinsheimer.sportscalendar.util.refresh
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-abstract class BaseRepository(private val database: SpocalDB) {
-    abstract var sport: String
+abstract class BaseRepository {
+    abstract var sport: Sport
     abstract var dao: BaseDao
 
     abstract var athletes: LiveData<List<Athlete>>
@@ -20,6 +21,8 @@ abstract class BaseRepository(private val database: SpocalDB) {
     abstract var mainEventCategories: LiveData<List<EventCategory>>
     abstract var eventCategories: LiveData<List<EventCategory>>
     abstract var calendarItems: LiveData<List<CalendarListItem>>
+
+    var filterCount: MediatorLiveData<Int> = MediatorLiveData()
 
     open suspend fun updateFilter(athletes: List<Athlete>?, eventCategories: List<EventCategory>?, events: List<Event>?) {
         withContext(Dispatchers.IO) {
@@ -51,6 +54,8 @@ abstract class BaseRepository(private val database: SpocalDB) {
             dao.changeEventListStatus(false, eventId)
         }
     }
+
+    abstract suspend fun refresh()
 
     /**
      * API + DAO calls

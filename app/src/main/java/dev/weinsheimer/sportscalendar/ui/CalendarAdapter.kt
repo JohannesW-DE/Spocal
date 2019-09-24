@@ -34,6 +34,7 @@ class CalendarAdapter(val clickListener: CalendarListener, context: Context): Li
     private val calendar = Calendar.getInstance()
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        Timber.i("binding some stuff")
         when (holder) {
             is EventViewHolder -> {
                 val eventItem = getItem(holder.getAdapterPosition()) as DataItem.EventItem

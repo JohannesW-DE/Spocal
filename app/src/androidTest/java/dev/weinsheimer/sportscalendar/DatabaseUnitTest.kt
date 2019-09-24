@@ -64,9 +64,9 @@ class DatabaseUnitTest {
     @Throws(Exception::class)
     fun badminton_getAthletesWithCountry() {
         val countries = countryDao.getCurrentCountries()
-        val athletes = badmintonDao.getAthletesWithCountry()
+        val athletes = badmintonDao.getAthletes()
         athletes.observeForever {  }
-        assertThat(athletes.value!!.first().country).isEqualTo(countries.first())
+        assertThat(athletes.value!!.first().gender).isEqualTo("m")
     }
 
     @Test

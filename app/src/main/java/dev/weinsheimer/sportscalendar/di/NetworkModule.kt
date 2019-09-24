@@ -6,30 +6,42 @@ import dev.weinsheimer.sportscalendar.BuildConfig
 import dev.weinsheimer.sportscalendar.database.SpocalDB
 import dev.weinsheimer.sportscalendar.network.ApiService
 import dev.weinsheimer.sportscalendar.network.MockInterceptor
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 val networkModule = module {
-    single { provideDefaultOkhttpClient() }
+    single { provideDefaultInterceptor() }
+    single { provideOkhttpClient(get()) }
     single { provideRetrofit(get()) }
     single { provideApiService(get()) }
 }
 
+/*
 val networkTestModule = module(override = true) {
-    single { provideTestOkhttpClient() }
+    single { provideDefaultInterceptor() }
+    single { provideOkhttpClient(get()) }
     single { provideRetrofit(get()) }
     single { provideApiService(get()) }
 }
+*/
 
-fun provideDefaultOkhttpClient(): OkHttpClient {
-    return OkHttpClient.Builder()
-        .build()
+class DoNothingInterceptor: Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        return chain.proceed(chain.request())
+    }
 }
 
-fun provideTestOkhttpClient(): OkHttpClient {
+fun provideDefaultInterceptor(): Interceptor {
+    return DoNothingInterceptor()
+}
+
+fun provideOkhttpClient(interceptor: Interceptor): OkHttpClient {
     return OkHttpClient.Builder()
         .retryOnConnectionFailure(true)
         .addInterceptor { chain ->
@@ -39,7 +51,7 @@ fun provideTestOkhttpClient(): OkHttpClient {
                 .build()
             chain.proceed(request)
         }
-        .addInterceptor(MockInterceptor())
+        .addInterceptor(interceptor)
         .build()
 }
 

@@ -9,8 +9,6 @@ class Converters {
 
     @TypeConverter
     fun stringToDate(value: String?): Date? {
-        println("TypeConverter")
-        println(sdf.parse(value))
         return value?.let { sdf.parse(it) }
     }
 
