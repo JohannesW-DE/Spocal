@@ -46,8 +46,9 @@ import timber.log.Timber
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest2 : KoinTest {
+class InstrumentedBadmintonTests : KoinTest {
     private val database: SpocalDB by inject()
+    private val testUtil = TestUtil(database)
 
     @Rule
     @JvmField
@@ -76,7 +77,7 @@ class MainActivityTest2 : KoinTest {
         loadKoinModules(listOf(databaseTestModule, module {
             single(override=true) { interceptor } // T!
         }))
-        TestUtil.populateForEspresso(database)
+        testUtil.prepareForBadminton()
         mActivityTestRule.launchActivity(null)
     }
 
@@ -120,7 +121,7 @@ class MainActivityTest2 : KoinTest {
 
     private fun addBadmintonEvent_fake(uri: String) : String {
         return when {
-            uri.endsWith("badminton/events") -> "{\"events\": [{\"id\": 3, \"entries\": []}]}"
+            uri.endsWith("badminton/events") -> "{\"events\": [{\"id\": 3}]}"
             uri.endsWith("tennis/events") -> "{\"events\": []}"
             uri.endsWith("cycling/events") -> "{\"events\": []}"
             else -> "{}"
