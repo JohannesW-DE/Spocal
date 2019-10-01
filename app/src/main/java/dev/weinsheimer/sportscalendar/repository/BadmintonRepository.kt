@@ -48,6 +48,7 @@ class BadmintonRepository: BaseRepository(), KoinComponent {
         }
 
     override suspend fun refreshAthletesFunction() {
+        println("refreshAthletesFunction")
         val response = retrofitService.getBadmintonAthletes()
         if (response.code() == 200) {
             response.body()?.let { container ->
@@ -63,6 +64,9 @@ class BadmintonRepository: BaseRepository(), KoinComponent {
                         current.update(future)
                     }
                 }
+                println(deletes.toTypedArray().size)
+                println(container.asDatabaseModel().size)
+                println(currents.toTypedArray().size)
                 database.badmintonDao.deleteAthletes(*deletes.toTypedArray())
                 database.badmintonDao.insertAthletes(*container.asDatabaseModel())
                 database.badmintonDao.updateAthletes(*currents.toTypedArray())
@@ -120,7 +124,11 @@ class BadmintonRepository: BaseRepository(), KoinComponent {
                     }
                 }
                 database.badmintonDao.deleteEvents(*deletes.toTypedArray())
-                database.badmintonDao.insertEvents(*container.asDatabaseModel())
+                //database.badmintonDao.insertEvents(*container.asDatabaseModel())
+                container.asDatabaseModel().forEach {
+                    println(it.name)
+                    database.badmintonDao.insertEvents(it)
+                }
                 database.badmintonDao.updateEvents(*currents.toTypedArray())
             }
         } else {

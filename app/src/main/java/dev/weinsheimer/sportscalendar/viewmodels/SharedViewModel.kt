@@ -42,22 +42,24 @@ class SharedViewModel: ViewModel(), KoinComponent {
     val isDatabasePopulated = MutableLiveData<Boolean>().apply { value = false }
 
 
-
-    // COMMON
+    /**
+     * Sports (related) LiveData
+     */
+    // Country
     val countries = countryRepository.countries
 
-    // TENNIS
+    // Tennis
     val tennisAthletes = tennisRepository.athletes
     val tennisEventCategories = tennisRepository.eventCategories
     val tennisEvents = tennisRepository.events
 
-    // BADMINTON
+    // Badminton
     val badmintonAthletes = badmintonRepository.athletes
     val badmintonEventCategories = badmintonRepository.eventCategories
     val badmintonEvents = badmintonRepository.events
     val badmintonEventMainCategories = badmintonRepository.mainEventCategories
 
-    // CYCLING
+    // Cycling
     val cyclingEventCategories = cyclingRepository.eventCategories
     val cyclingEvents = cyclingRepository.events
     val cyclingEventMainCategories =

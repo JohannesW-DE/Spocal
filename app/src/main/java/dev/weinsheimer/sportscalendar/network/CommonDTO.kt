@@ -1,6 +1,7 @@
 package dev.weinsheimer.sportscalendar.network
 
 import com.squareup.moshi.Json
+import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEntry
 
 /**
  * Models
@@ -20,9 +21,6 @@ data class NetworkFilterResultsRequest(
     @Json(name="eventIDs") val events: List<Int>?,
     @Json(name="categoryIDs") val eventCategories: List<Int>?
 )
-
-
-
 
 
 

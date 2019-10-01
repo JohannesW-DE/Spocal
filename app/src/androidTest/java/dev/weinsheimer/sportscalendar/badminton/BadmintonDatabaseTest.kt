@@ -1,4 +1,4 @@
-package dev.weinsheimer.sportscalendar
+package dev.weinsheimer.sportscalendar.badminton
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -7,24 +7,25 @@ import dev.weinsheimer.sportscalendar.database.*
 import dev.weinsheimer.sportscalendar.database.dao.BadmintonDao
 import dev.weinsheimer.sportscalendar.database.dao.CountryDao
 import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEntry
+import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEvent
+import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEventCategory
+import dev.weinsheimer.sportscalendar.database.model.DatabaseCountry
 import dev.weinsheimer.sportscalendar.di.databaseTestModule
+import dev.weinsheimer.sportscalendar.observeOnce
+import org.junit.runner.RunWith
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.junit.Rule
 import org.koin.core.context.loadKoinModules
 import org.koin.test.KoinTest
-import org.koin.test.inject
+import org.koin.test.get
 
 
 @RunWith(AndroidJUnit4::class)
-class BadmintonDatabaseUnitTest : KoinTest {
-    private lateinit var badmintonDao: BadmintonDao
+class BadmintonDatabaseTest : KoinTest {
     private lateinit var countryDao: CountryDao
-
-    private val database: SpocalDB by inject()
-    private val testUtil = TestUtil(database)
+    private lateinit var badmintonDao: BadmintonDao
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -32,24 +33,26 @@ class BadmintonDatabaseUnitTest : KoinTest {
     @Before
     fun before() {
         loadKoinModules(databaseTestModule)
-        testUtil.prepareForBadminton()
-        testUtil.prepareForBadmintonDatabaseAndRepositoryUnitTest()
+        val database: SpocalDB = get()
+
+        BadmintonTestUtil().apply {
+            seed()
+            modify()
+            modifyEntries()
+        }
+
         countryDao = database.countryDao
         badmintonDao = database.badmintonDao
-
     }
 
     @After
-    fun after() {
-        database.close()
-    }
+    fun after() {}
 
     /**
      * Athletes
      */
-
     @Test
-    fun badminton_resetAthleteFilters() {
+    fun testResetAthleteFilters() {
         badmintonDao.getAthletes().observeOnce { athletes ->
             assertThat(athletes.filter { it.filter }).isNotEmpty()
         }
@@ -60,7 +63,7 @@ class BadmintonDatabaseUnitTest : KoinTest {
     }
 
     @Test
-    fun badminton_updateAthleteFilter() {
+    fun testUpdateAthleteFilter() {
         badmintonDao.getAthletes().observeOnce { athletes ->
             assertThat(athletes.find { it.id == 1 }?.filter).isFalse()
         }
@@ -73,9 +76,8 @@ class BadmintonDatabaseUnitTest : KoinTest {
     /**
      * Events
      */
-
     @Test
-    fun badminton_resetEventFilters() {
+    fun testResetEventFilters() {
         badmintonDao.getEvents().observeOnce { events ->
             assertThat(events.filter { it.filter }).isNotEmpty()
         }
@@ -86,7 +88,7 @@ class BadmintonDatabaseUnitTest : KoinTest {
     }
 
     @Test
-    fun badminton_updateEventFilter() {
+    fun testUpdateEventFilter() {
         badmintonDao.getEvents().observeOnce { events ->
             assertThat(events.find { it.id == 1 }?.filter).isFalse()
         }
@@ -97,7 +99,7 @@ class BadmintonDatabaseUnitTest : KoinTest {
     }
 
     @Test
-    fun badminton_resetEventListStatus() {
+    fun testResetEventListStatus() {
         badmintonDao.getEvents().observeOnce { events ->
             assertThat(events.filter { it.list }).isNotEmpty()
         }
@@ -108,7 +110,7 @@ class BadmintonDatabaseUnitTest : KoinTest {
     }
 
     @Test
-    fun badminton_changeEventListStatus() {
+    fun testChangeEventListStatus() {
         badmintonDao.getEvents().observeOnce { events ->
             assertThat(events.filter { it.list }).isNotEmpty()
         }
@@ -123,9 +125,8 @@ class BadmintonDatabaseUnitTest : KoinTest {
     /**
      * Event categories
      */
-
     @Test
-    fun badminton_resetEventCategoryFilters() {
+    fun testResetEventCategoryFilters() {
         badmintonDao.getEventCategories().observeOnce { eventCategories ->
             assertThat(eventCategories.filter { it.filter }).isNotEmpty()
         }
@@ -136,7 +137,7 @@ class BadmintonDatabaseUnitTest : KoinTest {
     }
 
     @Test
-    fun badminton_updateEventCategoryFilter() {
+    fun testUpdateEventCategoryFilter() {
         badmintonDao.getEventCategories().observeOnce { eventCategories ->
             assertThat(eventCategories.find { it.id == 6 }?.filter).isFalse()
         }
@@ -149,12 +150,29 @@ class BadmintonDatabaseUnitTest : KoinTest {
     /**
      * Filtered events
      */
-
     @Test
-    fun badminton_getFilteredEvents() {
-        val country = countryDao.getCurrentCountries().find { it.id == 5 }
-        val eventCategory = badmintonDao.getCurrentEventCategories().find { it.id == 2 }
-        val event = badmintonDao.getCurrentEvents().find { it.id == 5 }
+    fun testGetFilteredEvents() {
+        lateinit var country: DatabaseCountry
+        lateinit var eventCategory: DatabaseBadmintonEventCategory
+        lateinit var event: DatabaseBadmintonEvent
+
+        countryDao.getCountries().observeOnce { countries ->
+            countries.find { it.id == 5 }?.let {
+                country = it
+            }
+
+        }
+        badmintonDao.getEventCategories().observeOnce { eventCategories ->
+            eventCategories.find { it.id == 2 }?.let {
+                eventCategory = it
+            }
+
+        }
+        badmintonDao.getEvents().observeOnce { events ->
+            events.find { it.id == 5 }?.let {
+                event = it
+            }
+        }
 
         assertThat(country).isNotNull()
         assertThat(eventCategory).isNotNull()
@@ -162,6 +180,7 @@ class BadmintonDatabaseUnitTest : KoinTest {
 
         badmintonDao.getFilteredEvents().observeOnce { filteredEvents ->
             assertThat(filteredEvents.size).isEqualTo(2)
+
             filteredEvents.first().let { filteredEvent ->
                 assertThat(filteredEvent.country).isEqualTo(country)
                 assertThat(filteredEvent.category).isEqualTo(eventCategory)

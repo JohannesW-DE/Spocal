@@ -6,7 +6,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import dev.weinsheimer.sportscalendar.database.SpocalDB
-import dev.weinsheimer.sportscalendar.di.databaseTestModule
 import dev.weinsheimer.sportscalendar.util.Constants
 import dev.weinsheimer.sportscalendar.util.asString
 import org.koin.core.KoinComponent
@@ -31,6 +30,7 @@ class MainActivityTestRule :
         context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE).edit(commit = true) {
             putString("refreshDate", calendar.time.asString())
             putString("lastStart", calendar.time.asString())
+            putBoolean("testing", true)
         }
     }
 

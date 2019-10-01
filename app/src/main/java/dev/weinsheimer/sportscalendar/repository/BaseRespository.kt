@@ -22,8 +22,6 @@ abstract class BaseRepository {
     abstract var eventCategories: LiveData<List<EventCategory>>
     abstract var calendarItems: LiveData<List<CalendarListItem>>
 
-    var filterCount: MediatorLiveData<Int> = MediatorLiveData()
-
     open suspend fun updateFilter(athletes: List<Athlete>?, eventCategories: List<EventCategory>?, events: List<Event>?) {
         withContext(Dispatchers.IO) {
             dao.resetAthleteFilters()
@@ -45,7 +43,6 @@ abstract class BaseRepository {
                     dao.updateEventFilter(event.id)
                 }
             }
-            println("UPDATED????")
         }
     }
 

@@ -19,6 +19,7 @@ class MockInterceptor(val fake: (String) -> String) : Interceptor {
             println("INTERCEPTED")
             val uri = chain.request().url().uri().toString()
 
+
             println(uri)
             val responseString = fake(uri)
             println(responseString)
@@ -43,5 +44,4 @@ class MockInterceptor(val fake: (String) -> String) : Interceptor {
             return chain.proceed(chain.request())
         }
     }
-
 }

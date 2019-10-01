@@ -1,4 +1,4 @@
-package dev.weinsheimer.sportscalendar
+package dev.weinsheimer.sportscalendar.general
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
@@ -6,23 +6,17 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
 import com.google.common.truth.Truth
-import dev.weinsheimer.sportscalendar.di.databaseTestModule
 import dev.weinsheimer.sportscalendar.network.MockInterceptor
 import dev.weinsheimer.sportscalendar.network.RefreshWorker
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
-import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
-import org.koin.core.context.stopKoin
 import org.koin.core.context.unloadKoinModules
-import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 import org.koin.test.KoinTest
-import org.koin.test.check.checkModules
 
 @RunWith(AndroidJUnit4::class)
 class RefreshWorkerTest : KoinTest {
@@ -32,7 +26,7 @@ class RefreshWorkerTest : KoinTest {
     fun before() {
         context = ApplicationProvider.getApplicationContext()
         // koin
-        loadKoinModules(databaseTestModule)
+        //loadKoinModules(databaseTestModule)
     }
 
     private fun testRefreshWorker_success_fake(uri: String) : String {

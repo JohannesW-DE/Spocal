@@ -26,15 +26,23 @@ class SportsCalendarApplication : Application()
 
         Timber.plant(Timber.DebugTree())
 
+        println("SportsCalendarApplication")
+
         startKoin {
             androidLogger()
             androidContext(this@SportsCalendarApplication)
             modules(listOf(databaseModule, networkModule, appModule))
         }
 
-        applicationScope.launch {
-            setupRefreshWorker()
-        }
+        applicationContext
+            .getSharedPreferences("spocal", Context.MODE_PRIVATE)
+            .getBoolean("testing", false).let { testing ->
+                if (!testing) {
+                    applicationScope.launch {
+                        //setupRefreshWorker()
+                    }
+                }
+            }
     }
 
     private fun setupRefreshWorker() {

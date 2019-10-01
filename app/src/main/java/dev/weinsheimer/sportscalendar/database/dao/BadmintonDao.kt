@@ -99,7 +99,7 @@ interface BadmintonDao : BaseDao {
     /**
      * filtered events
      */
-    @Transaction @Query("SELECT badminton_events.*, badminton_event_categories.id as category_id, badminton_event_categories.name as category_name, badminton_event_categories.filter as category_filter, countries.id as country_id, countries.name as country_name, countries.alphatwo as country_alphatwo FROM badminton_events JOIN badminton_event_categories ON badminton_event_categories.id = badminton_events.category JOIN countries ON countries.id = badminton_events.country WHERE badminton_events.list = 1")
+    @Transaction @Query("SELECT badminton_events.*, badminton_event_categories.id as category_id, badminton_event_categories.name as category_name, badminton_event_categories.main_category_id as category_main_category_id, badminton_event_categories.filter as category_filter, countries.id as country_id, countries.name as country_name, countries.alphatwo as country_alphatwo FROM badminton_events JOIN badminton_event_categories ON badminton_event_categories.id = badminton_events.category JOIN countries ON countries.id = badminton_events.country WHERE badminton_events.list = 1")
     fun getFilteredEvents(): LiveData<List<DatabaseBadmintonEventWithAthletes>>
 }
 
