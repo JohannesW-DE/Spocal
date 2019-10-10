@@ -26,23 +26,23 @@ import dev.weinsheimer.sportscalendar.viewmodels.SharedViewModel
 import timber.log.Timber
 import android.os.HandlerThread
 import android.os.Handler
-import dev.weinsheimer.sportscalendar.databinding.FragmentBadmintonFilterBinding
+import dev.weinsheimer.sportscalendar.databinding.FragmentFilterBinding
 import kotlinx.android.synthetic.main.filter_selection_event_category.view.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 open class FilterFragment: Fragment() {
-    private lateinit var binding: FragmentBadmintonFilterBinding
+    private lateinit var binding: FragmentFilterBinding
 
     private val selectedAthlete = MutableLiveData<Athlete>()
     private val selectedEvent = MutableLiveData<Event>()
     private val selectedCategory = MutableLiveData<EventCategory>()
 
     private val viewModel by sharedViewModel<SharedViewModel>()
-    open lateinit var sport: String
+    open lateinit var sport: Sport
+    open lateinit var eventName: String
     open val selectAthletes: Boolean = true
     open lateinit var athletes: LiveData<List<Athlete>>
-    open val selectEvents: Boolean = true
     open lateinit var events: LiveData<List<Event>>
     open lateinit var mainEventCategories: LiveData<List<EventCategory>>
     open lateinit var eventCategories: LiveData<List<EventCategory>>
@@ -59,18 +59,17 @@ open class FilterFragment: Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_badminton_filter, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_filter, container, false)
 
         binding.lifecycleOwner = this
+
+        binding.eventName = eventName
 
         binding.selectedAthlete = selectedAthlete
         binding.selectedEvent = selectedEvent
 
         if (!selectAthletes) {
             binding.athlete.root.visibility = View.GONE
-        }
-        if (!selectEvents) {
-            binding.event.root.visibility = View.GONE
         }
 
         /**
@@ -133,8 +132,9 @@ open class FilterFragment: Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 Timber.i("nothing")
             }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                selectedCategory.value = binding.event.fseSpinner.adapter.getItem(position) as EventCategory
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                //selectedCategory.value = binding.event.fseSpinner.adapter.getItem(position) as EventCategory
+                selectedCategory.value = parent.getItemAtPosition(position) as EventCategory
                 updateEventAutoComplete()
                 // react to refreshed events
                 binding.event.fseAutoCompleteTextView.text = binding.event.fseAutoCompleteTextView.text
@@ -297,12 +297,9 @@ open class FilterFragment: Fragment() {
                 binding.event.fseAutoCompleteTextView.threshold = 1
 
                 eventCategories.value?.let { categories ->
-                    println(categories)
                     categories.filter { it.mainCategory == selectedCategory.id }.map { it.id }.let { subCategories ->
                         events.value?.let { events ->
-                            println(events)
                             events.filter { subCategories.contains(it.category) }.sortedBy { it.name }.let { filteredEvents ->
-                                println(filteredEvents)
                                 binding.event.fseAutoCompleteTextView.setAdapter(
                                     BaseAdapter(
                                         binding.event.fseAutoCompleteTextView.context,

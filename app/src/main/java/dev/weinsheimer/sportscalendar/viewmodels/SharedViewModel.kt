@@ -24,10 +24,8 @@ import java.util.concurrent.TimeUnit
 const val REFRESH_DELAY = 10000L
 
 /**
- * SharedViewModel acts as a store for (at least) api related data. AndroidViewModel is subclassed because the
- * application context is needed for managing the room database.
+ * The source of information for every UI element.
  */
-@Suppress("IMPLICIT_CAST_TO_ANY")
 class SharedViewModel: ViewModel(), KoinComponent {
     private val applicationContext: Context by inject()
 
@@ -36,10 +34,11 @@ class SharedViewModel: ViewModel(), KoinComponent {
     private val tennisRepository: TennisRepository by inject()
     private val cyclingRepository: CyclingRepository by inject()
 
-    val isCalendarUpdated = MutableLiveData<Boolean>()
-
     var refreshWorkInfo: LiveData<WorkInfo>? = null
-    val isDatabasePopulated = MutableLiveData<Boolean>().apply { value = false }
+    val isDatabasePopulated
+            = MutableLiveData<Boolean>().apply { value = false }
+    val isCalendarUpdatedWithCurrentFilterSelection
+            = MutableLiveData<Boolean>().apply { value = false }
 
 
     /**
@@ -67,6 +66,9 @@ class SharedViewModel: ViewModel(), KoinComponent {
             categories.filter { it.mainCategory == null }
         }
 
+    var filterChangeMediator = MediatorLiveData<Any>()
+    var filterCount = MutableLiveData<Int>().apply { value = 0 }
+
     // MISC
     private val _toast = MutableLiveData<Int>()
     val toast
@@ -77,46 +79,61 @@ class SharedViewModel: ViewModel(), KoinComponent {
     /**
      * save filters
      */
-    fun updateFilters(sport: String, athletes: List<Athlete>?, eventCategories: List<EventCategory>?, events: List<Event>?) {
+    fun updateFilters(sport: Sport, athletes: List<Athlete>?, eventCategories: List<EventCategory>?, events: List<Event>?) {
         viewModelScope.launch {
             when(sport) {
-                "badminton" -> badmintonRepository.updateFilter(athletes, eventCategories, events)
-                "tennis" -> tennisRepository.updateFilter(athletes, eventCategories, events)
-                "cycling" -> cyclingRepository.updateFilter(athletes, eventCategories, events)
+                Sport.BADMINTON -> badmintonRepository.updateFilter(athletes, eventCategories, events)
+                Sport.TENNIS -> tennisRepository.updateFilter(athletes, eventCategories, events)
+                Sport.CYCLING -> cyclingRepository.updateFilter(athletes, eventCategories, events)
             }
         }
+        isCalendarUpdatedWithCurrentFilterSelection.value = false
     }
 
     fun updateCalendar() {
         viewModelScope.launch {
             try {
-                println("badmintonRepository.updateEvents()")
                 badmintonRepository.updateEvents()
-                println("tennisRepository.updateEvents()")
                 tennisRepository.updateEvents()
-                println("cyclingRepository.updateEvents()")
                 cyclingRepository.updateEvents()
 
-                isCalendarUpdated.value = true
+                isCalendarUpdatedWithCurrentFilterSelection.value = true
+
                 toast.value = R.string.calendar_update_success
             } catch (e: RefreshException) {
-                isCalendarUpdated.value = false
                 toast.value = R.string.calendar_update_fail
             }
         }
     }
 
-    fun hideCalendarItem(sport: String, eventId: Int) {
+    fun hideCalendarItem(sport: Sport, eventId: Int) {
         viewModelScope.launch {
             when(sport) {
-                "badminton" -> badmintonRepository.hideEvent(eventId)
-                "tennis" -> tennisRepository.hideEvent(eventId)
-                "cycling" -> cyclingRepository.hideEvent(eventId)
+                Sport.BADMINTON -> badmintonRepository.hideEvent(eventId)
+                Sport.TENNIS -> tennisRepository.hideEvent(eventId)
+                Sport.CYCLING -> cyclingRepository.hideEvent(eventId)
             }
         }
     }
 
+    private fun updateFilterCount() {
+        println("FILTERCOUNTUPDATE")
+        var filterCount = 0
+        filterCount += badmintonRepository.filterCount()
+        filterCount += tennisRepository.filterCount()
+        filterCount += cyclingRepository.filterCount()
+        this.filterCount.value = filterCount
+    }
+
     init {
+        filterChangeMediator.addSource(badmintonAthletes) { updateFilterCount() }
+        filterChangeMediator.addSource(badmintonEventCategories) { updateFilterCount() }
+        filterChangeMediator.addSource(badmintonEvents) { updateFilterCount() }
+        filterChangeMediator.addSource(tennisAthletes) { updateFilterCount() }
+        filterChangeMediator.addSource(tennisEventCategories) { updateFilterCount() }
+        filterChangeMediator.addSource(tennisEvents) { updateFilterCount() }
+        filterChangeMediator.addSource(cyclingEventCategories) { updateFilterCount() }
+        filterChangeMediator.addSource(cyclingEvents) { updateFilterCount() }
         /**
          * mediate calendar items
          */
@@ -141,9 +158,6 @@ class SharedViewModel: ViewModel(), KoinComponent {
         calendarItems.addSource(tennisRepository.calendarItems) { calendarItems ->
             val result = mutableListOf<CalendarListItem>()
             this.calendarItems.value?.let { list ->
-                list.forEach {
-                    println("@addSource -> ${it.dateFrom} / ${it.dateTo}")
-                }
                 result.addAll(list.filter { it.sport != Sport.TENNIS })
             }
             result.addAll(calendarItems)
@@ -171,7 +185,6 @@ class SharedViewModel: ViewModel(), KoinComponent {
             if (it == null) {
                 refreshWorkInfo = runRefreshWorker()
             } else {
-                println("populated YAY")
                 isDatabasePopulated.value = true
             }
         }

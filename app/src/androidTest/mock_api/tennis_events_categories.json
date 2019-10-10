@@ -1,0 +1,44 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "association": null,
+      "name": "Stadtmeisterschaft"
+    },
+    {
+      "id": 6,
+      "association": "wta",
+      "name": "Finals"
+    },
+    {
+      "id": 7,
+      "association": "wta",
+      "name": "Premier Mandatory"
+    },
+    {
+      "id": 8,
+      "association": "wta",
+      "name": "Premier 5"
+    },
+    {
+      "id": 9,
+      "association": "wta",
+      "name": "Premier"
+    },
+    {
+      "id": 10,
+      "association": "wta",
+      "name": "International"
+    },
+    {
+      "id": 11,
+      "association": "wta",
+      "name": "125K"
+    },
+    {
+      "id": 12,
+      "association": "atp",
+      "name": "Hobbyturnier"
+    }
+  ]
+}

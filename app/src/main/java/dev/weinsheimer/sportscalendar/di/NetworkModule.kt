@@ -23,15 +23,6 @@ val networkModule = module {
     single { provideApiService(get()) }
 }
 
-/*
-val networkTestModule = module(override = true) {
-    single { provideDefaultInterceptor() }
-    single { provideOkhttpClient(get()) }
-    single { provideRetrofit(get()) }
-    single { provideApiService(get()) }
-}
-*/
-
 class DoNothingInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         return chain.proceed(chain.request())
@@ -67,5 +58,3 @@ fun provideRetrofit(client: OkHttpClient): Retrofit {
 }
 
 fun provideApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
-
-const val DEFAULT_NAMESPACE = "default"

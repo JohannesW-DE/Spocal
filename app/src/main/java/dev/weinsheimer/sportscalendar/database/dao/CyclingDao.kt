@@ -84,7 +84,7 @@ interface CyclingDao : BaseDao {
     @Query("SELECT * FROM cycling_event_categories")
     fun getEventCategories(): LiveData<List<DatabaseCyclingEventCategory>>
 
-    @Transaction @Query("SELECT cycling_events.*, cycling_event_categories.id as category_id, cycling_event_categories.name as category_name, cycling_event_categories.filter as category_filter, countries.id as country_id, countries.name as country_name, countries.alphatwo as country_alphatwo FROM cycling_events JOIN cycling_event_categories ON cycling_event_categories.id = cycling_events.category JOIN countries ON countries.id = cycling_events.country WHERE cycling_events.list = 1")
+    @Transaction @Query("SELECT cycling_events.*, cycling_event_categories.id as category_id, cycling_event_categories.name as category_name, cycling_event_categories.main_category_id as category_main_category_id, cycling_event_categories.filter as category_filter, countries.id as country_id, countries.name as country_name, countries.alphatwo as country_alphatwo FROM cycling_events JOIN cycling_event_categories ON cycling_event_categories.id = cycling_events.category JOIN countries ON countries.id = cycling_events.country WHERE cycling_events.list = 1")
     fun getFilteredEvents(): LiveData<List<DatabaseCyclingEventWithAthletes>>
 
     /**

@@ -26,23 +26,15 @@ class SportsCalendarApplication : Application()
 
         Timber.plant(Timber.DebugTree())
 
-        println("SportsCalendarApplication")
-
         startKoin {
             androidLogger()
             androidContext(this@SportsCalendarApplication)
             modules(listOf(databaseModule, networkModule, appModule))
         }
 
-        applicationContext
-            .getSharedPreferences("spocal", Context.MODE_PRIVATE)
-            .getBoolean("testing", false).let { testing ->
-                if (!testing) {
-                    applicationScope.launch {
-                        //setupRefreshWorker()
-                    }
-                }
-            }
+        applicationScope.launch {
+            setupRefreshWorker()
+        }
     }
 
     private fun setupRefreshWorker() {
@@ -52,6 +44,7 @@ class SportsCalendarApplication : Application()
 
         val refreshRequest =
             PeriodicWorkRequestBuilder<RefreshWorker>(1, TimeUnit.DAYS)
+                .setInitialDelay(1, TimeUnit.DAYS)
                 .addTag(RefreshWorker.WORK_NAME).setConstraints(constraints)
                 .build()
 

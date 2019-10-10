@@ -7,40 +7,34 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import dev.weinsheimer.sportscalendar.R
 import dev.weinsheimer.sportscalendar.databinding.FragmentAboutBinding
 import dev.weinsheimer.sportscalendar.util.Sport
 import dev.weinsheimer.sportscalendar.viewmodels.SharedViewModel
-import org.koin.android.ext.android.bind
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
+/**
+ * The about/statistics view. Shows a little about text and a few stats of every supported sport.
+ */
 class AboutFragment: Fragment() {
     private lateinit var binding: FragmentAboutBinding
-    private lateinit var viewModel: SharedViewModel
+    private val viewModel by sharedViewModel<SharedViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_about, container, false)
 
-        // get viewModel
-        viewModel = activity?.run {
-            ViewModelProviders.of(this).get(SharedViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
-
-        binding.badminton.sport = "Badminton"
-        binding.badminton.athletesfilter = "-"
-        binding.badminton.athletes = "-"
-        binding.badminton.eventsfilter = "-"
-        binding.badminton.events = "-"
-        binding.badminton.eventcategoriesfilter = "-"
-        binding.badminton.eventcategories = "-"
-        binding.badminton.result = "0"
+        /** Badminton */
+        binding.badminton.apply {
+            sport = "Badminton"
+            eventName =
+                activity?.baseContext?.getString(R.string.fragment_about_badminton_event_name)
+        }
 
         viewModel.badmintonAthletes.observe(viewLifecycleOwner, Observer { athletes ->
             binding.badminton.athletes = athletes.size.toString()
             binding.badminton.athletesfilter = athletes.filter { it.filter }.size.toString()
         })
-
         viewModel.badmintonEvents.observe(viewLifecycleOwner, Observer { events ->
             binding.badminton.events = events.size.toString()
             binding.badminton.eventsfilter = events.filter { it.filter }.size.toString()
@@ -59,14 +53,12 @@ class AboutFragment: Fragment() {
             view.findNavController().navigate(R.id.action_aboutFragment_to_badmintonFilterFragment)
         }
 
-        binding.tennis.sport = "Tennis"
-        binding.tennis.athletesfilter = "-"
-        binding.tennis.athletes = "-"
-        binding.tennis.eventsfilter = "-"
-        binding.tennis.events = "-"
-        binding.tennis.eventcategoriesfilter = "-"
-        binding.tennis.eventcategories = "-"
-        binding.tennis.result = "0"
+        /** Tennis */
+        binding.tennis.apply {
+            sport = "Tennis"
+            eventName =
+                activity?.baseContext?.getString(R.string.fragment_about_tennis_event_name)
+        }
 
         viewModel.tennisAthletes.observe(viewLifecycleOwner, Observer { athletes ->
             binding.tennis.athletes = athletes.size.toString()
@@ -91,14 +83,14 @@ class AboutFragment: Fragment() {
             view.findNavController().navigate(R.id.action_aboutFragment_to_tennisFilterFragment)
         }
 
-        binding.cycling.sport = "Rad"
-        binding.cycling.athletesfilter = "-"
-        binding.cycling.athletes = "-"
-        binding.cycling.eventsfilter = "-"
-        binding.cycling.events = "-"
-        binding.cycling.eventcategoriesfilter = "-"
-        binding.cycling.eventcategories = "-"
-        binding.cycling.result = "0"
+        /** Cycling */
+        binding.cycling.apply {
+            sport = "Radsport"
+            eventName =
+                activity?.baseContext?.getString(R.string.fragment_about_cycling_event_name)
+            // no athletes
+            athleteTextView.visibility = View.GONE
+        }
 
         viewModel.cyclingEvents.observe(viewLifecycleOwner, Observer { events ->
             binding.cycling.events = events.size.toString()
@@ -117,7 +109,6 @@ class AboutFragment: Fragment() {
         binding.cycling.sportTextView.setOnClickListener { view ->
             view.findNavController().navigate(R.id.action_aboutFragment_to_cyclingFilterFragment)
         }
-
 
         return binding.root
     }

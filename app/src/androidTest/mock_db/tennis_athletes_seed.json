@@ -1,0 +1,28 @@
+{
+  "athletes": [
+    {
+      "id": 1,
+      "gender": "m",
+      "name": "Roger Federer",
+      "nationality": 8
+    },
+    {
+      "id": 2,
+      "gender": "m",
+      "name": "Alexander Zverev",
+      "nationality": 5
+    },
+    {
+      "id": 3,
+      "gender": "w",
+      "name": "Naomi Osaka",
+      "nationality": 3
+    },
+    {
+      "id": 4,
+      "gender": "w",
+      "name": "Angelique Kerber",
+      "nationality": 5
+    }
+  ]
+}

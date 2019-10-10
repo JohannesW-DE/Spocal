@@ -52,11 +52,13 @@ data class DatabaseCyclingEventCategory constructor(
         ForeignKey(
             entity = DatabaseCyclingEventCategory::class,
             parentColumns = arrayOf("id"),
-            childColumns = arrayOf("category")),
+            childColumns = arrayOf("category"),
+            onDelete = CASCADE),
         ForeignKey(
             entity = DatabaseCountry::class,
             parentColumns = arrayOf("id"),
-            childColumns = arrayOf("country"))]
+            childColumns = arrayOf("country"),
+            onDelete = CASCADE)]
 )
 data class DatabaseCyclingEvent(
     @PrimaryKey(autoGenerate = false)

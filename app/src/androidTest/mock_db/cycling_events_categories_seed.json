@@ -1,0 +1,49 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "main_category": null,
+      "name": "UCI World Tour"
+    },
+    {
+      "id": 2,
+      "main_category": 1,
+      "name": "UCI World Tour (One-day)"
+    },
+    {
+      "id": 3,
+      "main_category": 1,
+      "name": "UCI World Tour (Stages)"
+    },
+    {
+      "id": 4,
+      "main_category": null,
+      "name": "Hors Class"
+    },
+    {
+      "id": 5,
+      "main_category": 4,
+      "name": "Hors Class (One-day)"
+    },
+    {
+      "id": 6,
+      "main_category": 4,
+      "name": "Hors Class (Stages)"
+    },
+    {
+      "id": 7,
+      "main_category": null,
+      "name": "Class 1"
+    },
+    {
+      "id": 8,
+      "main_category": 7,
+      "name": "Class 1 (One-day)"
+    },
+    {
+      "id": 9,
+      "main_category": 7,
+      "name": "Class 1 (Stages)"
+    }
+  ]
+}

@@ -8,12 +8,6 @@ import dev.weinsheimer.sportscalendar.network.*
 
 
 class BadmintonTestUtil : TestUtil() {
-    override fun read(file: String) : String {
-        return context.assets.open(file).bufferedReader().use{
-            it.readText()
-        }
-    }
-
     override fun populateAthletes() {
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         val json = read("badminton_athletes_seed.json")
@@ -61,5 +55,7 @@ class BadmintonTestUtil : TestUtil() {
         database.badmintonDao.updateEventFilter(6)
         database.badmintonDao.changeEventListStatus(true, 5)
         database.badmintonDao.changeEventListStatus(true, 6)
+
+        println("badminton modified")
     }
 }

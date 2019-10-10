@@ -4,9 +4,8 @@
     <data>
         <import type="androidx.lifecycle.MutableLiveData"/>
         <import type="dev.weinsheimer.sportscalendar.domain.Event"/>
-        <variable
-                name="selectedEvent"
-                type="MutableLiveData&lt;Event&gt;" />
+        <variable name="selectedEvent" type="MutableLiveData&lt;Event&gt;"/>
+        <variable name="eventName" type="String"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout android:orientation="vertical"
                                                        android:layout_width="match_parent"
@@ -14,7 +13,7 @@
                                                        android:id="@+id/fseConstraintLayout">
 
         <TextView
-                android:text="@string/filter_selection_event_header"
+                android:text="@{eventName}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/fseTextView" android:layout_marginTop="16dp"

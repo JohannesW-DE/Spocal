@@ -138,8 +138,8 @@ class CalendarDiffCallback: DiffUtil.ItemCallback<DataItem>() {
     }
 }
 
-class CalendarListener(val clickListener: (sport: String, eventId: Int) -> Unit) {
-    fun onClick(item: CalendarListItem) = clickListener(item.sport.id, item.id)
+class CalendarListener(val clickListener: (sport: Sport, eventId: Int) -> Unit) {
+    fun onClick(item: CalendarListItem) = clickListener(item.sport, item.id)
 }
 
 sealed class DataItem {

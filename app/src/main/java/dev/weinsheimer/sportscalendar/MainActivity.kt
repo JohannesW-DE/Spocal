@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(binding.navigationView, navController)
 
         // !!!
-        //debug()
+        debug()
         // !!!
 
         // display information/errors/warnings

@@ -1,4 +1,4 @@
-package dev.weinsheimer.sportscalendar
+package dev.weinsheimer.sportscalendar.util
 
 import androidx.lifecycle.*
 

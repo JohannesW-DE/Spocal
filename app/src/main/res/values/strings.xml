@@ -1,20 +1,6 @@
 <resources>
     <string name="app_name">SportsCalendar</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="fragment_user_login_username">Username</string>
-    <string name="fragment_user_login_header">Login</string>
-    <string name="fragment_user_login_email">E-Mail</string>
-    <string name="fragment_user_login_password">Password</string>
-    <string name="fragment_user_login_login_button">Login</string>
-    <string name="fragment_user_register_register_textview">Register</string>
-    <string name="fragment_user_register_email_textview">E-Mail</string>
-    <string name="fragment_user_register_password1_textview">Password</string>
-    <string name="fragment_user_register_password2_textview">Repeat password</string>
-    <string name="fragment_user_register_register_button">Register</string>
-    <string name="menu_item_login">Login</string>
-    <string name="foo">bar</string>
     <string name="navdrawer_menu_calendar">Calendar</string>
     <string name="navdrawer_menu_filter_badminton">Badminton</string>
     <string name="navdrawer_menu_filter_cycling">Cycling</string>
@@ -34,54 +20,54 @@
     <string name="badminton_filter_events">Turniere</string>
     <string name="badminton_filter_categories">Turnier-Kategorien</string>
     <string name="badminton_filter_categories_all">Alle Kategorien</string>
-    // menu
+
+    // Navigation -> Menu (navdrawer_menu.xml)
     <string name="menu_calendar">Home</string>
+    <string name="menu_about">Über</string>
     <string name="menu_filters">Sportarten</string>
     <string name="menu_badminton">Badminton</string>
-    <string name="menu_cycling">Rad</string>
     <string name="menu_tennis">Tennis</string>
-    <string name="menu_about">Über</string>
-    // about
-    <string name="about_description">Diese App ist im Rahmen eines Projekts an der FH-SWF entstanden.</string>
-    <string name="about_copyright">© Johannes Weinsheimer, 2019</string>
-    // misc
-    <string name="error_network_connection">Es konnte keine Verbindung zum Server hergestellt werden.</string>
-    <string name="error_network_code">Aktualisierung des Datenbestandes fehlgeschlagen. Grund: Code!</string>
-    <string name="error_network_format">Aktualisierung des Datenbestandes fehlgeschlagen. Grund: Format!</string>
+    <string name="menu_cycling">Rad</string>
 
-
-
-
-    <string name="calendar_update_success">Der Kalender wurde aktualisiert.</string>
-    <string name="calendar_update_fail">Der Kalender konnte nicht aktualisiert werden.</string>
-    <string name="error_actionbar">Es konnte keine Verbindung zum Server hergestellt werden.</string>
-
-    // reusable xml components
-    <string name="filter_selection_athlete_header">Athleten</string>
-    <string name="filter_selection_event_header">Events</string>
-    <string name="filter_selection_event_category_header">Turnier-Kategorien</string>
-    // about fragment
-    <string name="fragment_about_about_header">Über</string>
-    <string name="fragment_about_about_textView">Diese App wurde mit dem Ziel entwickelt, dem Benutzer einen Überlick über Turniere / Renne / Wettkämpfe spannender Sportarten zu verschaffen,
-    die nicht im breiten Fokus der Öffentlichkeit stehen.</string>
-    <string name="fragment_about_athletes">Athleten: %s / %s</string>
-    <string name="fragment_about_events">Turniere: %s / %s</string>
-    <string name="fragment_about_event_categories">Turnier-Kategorien: %s / %s</string>
-    <string name="fragment_about_result">%s Turniere</string>
-
-    // navigation -> labels
+    // Navigation -> Labels (navigation.xml)
     <string name="navigation_label_calendar">Kalender</string>
     <string name="navigation_label_about">Über SportsCalendar</string>
     <string name="navigation_label_badminton">Badminton</string>
     <string name="navigation_label_tennis">Tennis</string>
     <string name="navigation_label_cycling">Rad</string>
 
+    // Toasts (SharedViewModel -> updateCalendar)
+    <string name="calendar_update_success">Der Kalender wurde aktualisiert.</string>
+    <string name="calendar_update_fail">Der Kalender konnte nicht aktualisiert werden.</string>
+
+
+    // AboutFragment
+    <string name="fragment_about_about_header">Über</string>
+    <string name="fragment_about_about_textView">Diese App wurde mit dem Ziel entwickelt, dem Benutzer einen Überblick über anstehende Wettkämpfe verschiedener Sportarten zu verschaffen.</string>
+    <string name="fragment_about_athletes">Athleten: %s / %s</string>
+    <string name="fragment_about_events">%s: %s / %s</string>
+    <string name="fragment_about_event_categories">%s (Kategorien): %s / %s</string>
+    <string name="fragment_about_result">%s %s</string>
+    <string name="fragment_about_categories">Kategorien</string>
+
+    // AboutFragment (also used for event header at filter)
+    <string name="fragment_about_badminton_event_name">Turniere</string>
+    <string name="fragment_about_tennis_event_name">Turniere</string>
+    <string name="fragment_about_cycling_event_name">Radrennen</string>
+
+    // reusable xml components
+    <string name="filter_selection_athlete_header">Athleten</string>
+    <string name="filter_selection_event_category_header">%s - Kategorien</string>
+
     // CalendarFragment
-    <string name="calendar_no_results">Leider wurden keine Turniere gemäß Ihrer aktuellen Einstellungen der Filter gefunden.</string>
-    <string name="calendar_no_items">
-        Ihr Kalender ist noch leer!\nUm dies zu ändern müssen Sie die Filtereinstellungen bearbeiten.
+    <string name="calendar_no_results">
+        Gemäss Ihrer aktuellen Filtereinstellungen wurden leider keine Ergebnisse gefunden.
+    </string>
+    <string name="calendar_no_filters">
+        Ihr Kalender ist noch leer!\nUm dies zu ändern müssen Sie die Filtereinstellungen der Sportarten für die Sie sich interessieren bearbeiten.
     </string>
     <string name="calendar_no_data">
-        Vor der ersten Nutzung müssen die aktuellen Informationen geladen werden.\nBitte haben Sie einen Moment Geduld.
+        Vor der ersten Nutzung muss der aktuelle Datenbestand geladen werden.\nBitte haben Sie einen Moment Geduld.
     </string>
+
 </resources>

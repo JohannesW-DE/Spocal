@@ -11,7 +11,7 @@ import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEvent
 import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEventCategory
 import dev.weinsheimer.sportscalendar.database.model.DatabaseCountry
 import dev.weinsheimer.sportscalendar.di.databaseTestModule
-import dev.weinsheimer.sportscalendar.observeOnce
+import dev.weinsheimer.sportscalendar.util.observeOnce
 import org.junit.runner.RunWith
 import org.junit.After
 import org.junit.Before

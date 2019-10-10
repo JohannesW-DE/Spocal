@@ -2,9 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <variable name="sport" type="String" />
+        <variable name="sport" type="String"/>
         <variable name="athletesfilter" type="String" />
         <variable name="athletes" type="String" />
+        <variable name="eventName" type="String" />
         <variable name="eventsfilter" type="String" />
         <variable name="events" type="String" />
         <variable name="eventcategoriesfilter" type="String" />
@@ -12,7 +13,7 @@
         <variable name="result" type="String" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+            android:id="@+id/outer_constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -27,6 +28,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/inner_constraintLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -64,7 +66,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="@{@string/fragment_about_events(eventsfilter, events)}"
+                        android:text="@{@string/fragment_about_events(eventName, eventsfilter, events)}"
                         android:textAppearance="@style/DefaultTextAppearance"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/athlete_textView"
@@ -76,10 +78,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginBottom="16dp"
-                        android:text="@{@string/fragment_about_event_categories(eventcategoriesfilter, eventcategories)}"
+                        android:text="@{@string/fragment_about_event_categories(eventName, eventcategoriesfilter, eventcategories)}"
                         android:textAppearance="@style/DefaultTextAppearance"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/event_textView"
                         tools:text="Turnier-Kategorien: 2 / 7" />
@@ -88,14 +88,17 @@
                         android:id="@+id/result_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
                         android:background="@drawable/background_accent_5dp"
                         android:padding="5dp"
-                        android:text="@{@string/fragment_about_result(result)}"
+                        android:text="@{@string/fragment_about_result(result, eventName)}"
                         android:textAppearance="@style/DefaultTextAppearance.OnAccent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/sport_textView"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/eventCategories_textView"
                         tools:text="- Turniere" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

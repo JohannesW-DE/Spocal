@@ -1,0 +1,60 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "association": "atp",
+      "name": "Australian Open",
+      "date_from": "2019-02-26",
+      "date_to": "2019-03-03",
+      "singles": 128,
+      "doubles": 64,
+      "indoor": false,
+      "surface": "Hard",
+      "city": "Melbourne",
+      "country": 12,
+      "category": 1
+    },
+    {
+      "id": 2,
+      "association": "atp",
+      "name": "Miami Open presented by Itau",
+      "date_from": "2019-03-20",
+      "date_to": "2019-03-31",
+      "singles": 96,
+      "doubles": 32,
+      "indoor": false,
+      "surface": "Hard",
+      "city": "Miami, FL",
+      "country": 13,
+      "category": 3
+    },
+    {
+      "id": 3,
+      "association": "atp",
+      "name": "BMW Open by FWU",
+      "date_from": "2019-04-29",
+      "date_to": "2019-05-05",
+      "singles": 28,
+      "doubles": 16,
+      "indoor": false,
+      "surface": "Clay",
+      "city": "Munich",
+      "country": 5,
+      "category": 5
+    },
+    {
+      "id": 4,
+      "association": "atp",
+      "name": "Swiss Indoors Basel",
+      "date_from": "2019-10-21",
+      "date_to": "2019-10-27",
+      "singles": 32,
+      "doubles": 16,
+      "indoor": true,
+      "surface": "Hard",
+      "city": "Basel",
+      "country": 4,
+      "category": 5
+    }
+  ]
+}

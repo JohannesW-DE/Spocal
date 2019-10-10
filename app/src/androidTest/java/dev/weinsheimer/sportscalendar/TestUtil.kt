@@ -11,13 +11,17 @@ import org.koin.core.inject
 
 abstract class TestUtil : KoinComponent {
     val database: SpocalDB by inject()
-    val context: Context by inject()
+    private val context: Context by inject()
 
     init {
         populateCountries()
     }
 
-    abstract fun read(file: String) : String
+    fun read(file: String) : String {
+        return context.assets.open(file).bufferedReader().use{
+            it.readText()
+        }
+    }
 
     private fun populateCountries() {
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()

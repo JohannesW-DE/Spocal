@@ -2,12 +2,9 @@ package dev.weinsheimer.sportscalendar.ui
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.snackbar.Snackbar
 import dev.weinsheimer.sportscalendar.*
 import dev.weinsheimer.sportscalendar.databinding.FragmentCalendarBinding
 import dev.weinsheimer.sportscalendar.viewmodels.SharedViewModel
@@ -21,10 +18,7 @@ class CalendarFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_calendar, container, false)
 
-        /**
-         * FIGURE OUT A BETTER WAY TO FORCE THE INITIAL PROPAGATION
-         */
-
+        // not ideal
         viewModel.countries.observe(viewLifecycleOwner, Observer { })
         viewModel.badmintonAthletes.observe(viewLifecycleOwner, Observer { })
         viewModel.badmintonEventCategories.observe(viewLifecycleOwner, Observer { })
@@ -35,7 +29,7 @@ class CalendarFragment : Fragment() {
         viewModel.cyclingEventCategories.observe(viewLifecycleOwner, Observer {  })
         viewModel.cyclingEvents.observe(viewLifecycleOwner, Observer {  })
         viewModel.cyclingEventMainCategories.observe(viewLifecycleOwner, Observer {  })
-
+        viewModel.filterChangeMediator.observe(viewLifecycleOwner, Observer {  })
         /**
          * adapter stuff
          */
@@ -54,6 +48,7 @@ class CalendarFragment : Fragment() {
         // refresh events
         binding.floatingActionButton.setOnClickListener {
             viewModel.updateCalendar()
+            updateInfoText()
         }
 
         viewModel.isDatabasePopulated.observe(viewLifecycleOwner, Observer {
@@ -70,24 +65,44 @@ class CalendarFragment : Fragment() {
     }
 
     private fun updateInfoText() {
-        viewModel.isDatabasePopulated.value?.let { isDatabasePopulated ->
-            binding.infoTextView.visibility = View.GONE
-            if (!isDatabasePopulated) {
+        // hide everything by default
+        binding.infoTextView.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
+        binding.floatingActionButton.show()
+
+        // database is populated not yet
+        viewModel.isDatabasePopulated.value?.let {
+            if (!it) {
                 binding.infoTextView.apply {
                     text = getString(R.string.calendar_no_data)
                     visibility = View.VISIBLE
                 }
                 binding.progressBar.visibility = View.VISIBLE
-            } else {
-                binding.progressBar.visibility = View.GONE
-                viewModel.calendarItems.value?.let { itemList ->
-                    if (itemList.isEmpty()) {
-                        binding.infoTextView.apply {
-                            text = getString(R.string.calendar_no_items)
-                            visibility = View.VISIBLE
-                        }
-                    } else {
-                        binding.infoTextView.visibility = View.GONE
+                binding.floatingActionButton.hide()
+                return
+            }
+        }
+
+        // no filter selected
+        viewModel.filterCount.value?.let {
+            println("FILTERCOUNT")
+            println(it)
+            if (it == 0) {
+                binding.infoTextView.apply {
+                    text = getString(R.string.calendar_no_filters)
+                    visibility = View.VISIBLE
+                }
+                return
+            }
+        }
+
+        // calendar is still empty
+        viewModel.calendarItems.value?.let { items ->
+            viewModel.isCalendarUpdatedWithCurrentFilterSelection.value?.let { updated ->
+                if (items.isEmpty() && updated) {
+                    binding.infoTextView.apply {
+                        text = getString(R.string.calendar_no_results)
+                        visibility = View.VISIBLE
                     }
                 }
             }

@@ -1,0 +1,28 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "name": "Tour de France",
+      "date_from": "2019-07-06",
+      "date_to": "2019-07-28",
+      "category": 3,
+      "country": 10
+    },
+    {
+      "id": 2,
+      "name": "EuroEyes Cyclassics Hamburg",
+      "date_from": "2019-07-06",
+      "date_to": "2019-07-28",
+      "category": 2,
+      "country": 5
+    },
+    {
+      "id": 3,
+      "name": "Tour of the Alps",
+      "date_from": "2019-04-22",
+      "date_to": "2019-04-26",
+      "category": 6,
+      "country": 11
+    }
+  ]
+}

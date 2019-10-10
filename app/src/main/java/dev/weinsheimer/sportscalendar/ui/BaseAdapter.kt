@@ -6,14 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Filter
-import androidx.databinding.DataBindingUtil
-import dev.weinsheimer.sportscalendar.R
+
 import dev.weinsheimer.sportscalendar.databinding.BaseAdapterRowBinding
 
+
+/**
+ * This adapter implements filtering by the return of toString().
+ */
 class BaseAdapter(context: Context, list: List<Any>) :
     ArrayAdapter<Any>(context, 0, list) {
-
-    private lateinit var binding: BaseAdapterRowBinding
 
     var completeList: ArrayList<Any> = ArrayList(list)
 
@@ -52,17 +53,23 @@ class BaseAdapter(context: Context, list: List<Any>) :
         }
     }
 
+    @Suppress("NAME_SHADOWING")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        binding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.base_adapter_row,
-            parent,
-            false)
+        var convertView = convertView
+        val binding: BaseAdapterRowBinding
 
-        getItem(position)?.let {obj ->
-            binding.text = obj.toString()
+        if (convertView == null) {
+            binding = BaseAdapterRowBinding.inflate(LayoutInflater.from(parent.context))
+            convertView = binding.root
+            convertView.tag = binding
+        } else {
+            binding = convertView.tag as BaseAdapterRowBinding
         }
 
-        return binding.root
+        getItem(position)?.let {
+            binding.text = it.toString()
+        }
+
+        return convertView
     }
 }

@@ -10,7 +10,7 @@ import dev.weinsheimer.sportscalendar.di.databaseTestModule
 import dev.weinsheimer.sportscalendar.domain.Athlete
 import dev.weinsheimer.sportscalendar.domain.Event
 import dev.weinsheimer.sportscalendar.network.NetworkFilterResultsRequest
-import dev.weinsheimer.sportscalendar.observeOnce
+import dev.weinsheimer.sportscalendar.util.observeOnce
 import dev.weinsheimer.sportscalendar.repository.BadmintonRepository
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor

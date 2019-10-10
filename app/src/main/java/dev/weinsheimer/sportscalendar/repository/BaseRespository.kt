@@ -2,6 +2,7 @@ package dev.weinsheimer.sportscalendar.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import dev.weinsheimer.sportscalendar.database.*
 import dev.weinsheimer.sportscalendar.database.dao.BaseDao
 import dev.weinsheimer.sportscalendar.domain.*
@@ -50,6 +51,14 @@ abstract class BaseRepository {
         withContext(Dispatchers.IO) {
             dao.changeEventListStatus(false, eventId)
         }
+    }
+
+    fun filterCount() : Int {
+        var count = 0
+        count += athletes.value?.filter { it.filter }?.size ?: 0
+        count += eventCategories.value?.filter { it.filter }?.size ?: 0
+        count += events.value?.filter { it.filter }?.size ?: 0
+        return count
     }
 
     abstract suspend fun refresh()
