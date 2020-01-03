@@ -11,12 +11,12 @@ class Converters {
     private val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
     @TypeConverter
-    fun stringToDate(value: String?): Date? {
-        return value?.let { sdf.parse(it) }
+    fun dateToString(date: Date?): String? {
+        return sdf.format(date)
     }
 
     @TypeConverter
-    fun dateToString(date: Date?): String? {
-        return sdf.format(date)
+    fun stringToDate(value: String?): Date? {
+        return value?.let { sdf.parse(it) }
     }
 }

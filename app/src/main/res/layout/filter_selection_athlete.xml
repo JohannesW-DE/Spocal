@@ -30,8 +30,7 @@
                 android:textColor="@color/colorTextDark"
                 app:layout_constraintEnd_toStartOf="@+id/fsaButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fsaTextView"
-                tools:text="Lin Dan" />
+                app:layout_constraintTop_toBottomOf="@+id/fsaTextView" />
         <Button
                 android:text="+"
                 android:id="@+id/fsaButton"

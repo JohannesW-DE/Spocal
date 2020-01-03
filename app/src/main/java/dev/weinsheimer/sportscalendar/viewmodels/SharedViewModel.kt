@@ -21,8 +21,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-const val REFRESH_DELAY = 10000L
-
 /**
  * The source of information for every UI element.
  */
