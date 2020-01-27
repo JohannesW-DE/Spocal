@@ -1,42 +1,54 @@
 package dev.weinsheimer.sportscalendar.viewmodels
 
 import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.*
-import dev.weinsheimer.sportscalendar.domain.*
-import dev.weinsheimer.sportscalendar.R
-import kotlinx.coroutines.launch
-import androidx.lifecycle.MediatorLiveData
 import androidx.work.BackoffPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import dev.weinsheimer.sportscalendar.R
+import dev.weinsheimer.sportscalendar.domain.Athlete
+import dev.weinsheimer.sportscalendar.domain.CalendarListItem
+import dev.weinsheimer.sportscalendar.domain.Event
+import dev.weinsheimer.sportscalendar.domain.EventCategory
 import dev.weinsheimer.sportscalendar.network.RefreshWorker
-import dev.weinsheimer.sportscalendar.repository.*
-import dev.weinsheimer.sportscalendar.util.*
-import kotlinx.coroutines.delay
-import org.koin.core.KoinComponent
-import org.koin.core.inject
-import java.text.SimpleDateFormat
+import dev.weinsheimer.sportscalendar.repository.BadmintonRepository
+import dev.weinsheimer.sportscalendar.repository.CountryRepository
+import dev.weinsheimer.sportscalendar.repository.CyclingRepository
+import dev.weinsheimer.sportscalendar.repository.TennisRepository
+import dev.weinsheimer.sportscalendar.util.RefreshException
+import dev.weinsheimer.sportscalendar.util.Sport
+import dev.weinsheimer.sportscalendar.util.asDate
+import dev.weinsheimer.sportscalendar.util.asString
+import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 /**
  * The source of information for every UI element.
  */
-class SharedViewModel: ViewModel(), KoinComponent {
-    private val applicationContext: Context by inject()
-
-    private val countryRepository: CountryRepository by inject()
-    private val badmintonRepository: BadmintonRepository by inject()
-    private val tennisRepository: TennisRepository by inject()
-    private val cyclingRepository: CyclingRepository by inject()
-
+class SharedViewModel @Inject constructor(
+    private val applicationContext: Context,
+    private val countryRepository: CountryRepository,
+    private val badmintonRepository: BadmintonRepository,
+    private val tennisRepository: TennisRepository,
+    private val cyclingRepository: CyclingRepository
+): ViewModel() {
     var refreshWorkInfo: LiveData<WorkInfo>? = null
     val isDatabasePopulated
             = MutableLiveData<Boolean>().apply { value = false }
     val isCalendarUpdatedWithCurrentFilterSelection
             = MutableLiveData<Boolean>().apply { value = false }
+
+    override fun onCleared() {
+        super.onCleared()
+        println("CLEARED VIEWMODEL")
+    }
+
+    init {
+        println("VIEWMODEL CREATED")
+    }
 
 
     /**
@@ -89,11 +101,16 @@ class SharedViewModel: ViewModel(), KoinComponent {
     }
 
     fun updateCalendar() {
+        println("updateCalendar()")
         viewModelScope.launch {
             try {
+                println("updatecalendar")
                 badmintonRepository.updateEvents()
+                println(1)
                 tennisRepository.updateEvents()
+                println(2)
                 cyclingRepository.updateEvents()
+                println(3)
 
                 isCalendarUpdatedWithCurrentFilterSelection.value = true
 

@@ -4,16 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import dev.weinsheimer.sportscalendar.R
 import dev.weinsheimer.sportscalendar.domain.Athlete
 import dev.weinsheimer.sportscalendar.util.Sport
 import dev.weinsheimer.sportscalendar.viewmodels.SharedViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import javax.inject.Inject
+
 
 class CyclingFilterFragment: FilterFragment() {
-    private val viewModel by sharedViewModel<SharedViewModel>()
-
     override var sport = Sport.CYCLING
     override var selectAthletes = false
 

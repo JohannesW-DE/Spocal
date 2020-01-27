@@ -1,7 +1,6 @@
 package dev.weinsheimer.sportscalendar.util
 
 import android.annotation.SuppressLint
-import android.media.Image
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,7 +10,6 @@ import com.google.android.material.chip.ChipGroup
 import dev.weinsheimer.sportscalendar.R
 import dev.weinsheimer.sportscalendar.domain.Athlete
 import dev.weinsheimer.sportscalendar.domain.CalendarListItem
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 

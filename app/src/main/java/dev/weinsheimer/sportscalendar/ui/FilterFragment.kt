@@ -2,6 +2,8 @@ package dev.weinsheimer.sportscalendar.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,32 +15,38 @@ import android.widget.ArrayAdapter
 import android.widget.CompoundButton
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
+import dagger.android.support.DaggerFragment
 import dev.weinsheimer.sportscalendar.R
+import dev.weinsheimer.sportscalendar.databinding.FragmentFilterBinding
 import dev.weinsheimer.sportscalendar.domain.Athlete
 import dev.weinsheimer.sportscalendar.domain.Event
 import dev.weinsheimer.sportscalendar.domain.EventCategory
 import dev.weinsheimer.sportscalendar.util.*
 import dev.weinsheimer.sportscalendar.viewmodels.SharedViewModel
-import timber.log.Timber
-import android.os.HandlerThread
-import android.os.Handler
-import dev.weinsheimer.sportscalendar.databinding.FragmentFilterBinding
+import kotlinx.android.synthetic.main.filter_selection_athlete.view.*
+import kotlinx.android.synthetic.main.filter_selection_event.view.*
 import kotlinx.android.synthetic.main.filter_selection_event_category.view.*
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import timber.log.Timber
+import javax.inject.Inject
 
 
-open class FilterFragment: Fragment() {
+open class FilterFragment: DaggerFragment() {
     private lateinit var binding: FragmentFilterBinding
 
     private val selectedAthlete = MutableLiveData<Athlete>()
     private val selectedEvent = MutableLiveData<Event>()
     private val selectedCategory = MutableLiveData<EventCategory>()
 
-    private val viewModel by sharedViewModel<SharedViewModel>()
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    val viewModel by viewModels<SharedViewModel> { viewModelFactory }
+
     open lateinit var sport: Sport
     open lateinit var eventName: String
     open val selectAthletes: Boolean = true

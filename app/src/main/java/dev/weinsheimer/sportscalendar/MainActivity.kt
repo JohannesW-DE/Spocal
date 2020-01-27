@@ -7,43 +7,50 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.work.*
-import com.google.android.material.snackbar.Snackbar
+import androidx.work.Configuration
+import androidx.work.WorkInfo
+import dagger.android.AndroidInjection
+import dagger.android.support.DaggerAppCompatActivity
 import dev.weinsheimer.sportscalendar.databinding.ActivityMainBinding
-import dev.weinsheimer.sportscalendar.network.RefreshWorker
-import dev.weinsheimer.sportscalendar.util.asDate
-import dev.weinsheimer.sportscalendar.util.asString
 import dev.weinsheimer.sportscalendar.viewmodels.SharedViewModel
-import kotlinx.coroutines.delay
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
+import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DaggerAppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
-    val viewModel: SharedViewModel by viewModel()
+
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<SharedViewModel> { viewModelFactory }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        println("MAINACTIVITY IS DESTROYED")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val binding =
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+
         drawerLayout = binding.drawerLayout
         val navController = this.findNavController(R.id.navHostFragment)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navigationView, navController)
 
+
+
         // !!!
-        debug()
+        //debug()
         // !!!
 
         // display information/errors/warnings
@@ -88,4 +95,5 @@ class MainActivity : AppCompatActivity() {
         val navController = this.findNavController(R.id.navHostFragment)
         return NavigationUI.navigateUp(navController, drawerLayout)
     }
+
 }

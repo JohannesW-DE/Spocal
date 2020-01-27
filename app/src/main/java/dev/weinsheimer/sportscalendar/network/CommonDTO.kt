@@ -1,7 +1,6 @@
 package dev.weinsheimer.sportscalendar.network
 
 import com.squareup.moshi.Json
-import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEntry
 
 /**
  * Models

@@ -11,8 +11,8 @@ import dev.weinsheimer.sportscalendar.domain.Athlete
 import dev.weinsheimer.sportscalendar.domain.Event
 import dev.weinsheimer.sportscalendar.domain.EventCategory
 import dev.weinsheimer.sportscalendar.network.NetworkFilterResultsRequest
-import dev.weinsheimer.sportscalendar.util.observeOnce
 import dev.weinsheimer.sportscalendar.repository.TennisRepository
+import dev.weinsheimer.sportscalendar.util.observeOnce
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import org.junit.After

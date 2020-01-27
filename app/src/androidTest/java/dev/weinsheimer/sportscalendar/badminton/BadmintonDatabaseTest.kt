@@ -3,7 +3,7 @@ package dev.weinsheimer.sportscalendar.badminton
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
-import dev.weinsheimer.sportscalendar.database.*
+import dev.weinsheimer.sportscalendar.database.SpocalDB
 import dev.weinsheimer.sportscalendar.database.dao.BadmintonDao
 import dev.weinsheimer.sportscalendar.database.dao.CountryDao
 import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEntry
@@ -12,11 +12,11 @@ import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEventCateg
 import dev.weinsheimer.sportscalendar.database.model.DatabaseCountry
 import dev.weinsheimer.sportscalendar.di.databaseTestModule
 import dev.weinsheimer.sportscalendar.util.observeOnce
-import org.junit.runner.RunWith
 import org.junit.After
 import org.junit.Before
-import org.junit.Test
 import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
 import org.koin.test.KoinTest
 import org.koin.test.get

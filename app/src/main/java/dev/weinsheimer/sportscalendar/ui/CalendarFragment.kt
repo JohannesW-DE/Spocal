@@ -1,19 +1,30 @@
 package dev.weinsheimer.sportscalendar.ui
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import dev.weinsheimer.sportscalendar.*
+import androidx.lifecycle.ViewModelProvider
+import dagger.android.support.DaggerFragment
+import dev.weinsheimer.sportscalendar.R
 import dev.weinsheimer.sportscalendar.databinding.FragmentCalendarBinding
 import dev.weinsheimer.sportscalendar.viewmodels.SharedViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import javax.inject.Inject
 
-class CalendarFragment : Fragment() {
+class CalendarFragment : DaggerFragment() {
     private lateinit var binding: FragmentCalendarBinding
 
-    private val viewModel by sharedViewModel<SharedViewModel>()
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<SharedViewModel> { viewModelFactory }
+
+    init {
+        println("INIT CALENDAR")
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_calendar, container, false)
@@ -47,6 +58,7 @@ class CalendarFragment : Fragment() {
 
         // refresh events
         binding.floatingActionButton.setOnClickListener {
+            println("FAB")
             viewModel.updateCalendar()
             updateInfoText()
         }

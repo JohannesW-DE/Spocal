@@ -1,24 +1,26 @@
 package dev.weinsheimer.sportscalendar.repository
 
 import androidx.lifecycle.Transformations
-import dev.weinsheimer.sportscalendar.database.*
+import dev.weinsheimer.sportscalendar.database.SpocalDB
 import dev.weinsheimer.sportscalendar.database.dao.BadmintonDao
 import dev.weinsheimer.sportscalendar.database.dao.BaseDao
 import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEntry
 import dev.weinsheimer.sportscalendar.database.model.asCalendarListItems
 import dev.weinsheimer.sportscalendar.database.model.asDomainModel
 import dev.weinsheimer.sportscalendar.database.model.update
-import dev.weinsheimer.sportscalendar.network.*
+import dev.weinsheimer.sportscalendar.network.ApiService
+import dev.weinsheimer.sportscalendar.network.asDatabaseModel
 import dev.weinsheimer.sportscalendar.util.RefreshException
 import dev.weinsheimer.sportscalendar.util.RefreshExceptionType
 import dev.weinsheimer.sportscalendar.util.Sport
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class BadmintonRepository: BaseRepository(), KoinComponent {
-    private val database: SpocalDB by inject()
-    private val retrofitService: ApiService by inject()
-
+@Singleton
+class BadmintonRepository @Inject constructor(
+    private val database: SpocalDB,
+    private val retrofitService: ApiService
+): BaseRepository() {
     override var dao: BaseDao = database.badmintonDao
     override var sport = Sport.BADMINTON
 
@@ -48,7 +50,10 @@ class BadmintonRepository: BaseRepository(), KoinComponent {
         }
 
     override suspend fun refreshAthletesFunction() {
+        println("BADMINTON ATHLETE REFRESH 1")
         val response = retrofitService.getBadmintonAthletes()
+        println("BADMINTON ATHLETE REFRESH 2")
+        println(response.code())
         if (response.code() == 200) {
             response.body()?.let { container ->
                 // objects in the database but not in the container

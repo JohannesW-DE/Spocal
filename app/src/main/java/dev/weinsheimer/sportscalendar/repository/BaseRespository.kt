@@ -1,12 +1,12 @@
 package dev.weinsheimer.sportscalendar.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import dev.weinsheimer.sportscalendar.database.*
 import dev.weinsheimer.sportscalendar.database.dao.BaseDao
-import dev.weinsheimer.sportscalendar.domain.*
-import dev.weinsheimer.sportscalendar.network.*
+import dev.weinsheimer.sportscalendar.domain.Athlete
+import dev.weinsheimer.sportscalendar.domain.CalendarListItem
+import dev.weinsheimer.sportscalendar.domain.Event
+import dev.weinsheimer.sportscalendar.domain.EventCategory
+import dev.weinsheimer.sportscalendar.network.NetworkFilterResultsRequest
 import dev.weinsheimer.sportscalendar.util.Sport
 import dev.weinsheimer.sportscalendar.util.refresh
 import kotlinx.coroutines.Dispatchers

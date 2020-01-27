@@ -1,6 +1,7 @@
 package dev.weinsheimer.sportscalendar.database.model
 
-import androidx.room.*
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import dev.weinsheimer.sportscalendar.domain.Country
 
 /**

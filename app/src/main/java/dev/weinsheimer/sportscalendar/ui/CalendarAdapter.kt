@@ -2,23 +2,19 @@ package dev.weinsheimer.sportscalendar.ui
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.chip.Chip
 import dev.weinsheimer.sportscalendar.databinding.ItemCalendarEventBinding
 import dev.weinsheimer.sportscalendar.databinding.ItemCalendarMonthBinding
 import dev.weinsheimer.sportscalendar.domain.CalendarListItem
+import dev.weinsheimer.sportscalendar.util.Sport
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import java.lang.Exception
-import java.util.*
-import dev.weinsheimer.sportscalendar.R
 import timber.log.Timber
 import java.text.DateFormatSymbols
-import dev.weinsheimer.sportscalendar.util.*
+import java.util.*
 
 private const val ITEM_VIEW_TYPE_MONTH = 0
 private const val ITEM_VIEW_TYPE_EVENT = 1

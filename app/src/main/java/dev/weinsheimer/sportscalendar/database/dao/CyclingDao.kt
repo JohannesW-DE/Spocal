@@ -2,7 +2,10 @@ package dev.weinsheimer.sportscalendar.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import dev.weinsheimer.sportscalendar.database.model.*
+import dev.weinsheimer.sportscalendar.database.model.DatabaseCyclingAthlete
+import dev.weinsheimer.sportscalendar.database.model.DatabaseCyclingEvent
+import dev.weinsheimer.sportscalendar.database.model.DatabaseCyclingEventCategory
+import dev.weinsheimer.sportscalendar.database.model.DatabaseCyclingEventWithAthletes
 
 @Dao
 interface CyclingDao : BaseDao {

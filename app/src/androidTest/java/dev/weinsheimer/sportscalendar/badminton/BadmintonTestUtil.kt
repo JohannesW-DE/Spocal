@@ -1,9 +1,9 @@
 package dev.weinsheimer.sportscalendar.badminton
 
-import dev.weinsheimer.sportscalendar.database.model.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.weinsheimer.sportscalendar.TestUtil
+import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEntry
 import dev.weinsheimer.sportscalendar.network.*
 
 

@@ -1,7 +1,8 @@
 package dev.weinsheimer.sportscalendar.database
 
-import androidx.room.*
 import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import dev.weinsheimer.sportscalendar.database.dao.BadmintonDao
 import dev.weinsheimer.sportscalendar.database.dao.CountryDao
 import dev.weinsheimer.sportscalendar.database.dao.CyclingDao

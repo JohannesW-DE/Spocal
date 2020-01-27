@@ -1,8 +1,7 @@
 package dev.weinsheimer.sportscalendar.domain
 
-import java.util.*
-
 import dev.weinsheimer.sportscalendar.util.Sport
+import java.util.*
 
 data class Country(val id: Int,
                    val name: String,

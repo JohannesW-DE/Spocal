@@ -3,8 +3,9 @@ package dev.weinsheimer.sportscalendar.cycling
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.weinsheimer.sportscalendar.TestUtil
-import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEntry
-import dev.weinsheimer.sportscalendar.network.*
+import dev.weinsheimer.sportscalendar.network.NetworkCyclingEventCategoriesContainer
+import dev.weinsheimer.sportscalendar.network.NetworkCyclingEventsContainer
+import dev.weinsheimer.sportscalendar.network.asDatabaseModel
 
 
 class CyclingTestUtil : TestUtil() {

@@ -3,7 +3,6 @@ package dev.weinsheimer.sportscalendar.tennis
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.weinsheimer.sportscalendar.TestUtil
-import dev.weinsheimer.sportscalendar.database.model.DatabaseBadmintonEntry
 import dev.weinsheimer.sportscalendar.database.model.DatabaseTennisEntry
 import dev.weinsheimer.sportscalendar.network.*
 

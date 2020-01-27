@@ -7,8 +7,8 @@ import dev.weinsheimer.sportscalendar.badminton.BadmintonTestUtil
 import dev.weinsheimer.sportscalendar.cycling.CyclingTestUtil
 import dev.weinsheimer.sportscalendar.database.SpocalDB
 import dev.weinsheimer.sportscalendar.di.databaseTestModule
-import dev.weinsheimer.sportscalendar.util.observeOnce
 import dev.weinsheimer.sportscalendar.tennis.TennisTestUtil
+import dev.weinsheimer.sportscalendar.util.observeOnce
 import dev.weinsheimer.sportscalendar.viewmodels.SharedViewModel
 import org.junit.After
 import org.junit.Before

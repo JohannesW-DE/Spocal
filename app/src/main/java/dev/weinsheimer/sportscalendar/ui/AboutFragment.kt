@@ -6,20 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import dagger.android.support.DaggerFragment
 import dev.weinsheimer.sportscalendar.R
 import dev.weinsheimer.sportscalendar.databinding.FragmentAboutBinding
 import dev.weinsheimer.sportscalendar.util.Sport
 import dev.weinsheimer.sportscalendar.viewmodels.SharedViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import javax.inject.Inject
 
 /**
  * The about/statistics view. Shows a little about text and a few stats of every supported sport.
  */
-class AboutFragment: Fragment() {
+class AboutFragment: DaggerFragment() {
     private lateinit var binding: FragmentAboutBinding
-    private val viewModel by sharedViewModel<SharedViewModel>()
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<SharedViewModel> { viewModelFactory }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_about, container, false)

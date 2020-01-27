@@ -3,16 +3,13 @@ package dev.weinsheimer.sportscalendar
 import android.content.Context
 import androidx.core.content.edit
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import dev.weinsheimer.sportscalendar.database.SpocalDB
 import dev.weinsheimer.sportscalendar.util.Constants
 import dev.weinsheimer.sportscalendar.util.asString
 import org.koin.core.KoinComponent
 import org.koin.core.context.loadKoinModules
 import org.koin.core.inject
 import org.koin.test.inject
-import timber.log.Timber
 import java.util.*
 
 class MainActivityTestRule :

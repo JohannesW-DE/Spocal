@@ -1,43 +1,45 @@
 package dev.weinsheimer.sportscalendar
 
 import android.app.Application
-import android.content.Context
 import androidx.work.*
-import dev.weinsheimer.sportscalendar.di.appModule
-import dev.weinsheimer.sportscalendar.di.databaseModule
-import dev.weinsheimer.sportscalendar.di.networkModule
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
+import dev.weinsheimer.sportscalendar.di.ApplicationComponent
+import dev.weinsheimer.sportscalendar.di.DaggerApplicationComponent
 import dev.weinsheimer.sportscalendar.network.RefreshWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class SportsCalendarApplication : Application()
+
+class SportsCalendarApplication : DaggerApplication(), Configuration.Provider
 {
     private val applicationScope = CoroutineScope(Dispatchers.Default)
+
+    private val appComponent by lazy {
+        DaggerApplicationComponent.factory().create(applicationContext)
+    }
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return appComponent
+    }
 
     override fun onCreate() {
         super.onCreate()
 
         Timber.plant(Timber.DebugTree())
 
-        startKoin {
-            androidLogger()
-            androidContext(this@SportsCalendarApplication)
-            modules(listOf(databaseModule, networkModule, appModule))
-        }
-
         applicationScope.launch {
             setupRefreshWorker()
         }
     }
 
+
     private fun setupRefreshWorker() {
+        WorkManager.initialize(this, Configuration.Builder().setWorkerFactory(appComponent.workerFactory()).build())
+
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
@@ -54,4 +56,7 @@ class SportsCalendarApplication : Application()
             refreshRequest
         )
     }
+
+    override fun getWorkManagerConfiguration(): Configuration =
+        Configuration.Builder().setWorkerFactory(appComponent.workerFactory()).build()
 }

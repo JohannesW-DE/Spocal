@@ -1,16 +1,7 @@
 package dev.weinsheimer.sportscalendar.network
 
-import com.google.gson.Gson
-import com.squareup.moshi.Json
 import dev.weinsheimer.sportscalendar.BuildConfig
 import okhttp3.*
-import timber.log.Timber
-import com.google.gson.JsonObject
-import okhttp3.ResponseBody
-import android.R.id.message
-
-
-
 
 
 class MockInterceptor(val fake: (String) -> String) : Interceptor {

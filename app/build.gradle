@@ -21,6 +21,11 @@ android {
             arguments {
                 arg("room.schemaLocation", "$projectDir/schemas".toString())
             }
+            javacOptions {
+                // Increase the max count of errors from annotation processors.
+                // Default is 100.
+                option("-Xmaxerrs", 500)
+            }
         }
 
         testOptions {
@@ -32,10 +37,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "SERVER_BASE_URL", "\"http://88.153.223.200:5000\"")
+            buildConfigField("String", "SERVER_BASE_URL", "\"http://88.153.25.195:5000\"")
         }
         debug {
-            buildConfigField("String", "SERVER_BASE_URL", "\"http://88.153.223.200:5000\"")
+            buildConfigField("String", "SERVER_BASE_URL", "\"http://88.153.25.195:5000\"")
         }
     }
 
@@ -75,12 +80,14 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
     // /custom
 
-    // Koin
-    implementation "org.koin:koin-android:$version_koin"
-    implementation "org.koin:koin-androidx-scope:$version_koin"
-    implementation "org.koin:koin-androidx-viewmodel:$version_koin"
-    implementation "org.koin:koin-androidx-ext:$version_koin"
-    androidTestImplementation "org.koin:koin-test:$version_koin"
+    // Dagger
+    implementation 'com.google.dagger:dagger:2.25.4'
+    kapt 'com.google.dagger:dagger-compiler:2.25.4'
+    implementation "com.google.dagger:dagger-android-support:2.25.4"
+    kapt "com.google.dagger:dagger-android-processor:2.25.4"
+
+    compileOnly 'com.squareup.inject:assisted-inject-annotations-dagger2:0.5.2'
+    kapt 'com.squareup.inject:assisted-inject-processor-dagger2:0.5.2'
 
     /**
      * Testing

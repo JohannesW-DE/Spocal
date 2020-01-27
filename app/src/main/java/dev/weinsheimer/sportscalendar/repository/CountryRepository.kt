@@ -2,7 +2,6 @@ package dev.weinsheimer.sportscalendar.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.squareup.moshi.JsonDataException
 import dev.weinsheimer.sportscalendar.database.SpocalDB
 import dev.weinsheimer.sportscalendar.database.model.asDomainModel
 import dev.weinsheimer.sportscalendar.domain.Country
@@ -13,14 +12,14 @@ import dev.weinsheimer.sportscalendar.util.RefreshExceptionType
 import dev.weinsheimer.sportscalendar.util.refresh
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.koin.core.KoinComponent
-import org.koin.core.inject
-import java.net.SocketTimeoutException
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class CountryRepository: KoinComponent {
-    private val database: SpocalDB by inject()
-    private val retrofitService: ApiService by inject()
-
+@Singleton
+class CountryRepository @Inject constructor(
+    private val database: SpocalDB,
+    private val retrofitService: ApiService
+) {
     /**
      * DAO calls
      */
@@ -35,7 +34,9 @@ class CountryRepository: KoinComponent {
     suspend fun refreshCountries() {
         refresh {
             withContext(Dispatchers.IO) {
+                println("testing")
                 val response = retrofitService.getCountries()
+                println(response.code())
                 if (response.code() == 200) {
                     println("COUNTRYCONTAINER")
                     response.body()?.let { container ->

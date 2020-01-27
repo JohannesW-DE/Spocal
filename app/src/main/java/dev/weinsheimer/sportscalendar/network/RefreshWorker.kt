@@ -1,38 +1,41 @@
 package dev.weinsheimer.sportscalendar.network
 
 import android.content.Context
-import androidx.work.CoroutineWorker
-import androidx.work.Data
-import androidx.work.Worker
-import androidx.work.WorkerParameters
-import dev.weinsheimer.sportscalendar.database.dao.CyclingDao_Impl
+import androidx.work.*
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
+import dagger.Binds
+import dagger.MapKey
+import dagger.Module
+import dagger.multibindings.IntoMap
+import dev.weinsheimer.sportscalendar.di.ChildWorkerFactory
 import dev.weinsheimer.sportscalendar.repository.BadmintonRepository
 import dev.weinsheimer.sportscalendar.repository.CountryRepository
 import dev.weinsheimer.sportscalendar.repository.CyclingRepository
 import dev.weinsheimer.sportscalendar.repository.TennisRepository
 import dev.weinsheimer.sportscalendar.util.RefreshException
-import dev.weinsheimer.sportscalendar.viewmodels.SharedViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import javax.inject.Inject
+import javax.inject.Provider
+import kotlin.reflect.KClass
 
-class RefreshWorker(appContext: Context, workerParams: WorkerParameters)
-    : CoroutineWorker(appContext, workerParams), KoinComponent {
+class RefreshWorker @AssistedInject constructor(
+    @Assisted private val appContext: Context,
+    @Assisted private val workerParams: WorkerParameters,
+    private val countryRepository: CountryRepository,
+    private val badmintonRepository: BadmintonRepository,
+    private val tennisRepository: TennisRepository,
+    private val cyclingRepository: CyclingRepository
+): CoroutineWorker(appContext, workerParams) {
 
     companion object {
         const val WORK_NAME = "RefreshWorker"
         const val WORK_NAME_UNIQUE = "UniqueRefreshWorker"
     }
 
-    private val countryRepository: CountryRepository by inject()
-    private val badmintonRepository: BadmintonRepository by inject()
-    private val tennisRepository: TennisRepository by inject()
-    private val cyclingRepository: CyclingRepository by inject()
-
     private suspend fun refresh() {
+        println("uno")
         countryRepository.refreshCountries()
-        println("countries refreshed")
+        println("dou")
         badmintonRepository.refresh()
         tennisRepository.refresh()
         cyclingRepository.refresh()
@@ -48,4 +51,12 @@ class RefreshWorker(appContext: Context, workerParams: WorkerParameters)
         }
         return Result.success()
     }
+
+    @AssistedInject.Factory
+    interface Factory : ChildWorkerFactory
 }
+
+
+
+
+

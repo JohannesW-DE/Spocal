@@ -1,12 +1,13 @@
 package dev.weinsheimer.sportscalendar.database.model
 
-import java.util.*
-
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
-
-import dev.weinsheimer.sportscalendar.domain.*
+import dev.weinsheimer.sportscalendar.domain.Athlete
+import dev.weinsheimer.sportscalendar.domain.CalendarListItem
+import dev.weinsheimer.sportscalendar.domain.Event
+import dev.weinsheimer.sportscalendar.domain.EventCategory
 import dev.weinsheimer.sportscalendar.util.Sport
+import java.util.*
 
 /**
  * Models

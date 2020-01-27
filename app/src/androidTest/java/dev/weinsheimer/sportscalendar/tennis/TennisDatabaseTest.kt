@@ -6,7 +6,10 @@ import com.google.common.truth.Truth
 import dev.weinsheimer.sportscalendar.database.SpocalDB
 import dev.weinsheimer.sportscalendar.database.dao.CountryDao
 import dev.weinsheimer.sportscalendar.database.dao.TennisDao
-import dev.weinsheimer.sportscalendar.database.model.*
+import dev.weinsheimer.sportscalendar.database.model.DatabaseCountry
+import dev.weinsheimer.sportscalendar.database.model.DatabaseTennisEntry
+import dev.weinsheimer.sportscalendar.database.model.DatabaseTennisEvent
+import dev.weinsheimer.sportscalendar.database.model.DatabaseTennisEventCategory
 import dev.weinsheimer.sportscalendar.di.databaseTestModule
 import dev.weinsheimer.sportscalendar.util.observeOnce
 import org.junit.After

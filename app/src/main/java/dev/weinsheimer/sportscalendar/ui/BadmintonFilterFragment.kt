@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import dev.weinsheimer.sportscalendar.R
 import dev.weinsheimer.sportscalendar.util.Sport
 import dev.weinsheimer.sportscalendar.viewmodels.SharedViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import javax.inject.Inject
 
 class BadmintonFilterFragment : FilterFragment() {
-    private val viewModel by sharedViewModel<SharedViewModel>()
-
     override var sport = Sport.BADMINTON
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
