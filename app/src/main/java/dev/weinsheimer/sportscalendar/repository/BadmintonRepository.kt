@@ -121,7 +121,7 @@ class BadmintonRepository: BaseRepository(), KoinComponent {
                 database.badmintonDao.deleteEvents(*deletes.toTypedArray())
                 //database.badmintonDao.insertEvents(*container.asDatabaseModel())
                 container.asDatabaseModel().forEach {
-                    println(it.name)
+                    println(it)
                     database.badmintonDao.insertEvents(it)
                 }
                 database.badmintonDao.updateEvents(*currents.toTypedArray())

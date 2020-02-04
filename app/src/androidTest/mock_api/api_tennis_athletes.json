@@ -1,0 +1,124 @@
+{
+  "athletes": [
+    {
+      "gender": "m",
+      "id": 1,
+      "name": "Rafael Nadal",
+      "nationality": 163
+    },
+    {
+      "gender": "m",
+      "id": 2,
+      "name": "Novak Djokovic",
+      "nationality": 153
+    },
+    {
+      "gender": "m",
+      "id": 3,
+      "name": "Roger Federer",
+      "nationality": 168
+    },
+    {
+      "gender": "m",
+      "id": 4,
+      "name": "Daniil Medvedev",
+      "nationality": 143
+    },
+    {
+      "gender": "m",
+      "id": 5,
+      "name": "Dominic Thiem",
+      "nationality": 10
+    },
+    {
+      "gender": "m",
+      "id": 6,
+      "name": "Stefanos Tsitsipas",
+      "nationality": 67
+    },
+    {
+      "gender": "m",
+      "id": 7,
+      "name": "Alexander Zverev",
+      "nationality": 65
+    },
+    {
+      "gender": "m",
+      "id": 8,
+      "name": "Matteo Berrettini",
+      "nationality": 83
+    },
+    {
+      "gender": "m",
+      "id": 9,
+      "name": "Roberto Bautista Agut",
+      "nationality": 163
+    },
+    {
+      "gender": "m",
+      "id": 10,
+      "name": "Gael Monfils",
+      "nationality": 61
+    },
+    {
+      "gender": "m",
+      "id": 11,
+      "name": "David Goffin",
+      "nationality": 17
+    },
+    {
+      "gender": "m",
+      "id": 12,
+      "name": "Fabio Fognini",
+      "nationality": 83
+    },
+    {
+      "gender": "m",
+      "id": 13,
+      "name": "Denis Shapovalov",
+      "nationality": 32
+    },
+    {
+      "gender": "m",
+      "id": 14,
+      "name": "Diego Schwartzman",
+      "nationality": 7
+    },
+    {
+      "gender": "m",
+      "id": 15,
+      "name": "Stan Wawrinka",
+      "nationality": 168
+    },
+    {
+      "gender": "m",
+      "id": 16,
+      "name": "Andrey Rublev",
+      "nationality": 143
+    },
+    {
+      "gender": "m",
+      "id": 17,
+      "name": "Karen Khachanov",
+      "nationality": 143
+    },
+    {
+      "gender": "m",
+      "id": 18,
+      "name": "Kei Nishikori",
+      "nationality": 85
+    },
+    {
+      "gender": "m",
+      "id": 19,
+      "name": "John Isner",
+      "nationality": 185
+    },
+    {
+      "gender": "m",
+      "id": 20,
+      "name": "Grigor Dimitrov",
+      "nationality": 26
+    }
+  ]
+}

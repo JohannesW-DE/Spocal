@@ -1,44 +1,59 @@
 {
   "categories": [
     {
-      "id": 1,
       "association": null,
-      "name": "Stadtmeisterschaft"
+      "id": 1,
+      "name": "Grand Slam"
     },
     {
-      "id": 6,
-      "association": "wta",
+      "association": "atp",
+      "id": 2,
       "name": "Finals"
     },
     {
-      "id": 7,
+      "association": "atp",
+      "id": 3,
+      "name": "Masters 1000"
+    },
+    {
+      "association": "atp",
+      "id": 4,
+      "name": "500"
+    },
+    {
+      "association": "atp",
+      "id": 5,
+      "name": "250"
+    },
+    {
       "association": "wta",
+      "id": 6,
+      "name": "Finals"
+    },
+    {
+      "association": "wta",
+      "id": 7,
       "name": "Premier Mandatory"
     },
     {
-      "id": 8,
       "association": "wta",
+      "id": 8,
       "name": "Premier 5"
     },
     {
-      "id": 9,
       "association": "wta",
+      "id": 9,
       "name": "Premier"
     },
     {
-      "id": 10,
       "association": "wta",
+      "id": 10,
       "name": "International"
     },
     {
-      "id": 11,
       "association": "wta",
+      "id": 11,
       "name": "125K"
-    },
-    {
-      "id": 12,
-      "association": "atp",
-      "name": "Hobbyturnier"
     }
   ]
 }

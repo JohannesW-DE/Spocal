@@ -2,6 +2,8 @@ package dev.weinsheimer.sportscalendar
 
 import android.content.Context
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.koin.core.KoinComponent
 import org.koin.core.get
 
@@ -10,8 +12,8 @@ class MockJsonInterceptor : Interceptor, KoinComponent {
         println("INTERCEPTOR")
         if (BuildConfig.DEBUG) {
             val context: Context = get()
-            val method = chain.request().method()
-            var path = chain.request().url().uri().path
+            val method = chain.request().method
+            var path = chain.request().url.toUri().path
 
             println("INTERCEPT")
             println(path)
@@ -40,10 +42,8 @@ class MockJsonInterceptor : Interceptor, KoinComponent {
                 .code(200)
                 .message("")
                 .body(
-                    ResponseBody.create(
-                        MediaType.parse("application/json"),
-                        jsonString
-                    )
+                    jsonString
+                        .toResponseBody("application/json".toMediaTypeOrNull())
                 )
                 .build()
         } else {

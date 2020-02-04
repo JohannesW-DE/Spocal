@@ -1,0 +1,34 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "main_category": null,
+      "name": "UCI WorldTour"
+    },
+    {
+      "id": 2,
+      "main_category": 1,
+      "name": "UCI WorldTour (One-day))"
+    },
+    {
+      "id": 3,
+      "main_category": 1,
+      "name": "UCI WorldTour (Stages)"
+    },
+    {
+      "id": 4,
+      "main_category": null,
+      "name": "UCI ProSeries"
+    },
+    {
+      "id": 5,
+      "main_category": 4,
+      "name": "UCI ProSeries (One-day)"
+    },
+    {
+      "id": 6,
+      "main_category": 4,
+      "name": "UCI ProSeries (Stages)"
+    }
+  ]
+}

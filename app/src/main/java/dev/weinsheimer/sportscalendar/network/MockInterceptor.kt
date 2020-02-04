@@ -8,16 +8,15 @@ import timber.log.Timber
 import com.google.gson.JsonObject
 import okhttp3.ResponseBody
 import android.R.id.message
-
-
-
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
 
 
 class MockInterceptor(val fake: (String) -> String) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         if (BuildConfig.DEBUG) {
             println("INTERCEPTED")
-            val uri = chain.request().url().uri().toString()
+            val uri = chain.request().url.toUri().toString()
 
 
             println(uri)
@@ -34,10 +33,8 @@ class MockInterceptor(val fake: (String) -> String) : Interceptor {
                 .code(200)
                 .message("")
                 .body(
-                    ResponseBody.create(
-                        MediaType.parse("application/json"),
-                        responseString
-                    )
+                    responseString
+                        .toResponseBody("application/json".toMediaTypeOrNull())
                 )
                 .build()
         } else {
